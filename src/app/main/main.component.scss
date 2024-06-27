@@ -1,0 +1,45 @@
+.main {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 50vh;
+  padding: 10px 50px;
+
+  p {
+    width: 100%;
+    max-width: 500px;
+  }
+  h2 {
+    max-width: 400px;
+    font-size: 35px;
+  }
+  img {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  .cleanings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 20px;
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80px;
+      width: 300px;
+      border: 1px solid yellow;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+  }
+}
