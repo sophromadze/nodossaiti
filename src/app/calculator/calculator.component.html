@@ -214,7 +214,7 @@
       </div>
 
       <!-- Discount Code -->
-      <div class="relative-container">
+      <!-- <div class="relative-container">
         <div class="form-group bordered-group">
           <label for="discountCode"><h3>Discount Code</h3></label>
           <div class="row">
@@ -234,7 +234,7 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Special Instructions -->
       <div class="relative-container">
@@ -250,180 +250,14 @@
       </div>
 
       <!-- Contact Information -->
-      <div class="relative-container">
-        <div class="form-group bordered-group">
-          <h3>Contact Info</h3>
-          <div class="formsGap">
-            <div class="row">
-              <div class="col">
-                <input
-                  type="text"
-                  formControlName="name"
-                  id="name"
-                  class="form-control"
-                  placeholder="First Name**"
-                />
-                <div
-                  *ngIf="
-                    calculatorForm.get('name')!.invalid &&
-                    calculatorForm.get('name')!.touched
-                  "
-                  class="error"
-                >
-                  Please enter your first name.
-                </div>
-              </div>
-              <div class="col">
-                <input
-                  type="text"
-                  formControlName="lastName"
-                  id="lastName"
-                  class="form-control"
-                  placeholder="Last Name**"
-                />
-                <div
-                  *ngIf="
-                    calculatorForm.get('lastName')!.invalid &&
-                    calculatorForm.get('lastName')!.touched
-                  "
-                  class="error"
-                >
-                  Please enter your last name.
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <input
-                  type="email"
-                  formControlName="email"
-                  id="email"
-                  class="form-control"
-                  placeholder="Email**"
-                />
-                <div
-                  *ngIf="
-                    calculatorForm.get('email')!.invalid &&
-                    calculatorForm.get('email')!.touched
-                  "
-                  class="error"
-                >
-                  Please enter a valid email.
-                </div>
-              </div>
-              <div class="col">
-                <input
-                  type="text"
-                  formControlName="cellNumber"
-                  id="cellNumber"
-                  class="form-control"
-                  placeholder="Cell Number"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-contact-information
+        [parentForm]="calculatorForm"
+      ></app-contact-information>
 
       <!-- Address Information -->
-      <div class="relative-container">
-        <div class="form-group">
-          <h3>Address</h3>
-          <div class="formsGap">
-            <div class="row">
-              <div class="col address-flex">
-                <input
-                  type="text"
-                  formControlName="address"
-                  id="address"
-                  class="form-control"
-                  placeholder="Address**"
-                />
-                <div
-                  *ngIf="
-                    calculatorForm.get('address')!.invalid &&
-                    calculatorForm.get('address')!.touched
-                  "
-                  class="error"
-                >
-                  Please enter your address.
-                </div>
-              </div>
-              <div class="col">
-                <input
-                  type="text"
-                  formControlName="apartment"
-                  id="apartment"
-                  class="form-control"
-                  placeholder="Apt/Suite #"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="row address-flex">
-                <div class="col address-flex">
-                  <input
-                    type="text"
-                    formControlName="city"
-                    id="city"
-                    class="form-control"
-                    placeholder="City**"
-                  />
-                  <div
-                    *ngIf="
-                      calculatorForm.get('city')!.invalid &&
-                      calculatorForm.get('city')!.touched
-                    "
-                    class="error"
-                  >
-                    Please enter your city.
-                  </div>
-                </div>
-                <div class="col">
-                  <select
-                    formControlName="state"
-                    id="state"
-                    class="form-control"
-                  >
-                    <!-- <option value="" disabled>Select state**</option> -->
-                    <option value="NY">New York</option>
-
-                    <!-- ... other states ... -->
-                  </select>
-                  <div
-                    *ngIf="
-                      calculatorForm.get('state')!.invalid &&
-                      calculatorForm.get('state')!.touched
-                    "
-                    class="error"
-                  >
-                    Please select your state.
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <input
-                  type="text"
-                  formControlName="zipCode"
-                  id="zipCode"
-                  class="form-control"
-                  placeholder="Zip Code**"
-                />
-                <div
-                  *ngIf="
-                    calculatorForm.get('zipCode')!.invalid &&
-                    calculatorForm.get('zipCode')!.touched
-                  "
-                  class="error"
-                >
-                  Please enter your zip code.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-address-information
+        [parentForm]="calculatorForm"
+      ></app-address-information>
 
       <button type="submit" class="btn btn-success">Book Now</button>
     </form>
@@ -431,131 +265,9 @@
 
   <div class="right-side">
     <div class="right-side-description">
-      <div *ngIf="calculatorForm.get('serviceType')!.value === 'Residential'">
-        <h4>Regular Cleaning:</h4>
-        <ul>
-          <li>
-            <span>Purpose: </span>Regular cleaning refers to routine maintenance
-            cleaning that is scheduled regularly to maintain a desired level of
-            cleanliness and tidiness.
-          </li>
-          <li>
-            <span>Tasks: </span>It typically includes basic tasks performed on a
-            recurring basis, such as dusting, vacuuming, mopping floors, wiping
-            surfaces, and cleaning bathrooms and kitchens.
-          </li>
-          <li>
-            <span>Frequency: </span>It is done on a frequent basis, often
-            weekly, bi-weekly, or monthly, depending on the needs and
-            preferences of the homeowner or business.
-          </li>
-        </ul>
-      </div>
-      <div *ngIf="calculatorForm.get('serviceType')!.value === 'Residential'">
-        <h4>Deep Cleaning:</h4>
-        <ul>
-          <li>
-            <span>Purpose: </span>Deep cleaning is a more thorough and intensive
-            cleaning process aimed at tackling accumulated dirt, grime, and
-            buildup that may not be addressed in regular cleaning sessions.
-          </li>
-          <li>
-            <span>Tasks: </span>It involves cleaning tasks that go beyond the
-            routine, such as scrubbing tiles and grout, cleaning inside
-            appliances (like ovens and refrigerators), washing baseboards,
-            cleaning light fixtures, and removing dust and cobwebs from corners
-            and high surfaces.
-          </li>
-          <li>
-            <span>Frequency: </span> It is typically done less frequently than
-            regular cleaning and is often performed on a seasonal basis or as
-            needed to maintain a higher level of cleanliness.
-          </li>
-        </ul>
-      </div>
-      <div *ngIf="calculatorForm.get('serviceType')!.value === 'Move In'">
-        <h4>
-          Move-In Cleaning Service:
-          <span style="font-weight: 400">
-            A move-in cleaning service is designed to prepare a new residence or
-            commercial space for occupancy. It focuses on thorough cleaning to
-            ensure the space is fresh, sanitized, and welcoming for the new
-            occupants. Key tasks typically include:
-          </span>
-        </h4>
-
-        <ul>
-          <li>
-            <span>Deep Cleaning: </span>Cleaning all surfaces, including floors,
-            walls, and ceilings.
-          </li>
-          <li>
-            <span>Sanitization: </span>Disinfecting bathrooms and kitchens to
-            ensure hygiene.
-          </li>
-          <li>
-            <span>Fixture Cleaning: </span> Wiping down fixtures such as
-            cabinets, countertops, and appliances.
-          </li>
-          <li>
-            <span>Floor Care: </span> Sweeping, vacuuming, and mopping all
-            floors.
-          </li>
-          <li>
-            <span>Window Cleaning: </span> Washing interior windows to remove
-            dust and grime.
-          </li>
-          <li>
-            <span>Dusting: </span> Removing dust from baseboards, light
-            fixtures, and other surfaces.
-          </li>
-          <li>
-            <span>Trash Removal: </span> Disposing of any leftover trash or
-            debris.
-          </li>
-        </ul>
-      </div>
-      <div *ngIf="calculatorForm.get('serviceType')!.value === 'Move Out'">
-        <h4>
-          Move-Out Cleaning Service:
-          <span style="font-weight: 400">
-            A move-out cleaning service is performed when occupants are vacating
-            a property. It focuses on deep cleaning to prepare the space for new
-            tenants or owners. Key tasks typically include:
-          </span>
-        </h4>
-
-        <ul>
-          <li>
-            <span>Detailed Cleaning: </span>Thoroughly cleaning all areas of the
-            property, including bathrooms, kitchens, and living spaces.
-          </li>
-          <li>
-            <span>Stain Removal: </span>Addressing any stains or marks on walls,
-            floors, or carpets.
-          </li>
-          <li>
-            <span>Appliance Cleaning: </span> Cleaning inside and outside of
-            appliances like refrigerators and ovens.
-          </li>
-          <li>
-            <span>Window and Blind Cleaning: </span> Washing windows and
-            cleaning blinds or curtains.
-          </li>
-          <li>
-            <span>Baseboard and Trim Cleaning: </span> Wiping down baseboards,
-            door frames, and trim.
-          </li>
-          <li>
-            <span>Carpet Cleaning: </span> Vacuuming and spot-treating carpets
-            to remove dirt and stains.
-          </li>
-          <li>
-            <span>Final Touches: </span> Ensuring all areas are spotless and
-            ready for the next occupants.
-          </li>
-        </ul>
-      </div>
+      <app-service-description
+        [serviceType]="calculatorForm.get('serviceType')!.value"
+      ></app-service-description>
     </div>
     <div class="calculator-card fixed">
       <div class="summary">
@@ -588,7 +300,6 @@
               : "N/A"
           }}
         </p>
-
         <p>
           Number of Cleaners:
           {{

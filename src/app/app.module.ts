@@ -7,7 +7,9 @@ import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
 import { CalculatorComponent } from './calculator/calculator.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SereviceDescriptionsComponent } from './calculator/serevice-descriptions/serevice-descriptions.component';
+import { ServiceDescriptionComponent } from './calculator/service-description/service-description.component';
+import { ContactInformationComponent } from './calculator/contact-information/contact-information.component';
+import { AddressInformationComponent } from './calculator/address-information/address-information.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { SereviceDescriptionsComponent } from './calculator/serevice-description
     HeaderComponent,
     MainComponent,
     CalculatorComponent,
-    SereviceDescriptionsComponent,
+    ServiceDescriptionComponent,
+    ContactInformationComponent,
+    AddressInformationComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [],

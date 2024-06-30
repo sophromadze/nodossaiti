@@ -120,40 +120,8 @@ button.btn-success {
   color: #fff;
 }
 
-.error {
-  position: absolute;
-  color: red;
-  font-size: 0.875rem;
-  margin-top: 3.3rem;
-}
-
-.placeholder {
-  color: grey;
-  font-style: italic;
-}
-
-.form-group {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.row {
-  display: flex;
-  gap: 1rem;
-}
-
-.col {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex: 1;
-  gap: 10px;
-}
-
-.address-flex {
-  flex: 3;
+.hidden {
+  display: none;
 }
 
 .bordered-group {
@@ -161,26 +129,6 @@ button.btn-success {
   padding: 30px 10px;
 }
 
-.relative-container {
-  position: relative;
-}
-
 h3 {
   margin-top: 0;
-}
-
-.formsGap {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.typeRow {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-}
-
-.hidden {
-  display: none;
 }

@@ -96,15 +96,6 @@ export class CalculatorComponent implements OnInit {
       entryMethod: ['', Validators.required],
       discountCode: [''],
       specialInstructions: [''],
-      name: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      cellNumber: [''],
-      address: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['NY', Validators.required],
-      apartment: [''],
-      zipCode: ['', Validators.required],
       sameDay: [false],
       deepCleaning: [false],
       insideOfClosets: [false],
@@ -162,9 +153,9 @@ export class CalculatorComponent implements OnInit {
     this.calculatePriceAndTime();
   }
 
-  applyDiscount(): void {
-    // Implement discount code logic here
-  }
+  // applyDiscount(): void {
+  //   // Implement discount code logic here
+  // }
 
   setFrequency(frequency: string): void {
     this.calculatorForm.get('frequency')!.setValue(frequency);
