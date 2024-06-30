@@ -1,0 +1,186 @@
+.container {
+  display: flex;
+  gap: 2rem;
+  padding: 10px 50px;
+}
+
+.left-side {
+  flex: 2;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.right-side {
+  flex: 1;
+}
+
+.fixed {
+  position: fixed;
+  bottom: 10px; /* Adjust this value based on your layout */
+  width: 32%;
+}
+
+.calculator-card {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.summary {
+  margin-bottom: 1rem;
+}
+
+.total-price {
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+button.btn-success {
+  width: 100%;
+  background-color: #28a745;
+  color: #fff;
+  margin-top: 20px;
+}
+
+.discountBtn {
+  width: 50%;
+}
+
+.frequency-buttons,
+.extra-services-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.frequency-buttons .btn,
+.extra-services-buttons .btn {
+  flex: 1;
+  text-align: center;
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+}
+
+.frequency-buttons .btn.selected,
+.extra-services-buttons .btn.selected {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.extra-services-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.extra-services-buttons .btn {
+  text-align: center;
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  box-sizing: border-box;
+}
+
+.extra-services-buttons .btn.selected {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.error {
+  position: absolute;
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 3.3rem;
+}
+
+.placeholder {
+  color: grey;
+  font-style: italic;
+}
+
+.form-group {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  gap: 10px;
+}
+
+.address-flex {
+  flex: 3;
+}
+
+.bordered-group {
+  border-bottom: 1px dotted #ccc;
+  padding: 30px 10px;
+}
+
+.relative-container {
+  position: relative;
+}
+
+h3 {
+  margin-top: 0;
+}
+
+.formsGap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.typeRow {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.hidden {
+  display: none;
+}

@@ -1,1 +1,617 @@
-<p>calculator works!</p>
+<div class="container">
+  <div class="left-side">
+    <form [formGroup]="calculatorForm" (ngSubmit)="onSubmit()">
+      <!-- Service Type -->
+      <div class="relative-container">
+        <div class="form-group col bordered-group">
+          <div class="col">
+            <h3>Service Type</h3>
+            <div class="col">
+              <select
+                formControlName="serviceType"
+                id="serviceType"
+                class="form-control"
+                (change)="onServiceTypeChange()"
+              >
+                <option value="" disabled>Select a service type**</option>
+                <option value="Residential">
+                  Residential Cleaning Service
+                </option>
+                <option value="Move In">Move In Cleaning Package</option>
+                <option value="Move Out">Move Out Cleaning Package</option>
+                <option value="Custom Cleaning">Custom Cleaning</option>
+              </select>
+              <div
+                *ngIf="
+                  calculatorForm.get('serviceType')!.invalid &&
+                  calculatorForm.get('serviceType')!.touched
+                "
+                class="error"
+              >
+                Please select a service type.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bedrooms and Bathrooms -->
+      <div *ngIf="!isCustomCleaning" class="relative-container">
+        <div class="form-group row bordered-group typeRow">
+          <div class="col">
+            <h3>Tell us about your home.</h3>
+            <select
+              formControlName="bedrooms"
+              id="bedrooms"
+              class="form-control"
+            >
+              <option value="studio">Studio Clean</option>
+              <option value="one">One Bedroom Clean</option>
+              <option value="two">Two Bedrooms Clean</option>
+              <option value="three">Three Bedrooms Clean</option>
+              <option value="four">Four Bedrooms Clean</option>
+              <option value="five">Five Bedrooms Clean</option>
+              <option value="six">Six Bedrooms Clean</option>
+            </select>
+            <div
+              *ngIf="
+                calculatorForm.get('bedrooms')!.invalid &&
+                calculatorForm.get('bedrooms')!.touched
+              "
+              class="error"
+            >
+              Please select the number of bedrooms.
+            </div>
+          </div>
+          <div class="col">
+            <select
+              formControlName="bathrooms"
+              id="bathrooms"
+              class="form-control"
+            >
+              <option value="" disabled>Select number of bathrooms**</option>
+              <option *ngFor="let i of bathroomOptions" [value]="i">
+                {{ i }} {{ i === 1 ? "Bathroom" : "Bathrooms" }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cleaners and Hours (Custom Cleaning) -->
+      <div *ngIf="isCustomCleaning" class="relative-container">
+        <div class="form-group row bordered-group typeRow">
+          <div class="col">
+            <h3>Hourly Service: $55 per hour/per cleaner</h3>
+            <select
+              formControlName="cleaners"
+              id="cleaners"
+              class="form-control"
+            >
+              <option value="" disabled>Select number of cleaners**</option>
+              <option *ngFor="let i of cleanersOptions" [value]="i">
+                {{ i }} {{ i === 1 ? "Cleaner" : "Cleaners" }}
+              </option>
+            </select>
+          </div>
+          <div class="col">
+            <select formControlName="hours" id="hours" class="form-control">
+              <option value="" disabled>Select number of hours**</option>
+              <option *ngFor="let hour of hoursOptions" [value]="hour">
+                {{ hour }} {{ hour === 1 ? "Hour" : "Hours" }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extra Services -->
+      <div class="relative-container">
+        <div class="form-group bordered-group">
+          <label><h3>Extra Services</h3></label>
+          <div class="extra-services-buttons">
+            <button
+              type="button"
+              class="btn"
+              *ngFor="let extra of extraServices"
+              [class.selected]="calculatorForm.get(extra.controlName)!.value"
+              (click)="toggleExtraService(extra.controlName)"
+              [ngClass]="{
+                hidden:
+                  isCustomCleaning &&
+                  !(
+                    extra.controlName === 'deepCleaning' ||
+                    extra.controlName === 'sameDay'
+                  )
+              }"
+            >
+              {{ extra.label }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Date and Time -->
+      <div class="relative-container">
+        <div class="form-group col bordered-group">
+          <h3>Service Date & Time</h3>
+          <div class="row">
+            <div class="col">
+              <input
+                type="date"
+                formControlName="serviceDate"
+                id="serviceDate"
+                class="form-control"
+                placeholder="Service Date**"
+              />
+              <div
+                *ngIf="
+                  calculatorForm.get('serviceDate')!.invalid &&
+                  calculatorForm.get('serviceDate')!.touched
+                "
+                class="error"
+              >
+                Please select a service date.
+              </div>
+            </div>
+            <div class="col">
+              <input
+                type="time"
+                formControlName="serviceTime"
+                id="serviceTime"
+                class="form-control"
+                placeholder="Service Time**"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Frequency -->
+      <div class="relative-container">
+        <div class="form-group bordered-group">
+          <label><h3>Frequency</h3></label>
+          <div class="frequency-buttons">
+            <button
+              type="button"
+              class="btn"
+              *ngFor="let freq of frequencies"
+              [class.selected]="
+                calculatorForm.get('frequency')!.value === freq.value
+              "
+              (click)="setFrequency(freq.value)"
+            >
+              {{ freq.label }}
+            </button>
+          </div>
+          <div
+            *ngIf="
+              calculatorForm.get('frequency')!.invalid &&
+              calculatorForm.get('frequency')!.touched
+            "
+            class="error"
+          >
+            Please select a frequency.
+          </div>
+        </div>
+      </div>
+
+      <!-- Entry Method -->
+      <div class="relative-container">
+        <div class="form-group bordered-group">
+          <label for="entryMethod"><h3>Entry Method</h3></label>
+          <select
+            formControlName="entryMethod"
+            id="entryMethod"
+            class="form-control"
+          >
+            <option value="" disabled>Select entry method</option>
+            <option value="keyUnderMat">Key Under Mat</option>
+            <option value="leaveOpen">Leave Open</option>
+            <option value="meetInPerson">Meet in Person</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Discount Code -->
+      <div class="relative-container">
+        <div class="form-group bordered-group">
+          <label for="discountCode"><h3>Discount Code</h3></label>
+          <div class="row">
+            <input
+              type="text"
+              formControlName="discountCode"
+              id="discountCode"
+              class="form-control"
+              placeholder="Discount Code"
+            />
+            <button
+              type="button"
+              (click)="applyDiscount()"
+              class="btn btn-primary discountBtn"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Special Instructions -->
+      <div class="relative-container">
+        <div class="form-group bordered-group">
+          <label for="specialInstructions"><h3>Special Instructions</h3></label>
+          <textarea
+            formControlName="specialInstructions"
+            id="specialInstructions"
+            class="form-control"
+            placeholder="Special Instructions"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="relative-container">
+        <div class="form-group bordered-group">
+          <h3>Contact Info</h3>
+          <div class="formsGap">
+            <div class="row">
+              <div class="col">
+                <input
+                  type="text"
+                  formControlName="name"
+                  id="name"
+                  class="form-control"
+                  placeholder="First Name**"
+                />
+                <div
+                  *ngIf="
+                    calculatorForm.get('name')!.invalid &&
+                    calculatorForm.get('name')!.touched
+                  "
+                  class="error"
+                >
+                  Please enter your first name.
+                </div>
+              </div>
+              <div class="col">
+                <input
+                  type="text"
+                  formControlName="lastName"
+                  id="lastName"
+                  class="form-control"
+                  placeholder="Last Name**"
+                />
+                <div
+                  *ngIf="
+                    calculatorForm.get('lastName')!.invalid &&
+                    calculatorForm.get('lastName')!.touched
+                  "
+                  class="error"
+                >
+                  Please enter your last name.
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <input
+                  type="email"
+                  formControlName="email"
+                  id="email"
+                  class="form-control"
+                  placeholder="Email**"
+                />
+                <div
+                  *ngIf="
+                    calculatorForm.get('email')!.invalid &&
+                    calculatorForm.get('email')!.touched
+                  "
+                  class="error"
+                >
+                  Please enter a valid email.
+                </div>
+              </div>
+              <div class="col">
+                <input
+                  type="text"
+                  formControlName="cellNumber"
+                  id="cellNumber"
+                  class="form-control"
+                  placeholder="Cell Number"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Information -->
+      <div class="relative-container">
+        <div class="form-group">
+          <h3>Address</h3>
+          <div class="formsGap">
+            <div class="row">
+              <div class="col address-flex">
+                <input
+                  type="text"
+                  formControlName="address"
+                  id="address"
+                  class="form-control"
+                  placeholder="Address**"
+                />
+                <div
+                  *ngIf="
+                    calculatorForm.get('address')!.invalid &&
+                    calculatorForm.get('address')!.touched
+                  "
+                  class="error"
+                >
+                  Please enter your address.
+                </div>
+              </div>
+              <div class="col">
+                <input
+                  type="text"
+                  formControlName="apartment"
+                  id="apartment"
+                  class="form-control"
+                  placeholder="Apt/Suite #"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="row address-flex">
+                <div class="col address-flex">
+                  <input
+                    type="text"
+                    formControlName="city"
+                    id="city"
+                    class="form-control"
+                    placeholder="City**"
+                  />
+                  <div
+                    *ngIf="
+                      calculatorForm.get('city')!.invalid &&
+                      calculatorForm.get('city')!.touched
+                    "
+                    class="error"
+                  >
+                    Please enter your city.
+                  </div>
+                </div>
+                <div class="col">
+                  <select
+                    formControlName="state"
+                    id="state"
+                    class="form-control"
+                  >
+                    <!-- <option value="" disabled>Select state**</option> -->
+                    <option value="NY">New York</option>
+
+                    <!-- ... other states ... -->
+                  </select>
+                  <div
+                    *ngIf="
+                      calculatorForm.get('state')!.invalid &&
+                      calculatorForm.get('state')!.touched
+                    "
+                    class="error"
+                  >
+                    Please select your state.
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <input
+                  type="text"
+                  formControlName="zipCode"
+                  id="zipCode"
+                  class="form-control"
+                  placeholder="Zip Code**"
+                />
+                <div
+                  *ngIf="
+                    calculatorForm.get('zipCode')!.invalid &&
+                    calculatorForm.get('zipCode')!.touched
+                  "
+                  class="error"
+                >
+                  Please enter your zip code.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success">Book Now</button>
+    </form>
+  </div>
+
+  <div class="right-side">
+    <div class="right-side-description">
+      <div *ngIf="calculatorForm.get('serviceType')!.value === 'Residential'">
+        <h4>Regular Cleaning:</h4>
+        <ul>
+          <li>
+            <span>Purpose: </span>Regular cleaning refers to routine maintenance
+            cleaning that is scheduled regularly to maintain a desired level of
+            cleanliness and tidiness.
+          </li>
+          <li>
+            <span>Tasks: </span>It typically includes basic tasks performed on a
+            recurring basis, such as dusting, vacuuming, mopping floors, wiping
+            surfaces, and cleaning bathrooms and kitchens.
+          </li>
+          <li>
+            <span>Frequency: </span>It is done on a frequent basis, often
+            weekly, bi-weekly, or monthly, depending on the needs and
+            preferences of the homeowner or business.
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="calculatorForm.get('serviceType')!.value === 'Residential'">
+        <h4>Deep Cleaning:</h4>
+        <ul>
+          <li>
+            <span>Purpose: </span>Deep cleaning is a more thorough and intensive
+            cleaning process aimed at tackling accumulated dirt, grime, and
+            buildup that may not be addressed in regular cleaning sessions.
+          </li>
+          <li>
+            <span>Tasks: </span>It involves cleaning tasks that go beyond the
+            routine, such as scrubbing tiles and grout, cleaning inside
+            appliances (like ovens and refrigerators), washing baseboards,
+            cleaning light fixtures, and removing dust and cobwebs from corners
+            and high surfaces.
+          </li>
+          <li>
+            <span>Frequency: </span> It is typically done less frequently than
+            regular cleaning and is often performed on a seasonal basis or as
+            needed to maintain a higher level of cleanliness.
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="calculatorForm.get('serviceType')!.value === 'Move In'">
+        <h4>
+          Move-In Cleaning Service:
+          <span style="font-weight: 400">
+            A move-in cleaning service is designed to prepare a new residence or
+            commercial space for occupancy. It focuses on thorough cleaning to
+            ensure the space is fresh, sanitized, and welcoming for the new
+            occupants. Key tasks typically include:
+          </span>
+        </h4>
+
+        <ul>
+          <li>
+            <span>Deep Cleaning: </span>Cleaning all surfaces, including floors,
+            walls, and ceilings.
+          </li>
+          <li>
+            <span>Sanitization: </span>Disinfecting bathrooms and kitchens to
+            ensure hygiene.
+          </li>
+          <li>
+            <span>Fixture Cleaning: </span> Wiping down fixtures such as
+            cabinets, countertops, and appliances.
+          </li>
+          <li>
+            <span>Floor Care: </span> Sweeping, vacuuming, and mopping all
+            floors.
+          </li>
+          <li>
+            <span>Window Cleaning: </span> Washing interior windows to remove
+            dust and grime.
+          </li>
+          <li>
+            <span>Dusting: </span> Removing dust from baseboards, light
+            fixtures, and other surfaces.
+          </li>
+          <li>
+            <span>Trash Removal: </span> Disposing of any leftover trash or
+            debris.
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="calculatorForm.get('serviceType')!.value === 'Move Out'">
+        <h4>
+          Move-Out Cleaning Service:
+          <span style="font-weight: 400">
+            A move-out cleaning service is performed when occupants are vacating
+            a property. It focuses on deep cleaning to prepare the space for new
+            tenants or owners. Key tasks typically include:
+          </span>
+        </h4>
+
+        <ul>
+          <li>
+            <span>Detailed Cleaning: </span>Thoroughly cleaning all areas of the
+            property, including bathrooms, kitchens, and living spaces.
+          </li>
+          <li>
+            <span>Stain Removal: </span>Addressing any stains or marks on walls,
+            floors, or carpets.
+          </li>
+          <li>
+            <span>Appliance Cleaning: </span> Cleaning inside and outside of
+            appliances like refrigerators and ovens.
+          </li>
+          <li>
+            <span>Window and Blind Cleaning: </span> Washing windows and
+            cleaning blinds or curtains.
+          </li>
+          <li>
+            <span>Baseboard and Trim Cleaning: </span> Wiping down baseboards,
+            door frames, and trim.
+          </li>
+          <li>
+            <span>Carpet Cleaning: </span> Vacuuming and spot-treating carpets
+            to remove dirt and stains.
+          </li>
+          <li>
+            <span>Final Touches: </span> Ensuring all areas are spotless and
+            ready for the next occupants.
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="calculator-card fixed">
+      <div class="summary">
+        <h1>Booking Summary</h1>
+        <p *ngIf="calculatorForm.get('serviceType')!.value">
+          Selected Service Type: {{ calculatorForm.get("serviceType")!.value }}
+        </p>
+        <p
+          *ngIf="!calculatorForm.get('serviceType')!.value"
+          class="placeholder"
+        >
+          Select service...
+        </p>
+        <p *ngIf="calculatorForm.get('serviceDate')!.value">
+          Service Date: {{ calculatorForm.get("serviceDate")!.value }} at
+          {{ formatTimeToAmPm(calculatorForm.get("serviceTime")!.value) }}
+        </p>
+        <p
+          *ngIf="!calculatorForm.get('serviceDate')!.value"
+          class="placeholder"
+        >
+          Choose service date...
+        </p>
+        <p>Frequency: {{ calculatorForm.get("frequency")!.value }}</p>
+        <p *ngIf="!isCustomCleaning">
+          Sub-total Time:
+          {{
+            subTotalTime !== null
+              ? formatTimeToHoursAndMinutes(subTotalTime)
+              : "N/A"
+          }}
+        </p>
+
+        <p>
+          Number of Cleaners:
+          {{
+            !isCustomCleaning
+              ? requiredCleaners
+              : calculatorForm.get("cleaners")!.value
+          }}
+        </p>
+        <p *ngIf="!isCustomCleaning">
+          Total Time:
+          {{
+            totalTime !== null ? formatTimeToHoursAndMinutes(totalTime) : "N/A"
+          }}
+        </p>
+        <p *ngIf="isCustomCleaning">
+          Number of Hours: {{ calculatorForm.get("hours")!.value }}
+        </p>
+      </div>
+      <div class="total-price">
+        <p>Sub-total: {{ totalPrice | currency }}</p>
+        <p>Sales Tax: {{ salesTax | currency }}</p>
+        <p>Total: {{ total | currency }}</p>
+      </div>
+    </div>
+  </div>
+</div>
