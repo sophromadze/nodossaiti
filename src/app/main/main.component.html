@@ -1,5 +1,5 @@
 <div class="main">
-  <img src="assets/images/esa.png" alt="" />
+  <!-- <img src="assets/images/esa.png" alt="" /> -->
   <div>
     <h2>Save your time and energy, we bring you comfort and cleanliness.</h2>
     <p>
@@ -11,10 +11,152 @@
   </div>
   <div class="cleanings">
     <div (click)="navigateToCalculator('regular')">
-      <h5>Regular Cleaning</h5>
+      <h5>BOOK NOW</h5>
     </div>
-    <div (click)="navigateToCalculator('deep')">
-      <h5>Deep Cleaning</h5>
+    <div id="ourPopular" class="clickable-div" (click)="scrollToCards()">
+      <h5>OUR POPULAR</h5>
     </div>
   </div>
 </div>
+<section class="cards" id="cards">
+  <div class="regularCleaning">
+    <h2>Regular Cleaning</h2>
+    <h3>PRICE</h3>
+    <hr />
+    <p>
+      Purpose: Regular cleaning refers to routine maintenance cleaning that is
+      scheduled regularly to maintain a desired level of cleanliness and
+      tidiness.
+    </p>
+    <p>
+      Tasks: It typically includes basic tasks performed on a recurring basis,
+      such as dusting, vacuuming, mopping floors, wiping surfaces, and cleaning
+      bathrooms and kitchens.
+    </p>
+    <p>
+      Frequency: It is done on a frequent basis, often weekly, bi-weekly, or
+      monthly, depending on the needs and preferences of the homeowner or
+      business.
+    </p>
+    <h4>FREE Supplies</h4>
+    <h4>Time -</h4>
+    <button class="bookBtns" (click)="navigateToCalculator('regular')">
+      Book Now
+    </button>
+  </div>
+  <div class="deepCleaning">
+    <h2>Deep Cleaning</h2>
+    <h3>PRICE</h3>
+    <hr />
+    <p>
+      Purpose: Deep cleaning is a more thorough and intensive cleaning process
+      aimed at tackling accumulated dirt, grime, and buildup that may not be
+      addressed in regular cleaning sessions.
+    </p>
+    <p>
+      Tasks: It involves cleaning tasks that go beyond the routine, such as
+      scrubbing tiles and grout, cleaning inside appliances (like ovens and
+      refrigerators), washing baseboards, cleaning light fixtures, and removing
+      dust and cobwebs from corners and high surfaces.
+    </p>
+    <p>
+      Frequency: It is typically done less frequently than regular cleaning and
+      is often performed on a seasonal basis or as needed to maintain a higher
+      level of cleanliness.
+    </p>
+    <h4>Free Supplies</h4>
+    <h4>Free balcony regular cleaning</h4>
+    <h4>Time -</h4>
+    <button class="bookBtns" (click)="navigateToCalculator('deep')">
+      Book Now
+    </button>
+  </div>
+  <div class="moveIn">
+    <h2>Move In</h2>
+    <h3>PRICE</h3>
+    <hr />
+    <p>
+      <b>Move-In Cleaning Service:</b> A move-in cleaning service is designed to
+      prepare a new residence or commercial space for occupancy. It focuses on
+      thorough cleaning to ensure the space is fresh, sanitized, and welcoming
+      for the new occupants. Key tasks typically include:
+    </p>
+    <ul>
+      <li>
+        <b>Deep Cleaning:</b> Cleaning all surfaces, including floors, walls,
+        and ceilings.
+      </li>
+      <li>
+        <b>Sanitization:</b> Disinfecting bathrooms and kitchens to ensure
+        hygiene.
+      </li>
+      <li>
+        <b>Fixture Cleaning:</b> Wiping down fixtures such as cabinets,
+        countertops, and appliances.
+      </li>
+      <li><b>Floor Care:</b> Sweeping, vacuuming, and mopping all floors.</li>
+      <li>
+        <b>Window Cleaning:</b> Washing interior windows to remove dust and
+        grime.
+      </li>
+      <li>
+        <b>Dusting:</b> Removing dust from baseboards, light fixtures, and other
+        surfaces.
+      </li>
+      <li><b>Trash Removal:</b> Disposing of any leftover trash or debris.</li>
+    </ul>
+    <h4>Time -</h4>
+    <button class="bookBtns" (click)="navigateToCalculator('moveIn')">
+      Book Now
+    </button>
+  </div>
+  <div class="moveOut">
+    <h2>Move Out</h2>
+    <h3>PRICE</h3>
+    <hr />
+    <p>
+      <b>Move-Out Cleaning Service:</b> A move-out cleaning service is performed
+      when occupants are vacating a property. It focuses on deep cleaning to
+      prepare the space for new tenants or owners. Key tasks typically include:
+    </p>
+    <ul>
+      <li>
+        <b>Detailed Cleaning:</b> Thoroughly cleaning all areas of the property,
+        including bathrooms, kitchens, and living spaces.
+      </li>
+      <li>
+        <b>Stain Removal:</b> Addressing any stains or marks on walls, floors,
+        or carpets.
+      </li>
+      <li>
+        <b>Appliance Cleaning:</b> Cleaning inside and outside of appliances
+        like refrigerators and ovens.
+      </li>
+      <li>
+        <b>Window and Blind Cleaning:</b> Washing windows and cleaning blinds or
+        curtains.
+      </li>
+      <li>
+        <b>Baseboard and Trim Cleaning:</b> Wiping down baseboards, door frames,
+        and trim.
+      </li>
+      <li>
+        <b>Carpet Cleaning:</b> Vacuuming and spot-treating carpets to remove
+        dirt and stains.
+      </li>
+      <li>
+        <b>Final Touches:</b> Ensuring all areas are spotless and ready for the
+        next occupants.
+      </li>
+    </ul>
+    <p>
+      A move-out cleaning service aims to restore the property to a pristine
+      condition, meeting the expectations of landlords, property managers, or
+      new occupants moving in.
+    </p>
+    <h4>Time -</h4>
+    <button class="bookBtns" (click)="navigateToCalculator('moveOut')">
+      Book Now
+    </button>
+  </div>
+</section>

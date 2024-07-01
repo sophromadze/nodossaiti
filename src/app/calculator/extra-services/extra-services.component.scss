@@ -1,0 +1,86 @@
+.extra-services-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.extra-services-buttons .btn {
+  text-align: center;
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.extra-services-buttons .btn.selected,
+.extra-services-buttons .btn:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.vacuum-options {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.vacuum-options .btn {
+  flex: 1;
+  text-align: center;
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.vacuum-options .btn.selected,
+.vacuum-options .btn:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.vacuum-selection {
+  margin-top: 0.5rem;
+}
+
+.organizing-input {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.organizing-input input {
+  width: 50%; /* Adjust the width as needed */
+  text-align: center;
+}
+
+.organizing-input .btn.confirm-btn {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.organizing-input .btn.confirm-btn:hover {
+  background-color: #218838;
+}
+
+.organizing-selection {
+  margin-top: 0.5rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.bordered-group {
+  border-bottom: 1px dotted #ccc;
+  padding: 30px 10px;
+}
+
+h3 {
+  margin-top: 0;
+}

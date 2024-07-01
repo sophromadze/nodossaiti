@@ -79,15 +79,13 @@ button.btn-success {
   width: 50%;
 }
 
-.frequency-buttons,
-.extra-services-buttons {
+.frequency-buttons {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
 }
 
-.frequency-buttons .btn,
-.extra-services-buttons .btn {
+.frequency-buttons .btn {
   flex: 1;
   text-align: center;
   background-color: #f8f9fa;
@@ -95,27 +93,7 @@ button.btn-success {
   padding: 0.75rem;
 }
 
-.frequency-buttons .btn.selected,
-.extra-services-buttons .btn.selected {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.extra-services-buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
-}
-
-.extra-services-buttons .btn {
-  text-align: center;
-  background-color: #f8f9fa;
-  border: 1px solid #ccc;
-  padding: 0.75rem;
-  box-sizing: border-box;
-}
-
-.extra-services-buttons .btn.selected {
+.frequency-buttons .btn.selected {
   background-color: #007bff;
   color: #fff;
 }
@@ -131,4 +109,23 @@ button.btn-success {
 
 h3 {
   margin-top: 0;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  gap: 10px;
+}
+
+.typeRow {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
 }

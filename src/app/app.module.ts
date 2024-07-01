@@ -6,10 +6,13 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
 import { CalculatorComponent } from './calculator/calculator.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ServiceDescriptionComponent } from './calculator/service-description/service-description.component';
 import { ContactInformationComponent } from './calculator/contact-information/contact-information.component';
 import { AddressInformationComponent } from './calculator/address-information/address-information.component';
+import { ExtraServicesComponent } from './calculator/extra-services/extra-services.component';
+import { TooltipComponent } from './calculator/extra-services/tooltip/tooltip.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,8 +23,16 @@ import { AddressInformationComponent } from './calculator/address-information/ad
     ServiceDescriptionComponent,
     ContactInformationComponent,
     AddressInformationComponent,
+    ExtraServicesComponent,
+    TooltipComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

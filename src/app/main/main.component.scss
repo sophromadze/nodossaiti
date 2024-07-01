@@ -3,8 +3,12 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 50vh;
+  height: 820px;
   padding: 10px 50px;
+  background-image: url(/assets/images/esa.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 
   p {
     width: 100%;
@@ -14,15 +18,15 @@
     max-width: 400px;
     font-size: 35px;
   }
-  img {
-    position: absolute;
-    z-index: -1;
-    width: 100%;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-  }
+  // img {
+  //   position: absolute;
+  //   z-index: -1;
+  //   width: 100%;
+  //   top: 0;
+  //   left: 0;
+  //   bottom: 0;
+  //   right: 0;
+  // }
 
   .cleanings {
     display: flex;
@@ -41,5 +45,53 @@
       border-radius: 50px;
       cursor: pointer;
     }
+  }
+}
+
+.cards {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+  div {
+    background-color: #fff;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    filter: drop-shadow(0 20px 13px rgba(0, 0, 0, 0.03))
+      drop-shadow(0 8px 5px rgba(0, 0, 0, 0.08));
+    h2 {
+      background-color: rgb(69 242 152);
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+      text-align: center;
+      padding: 10px;
+    }
+
+    p,
+    ul,
+    h3 {
+      padding: 10px;
+    }
+    h4 {
+      padding: 0 10px;
+    }
+  }
+  ul li {
+    list-style-position: inside;
+  }
+
+  .bookBtns {
+    width: 50%;
+    align-self: center;
+    padding: 5px;
+    margin: 10px 0;
+    cursor: pointer;
   }
 }

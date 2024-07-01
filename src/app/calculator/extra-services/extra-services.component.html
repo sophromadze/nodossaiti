@@ -1,0 +1,89 @@
+<div class="relative-container">
+  <div class="form-group bordered-group">
+    <label><h3>Extra Services</h3></label>
+    <div class="extra-services-buttons">
+      <ng-container *ngFor="let extra of extraServices">
+        <button
+          type="button"
+          class="btn"
+          [class.selected]="parentForm.get(extra.controlName)!.value"
+          (click)="toggleExtraService(extra.controlName)"
+          (mouseover)="showTooltip(extra.controlName)"
+          (mouseout)="hideTooltip()"
+          *ngIf="!(isCustomCleaning && extra.controlName === 'organizing')"
+        >
+          <span
+            *ngIf="!(extra.controlName === 'organizing' && showOrganizingInput)"
+          >
+            {{ extra.label }}
+          </span>
+          <div *ngIf="extra.controlName === 'vacuum' && showVacuumOptions">
+            <div class="vacuum-options">
+              <button
+                type="button"
+                class="btn"
+                [class.selected]="selectedVacuumOption === 'Standard'"
+                (click)="selectVacuumOption('Standard', $event)"
+              >
+                Standard
+              </button>
+              <button
+                type="button"
+                class="btn"
+                [class.selected]="selectedVacuumOption === 'Steam'"
+                (click)="selectVacuumOption('Steam', $event)"
+              >
+                Steam
+              </button>
+            </div>
+          </div>
+          <div
+            *ngIf="
+              extra.controlName === 'vacuum' &&
+              parentForm.get('vacuum')!.value &&
+              selectedVacuumOption
+            "
+            class="vacuum-selection"
+          >
+            Selected: {{ selectedVacuumOption }}
+          </div>
+          <div
+            *ngIf="extra.controlName === 'organizing' && showOrganizingInput"
+            class="organizing-input"
+          >
+            <input
+              type="number"
+              [min]="0.5"
+              [max]="5"
+              [step]="0.5"
+              [(ngModel)]="organizingHours"
+              (click)="$event.stopPropagation()"
+              (input)="onOrganizingHoursChange(organizingHours)"
+            />
+            <button
+              type="button"
+              class="btn confirm-btn"
+              (click)="confirmOrganizingHours($event)"
+            >
+              Confirm
+            </button>
+          </div>
+          <div
+            *ngIf="
+              extra.controlName === 'organizing' &&
+              parentForm.get('organizing')!.value &&
+              !showOrganizingInput
+            "
+            class="organizing-selection"
+          >
+            Selected: extra {{ organizingHours }} hours
+          </div>
+          <app-tooltip
+            *ngIf="tooltipVisible && currentTooltip === extra.controlName"
+            [controlName]="extra.controlName"
+          ></app-tooltip>
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</div>

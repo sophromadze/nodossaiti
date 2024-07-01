@@ -4,3 +4,8 @@
   box-sizing: border-box;
   font-family: "Fraunces", serif;
 }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-scroll-behavior: smooth;
+}

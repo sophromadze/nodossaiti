@@ -10,6 +10,20 @@ export class MainComponent {
   constructor(private router: Router) {}
 
   navigateToCalculator(type: string) {
-    this.router.navigate(['/calculator'], { queryParams: { type } });
+    const queryParams: any = { type };
+    if (type === 'deep') {
+      queryParams.deepCleaning = true;
+      type = 'regular'; // Change type to 'regular' to match your condition
+    }
+    this.router.navigate(['/calculator'], {
+      queryParams: { type, ...queryParams },
+    });
+  }
+
+  scrollToCards() {
+    const element = document.getElementById('cards');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }

@@ -98,7 +98,7 @@
             <select formControlName="hours" id="hours" class="form-control">
               <option value="" disabled>Select number of hours**</option>
               <option *ngFor="let hour of hoursOptions" [value]="hour">
-                {{ hour }} {{ hour === 1 ? "Hour" : "Hours" }}
+                {{ formatTimeToHoursAndMinutes(hour) }}
               </option>
             </select>
           </div>
@@ -106,30 +106,12 @@
       </div>
 
       <!-- Extra Services -->
-      <div class="relative-container">
-        <div class="form-group bordered-group">
-          <label><h3>Extra Services</h3></label>
-          <div class="extra-services-buttons">
-            <button
-              type="button"
-              class="btn"
-              *ngFor="let extra of extraServices"
-              [class.selected]="calculatorForm.get(extra.controlName)!.value"
-              (click)="toggleExtraService(extra.controlName)"
-              [ngClass]="{
-                hidden:
-                  isCustomCleaning &&
-                  !(
-                    extra.controlName === 'deepCleaning' ||
-                    extra.controlName === 'sameDay'
-                  )
-              }"
-            >
-              {{ extra.label }}
-            </button>
-          </div>
-        </div>
-      </div>
+      <app-extra-services
+        [parentForm]="calculatorForm"
+        [isCustomCleaning]="isCustomCleaning"
+        (extraServiceChanged)="onExtraServiceChanged($event)"
+        (sameDayServiceChanged)="onSameDayServiceChanged($event)"
+      ></app-extra-services>
 
       <!-- Service Date and Time -->
       <div class="relative-container">
@@ -142,6 +124,8 @@
                 formControlName="serviceDate"
                 id="serviceDate"
                 class="form-control"
+                [min]="minDate"
+                [disabled]="isSameDayService"
                 placeholder="Service Date**"
               />
               <div
@@ -213,29 +197,6 @@
         </div>
       </div>
 
-      <!-- Discount Code -->
-      <!-- <div class="relative-container">
-        <div class="form-group bordered-group">
-          <label for="discountCode"><h3>Discount Code</h3></label>
-          <div class="row">
-            <input
-              type="text"
-              formControlName="discountCode"
-              id="discountCode"
-              class="form-control"
-              placeholder="Discount Code"
-            />
-            <button
-              type="button"
-              (click)="applyDiscount()"
-              class="btn btn-primary discountBtn"
-            >
-              Apply
-            </button>
-          </div>
-        </div>
-      </div> -->
-
       <!-- Special Instructions -->
       <div class="relative-container">
         <div class="form-group bordered-group">
@@ -300,6 +261,11 @@
               : "N/A"
           }}
         </p>
+        <p *ngIf="isCustomCleaning">
+          Number of Hours:
+          {{ formatTimeToHoursAndMinutes(calculatorForm.get("hours")!.value) }}
+        </p>
+
         <p>
           Number of Cleaners:
           {{
@@ -313,9 +279,6 @@
           {{
             totalTime !== null ? formatTimeToHoursAndMinutes(totalTime) : "N/A"
           }}
-        </p>
-        <p *ngIf="isCustomCleaning">
-          Number of Hours: {{ calculatorForm.get("hours")!.value }}
         </p>
       </div>
       <div class="total-price">
