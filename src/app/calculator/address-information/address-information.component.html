@@ -38,13 +38,13 @@
       <div class="row">
         <div class="row address-flex">
           <div class="col address-flex">
-            <input
-              type="text"
-              formControlName="city"
-              id="city"
-              class="form-control"
-              placeholder="City**"
-            />
+            <select formControlName="city" id="city" class="form-control">
+              <option value="" disabled>Select City**</option>
+              <option value="bro">Brooklyn</option>
+              <option value="man">Manhattan</option>
+              <option value="que">Queens</option>
+              <!-- ... other cities ... -->
+            </select>
             <div
               *ngIf="
                 addressInfoForm.get('city')!.invalid &&

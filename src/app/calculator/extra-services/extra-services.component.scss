@@ -45,18 +45,21 @@
   margin-top: 0.5rem;
 }
 
-.organizing-input {
+.organizing-input,
+.insideWindows-input {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
-.organizing-input input {
+.organizing-input input,
+.insideWindows-input input {
   width: 50%; /* Adjust the width as needed */
   text-align: center;
 }
 
-.organizing-input .btn.confirm-btn {
+.organizing-input .btn.confirm-btn,
+.insideWindows-input .btn.confirm-btn {
   background-color: #28a745;
   color: #fff;
   border: none;
@@ -64,11 +67,13 @@
   cursor: pointer;
 }
 
-.organizing-input .btn.confirm-btn:hover {
+.organizing-input .btn.confirm-btn:hover,
+.insideWindows-input .btn.confirm-btn {
   background-color: #218838;
 }
 
-.organizing-selection {
+.organizing-selection,
+.insideWindows-selection {
   margin-top: 0.5rem;
 }
 

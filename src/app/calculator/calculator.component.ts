@@ -38,6 +38,7 @@ export class CalculatorComponent implements OnInit {
   extraServiceTimes: { [key: string]: number } = {};
   originalServiceDate: string | null = null;
   organizingHours: number | null = 0; // Initialize organizing hours
+  insideWindowsNumbers: number | null = 0; // Initialize windows number
   selectedVacuumOption: string = 'None'; // Initialize vacuum option
 
   constructor(
@@ -49,7 +50,10 @@ export class CalculatorComponent implements OnInit {
       serviceType: ['', Validators.required],
       bedrooms: ['studio'],
       bathrooms: [1],
-      serviceDate: ['', Validators.required],
+      serviceDate: [
+        { value: '', disabled: this.isSameDayService },
+        Validators.required,
+      ],
       serviceTime: ['', Validators.required],
       frequency: ['One Time', Validators.required],
       entryMethod: ['', Validators.required],
@@ -155,11 +159,13 @@ export class CalculatorComponent implements OnInit {
     prices: { [key: string]: number };
     times: { [key: string]: number };
     organizingHours: number;
+    insideWindowsNumbers: number;
     selectedVacuumOption: string;
   }): void {
     this.extraServicePrices = extraServiceData.prices;
     this.extraServiceTimes = extraServiceData.times;
     this.organizingHours = extraServiceData.organizingHours; // Capture organizing hours
+    this.insideWindowsNumbers = extraServiceData.insideWindowsNumbers; // Capture windows numbers
     this.selectedVacuumOption = extraServiceData.selectedVacuumOption; // Capture vacuum option
     this.calculatePriceAndTime();
   }
@@ -170,9 +176,9 @@ export class CalculatorComponent implements OnInit {
       this.originalServiceDate = this.calculatorForm.get('serviceDate')!.value;
       const today = new Date().toISOString().split('T')[0];
       this.calculatorForm.get('serviceDate')!.setValue(today);
-      this.calculatorForm.get('serviceDate')!.disable();
+      this.calculatorForm.get('serviceDate')!.disable({ emitEvent: false });
     } else {
-      this.calculatorForm.get('serviceDate')!.enable();
+      this.calculatorForm.get('serviceDate')!.enable({ emitEvent: false });
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const tomorrowDateString = tomorrow.toISOString().split('T')[0];
@@ -348,6 +354,9 @@ export class CalculatorComponent implements OnInit {
     if (this.calculatorForm.valid) {
       const formValues = this.calculatorForm.value;
 
+      const contactInfo = this.calculatorForm.get('contactInfo')?.value;
+      const addressInfo = this.calculatorForm.get('addressInfo')?.value;
+
       const booleanToYesNo = (value: boolean) => (value ? 'YES' : 'NO');
 
       const serviceDate = this.isSameDayService
@@ -373,22 +382,43 @@ export class CalculatorComponent implements OnInit {
       const organizingHoursText = formValues.organizing
         ? this.organizingHours
         : 0;
+      const insideWindowsText = formValues.insideWindows
+        ? this.insideWindowsNumbers
+        : 0;
       const vacuumOptionText = formValues.vacuum
         ? this.selectedVacuumOption
         : 'NO';
+
+      // Retrieve displayed text of city, state, and entry method select elements
+      const cityElement = document.querySelector(
+        '#city option:checked'
+      ) as HTMLOptionElement;
+      const stateElement = document.querySelector(
+        '#state option:checked'
+      ) as HTMLOptionElement;
+      const entryMethodElement = document.querySelector(
+        '#entryMethod option:checked'
+      ) as HTMLOptionElement;
+
+      const cityText = cityElement ? cityElement.textContent : 'N/A';
+      const stateText = stateElement ? stateElement.textContent : 'N/A';
+      const entryMethodText = entryMethodElement
+        ? entryMethodElement.textContent
+        : 'N/A';
 
       const emailPayload = {
         email: 'ciyvi94@gmail.com', // Recipient email address
         subject: 'New Booking',
         text: `
           Booking Details:
+  
           Service Type: ${formValues.serviceType}
           Bedrooms: ${formValues.bedrooms ?? 'None'}
           Bathrooms: ${formValues.bathrooms ?? 'None'}
           Service Date: ${serviceDate}
           Service Time: ${formattedServiceTime}
           Frequency: ${formValues.frequency}
-          Entry Method: ${formValues.entryMethod}
+          Entry Method: ${entryMethodText}
           Special Instructions: ${formValues.specialInstructions}
           Same Day Service: ${booleanToYesNo(formValues.sameDay)}
           Deep Cleaning: ${booleanToYesNo(formValues.deepCleaning)}
@@ -397,7 +427,7 @@ export class CalculatorComponent implements OnInit {
           Inside the Fridge: ${booleanToYesNo(formValues.insideTheFridge)}
           Washing Dishes: ${booleanToYesNo(formValues.washingDishes)}
           Wall Cleaning: ${booleanToYesNo(formValues.wallCleaning)}
-          Inside Windows: ${booleanToYesNo(formValues.insideWindows)}
+          Inside Windows: ${insideWindowsText}
           Pet Hair Clean: ${booleanToYesNo(formValues.petHairClean)}
           Inside Kitchen Cabinets: ${booleanToYesNo(formValues.insideCabinets)}
           Balcony Cleaning: ${booleanToYesNo(formValues.balcony)}
@@ -416,6 +446,21 @@ export class CalculatorComponent implements OnInit {
           Sub-total Price: ${this.totalPrice}
           Sales Tax: ${this.salesTax}
           Total Price: ${this.total}
+  
+          Contact Info:
+          
+          Name: ${contactInfo.name}
+          Last Name: ${contactInfo.lastName}
+          Email: ${contactInfo.email}
+          Cell Number: ${contactInfo.cellNumber || 'None'}
+  
+          Address Info:
+  
+          Address: ${addressInfo.address}
+          Apartment: ${addressInfo.apartment || 'N/A'}
+          City: ${cityText}
+          State: ${stateText}
+          Zip Code: ${addressInfo.zipCode}
         `,
       };
 
