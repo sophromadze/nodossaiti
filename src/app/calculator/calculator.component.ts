@@ -47,7 +47,7 @@ export class CalculatorComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.calculatorForm = this.fb.group({
-      serviceType: ['', Validators.required],
+      serviceType: ['Residential', Validators.required],
       bedrooms: ['studio'],
       bathrooms: [1],
       serviceDate: [
@@ -319,7 +319,7 @@ export class CalculatorComponent implements OnInit {
     const discountAmount = (basePrice * frequencyDiscount) / 100;
     basePrice -= discountAmount;
 
-    const salesTax = basePrice * 0.088;
+    const salesTax = basePrice * 0.0888;
     const total = basePrice + salesTax;
 
     this.totalPrice = basePrice;
