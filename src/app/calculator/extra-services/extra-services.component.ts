@@ -82,7 +82,7 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     insideWindows: 0.5,
     washingDishes: 1.0,
     wallCleaning: 1.0,
-    petHairClean: 1.0, // ???
+    petHairClean: 0.5,
     insideCabinets: 0.5,
     balcony: 1.0,
     supplies: 0.0,

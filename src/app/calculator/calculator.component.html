@@ -1,3 +1,5 @@
+<!-- src/app/calculator/calculator.component.html -->
+
 <div class="container">
   <div class="left-side">
     <form [formGroup]="calculatorForm" (ngSubmit)="onSubmit()">
@@ -82,7 +84,13 @@
       <div *ngIf="isCustomCleaning" class="relative-container">
         <div class="form-group row bordered-group typeRow">
           <div class="col">
-            <h3>Hourly Service: $55 per hour/per cleaner</h3>
+            <h3>
+              Hourly Service: {{ deepCleaningChecked ? "$75" : "$55" }} per
+              hour/per cleaner
+              <span *ngIf="deepCleaningChecked" class="deep-cleaning-text"
+                >(Deep Cleaning)</span
+              >
+            </h3>
             <select
               formControlName="cleaners"
               id="cleaners"
@@ -219,7 +227,23 @@
         [parentForm]="calculatorForm"
       ></app-address-information>
 
-      <button type="submit" class="btn btn-success">Book Now</button>
+      <button
+        type="button"
+        class="btn btn-success"
+        [ngClass]="{ disabled: !calculatorForm.valid }"
+        (click)="onBookNowClick()"
+      >
+        Book Now
+      </button>
+
+      <div *ngIf="showPaymentForm && total !== null">
+        <app-payment-form
+          [amount]="total!"
+          [formValues]="calculatorForm.value"
+          (close)="closePaymentForm()"
+          (paymentSuccess)="onPaymentSuccess($event)"
+        ></app-payment-form>
+      </div>
     </form>
   </div>
 

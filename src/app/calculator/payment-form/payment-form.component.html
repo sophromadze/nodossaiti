@@ -1,0 +1,40 @@
+<div class="overlay">
+  <div class="payment-form-container">
+    <span class="close-button" (click)="closeForm()">&times;</span>
+    <form [formGroup]="paymentForm" (ngSubmit)="showConfirmation()">
+      <div class="form-group">
+        <label for="name">Name on Card</label>
+        <input id="name" formControlName="name" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="card-element">Credit or Debit Card</label>
+        <div id="card-element" class="form-control"></div>
+      </div>
+      <button type="submit">Pay {{ amount | currency }}</button>
+    </form>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div *ngIf="showConfirmModal" class="overlay">
+  <div class="confirm-modal-container">
+    <h3>Are you sure you want to pay {{ amount | currency }}?</h3>
+    <button (click)="confirmPayment()" class="confirm-button">Yes</button>
+    <button (click)="cancelConfirmation()" class="cancel-button">No</button>
+  </div>
+</div>
+
+<!-- Payment Result Modal -->
+<div *ngIf="showResultModal" class="overlay">
+  <div class="result-modal-container">
+    <div *ngIf="paymentSuccessFlag" class="success-message">
+      <span class="checkmark">&#10003;</span> Your payment was successful!
+    </div>
+    <div *ngIf="!paymentSuccessFlag" class="error-message">
+      <span class="crossmark">&#10007;</span> Your payment was unsuccessful.
+    </div>
+    <button (click)="closeResultModal()" class="close-result-button">
+      Close
+    </button>
+  </div>
+</div>

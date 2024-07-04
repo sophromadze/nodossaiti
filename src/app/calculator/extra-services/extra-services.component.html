@@ -75,7 +75,16 @@
               Confirm
             </button>
           </div>
-
+          <div
+            *ngIf="
+              extra.controlName === 'insideWindows' &&
+              parentForm.get('insideWindows')!.value &&
+              !showWindowsInput
+            "
+            class="insideWindows-selection"
+          >
+            Selected: extra {{ insideWindowsNumbers }} hours
+          </div>
           <div
             *ngIf="extra.controlName === 'organizing' && showOrganizingInput"
             class="organizing-input"

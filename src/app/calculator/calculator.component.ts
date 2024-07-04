@@ -18,7 +18,7 @@ export class CalculatorComponent implements OnInit {
     { value: 'Weekly', label: 'Weekly 10% Discount', discount: 10 },
     { value: 'Every 2 Weeks', label: 'Every 2 Weeks 8% Discount', discount: 8 },
     { value: 'Every 3 Weeks', label: '3 Weekly 5.5%', discount: 5.5 },
-    { value: 'Monthly', label: 'Monthly Discount 3%', discount: 3 },
+    { value: 'Monthly', label: 'Monthly Discount 3%', discount: 99.347 }, // 3 უნდა ეწეროს აქ!!! სატესტოდაა ჯერ.
   ];
   cleanersOptions = [1, 2, 3, 4, 5];
   hoursOptions = [
@@ -33,6 +33,7 @@ export class CalculatorComponent implements OnInit {
   salesTax: number | null = null;
   total: number | null = null;
   isCustomCleaning = false;
+  deepCleaningChecked = false; // Add this line
   requiredCleaners: number | null = null;
   extraServicePrices: { [key: string]: number } = {};
   extraServiceTimes: { [key: string]: number } = {};
@@ -41,13 +42,15 @@ export class CalculatorComponent implements OnInit {
   insideWindowsNumbers: number | null = 0; // Initialize windows number
   selectedVacuumOption: string = 'None'; // Initialize vacuum option
 
+  showPaymentForm: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private route: ActivatedRoute
   ) {
     this.calculatorForm = this.fb.group({
-      serviceType: ['Residential', Validators.required],
+      serviceType: ['', Validators.required],
       bedrooms: ['studio'],
       bathrooms: [1],
       serviceDate: [
@@ -57,7 +60,7 @@ export class CalculatorComponent implements OnInit {
       serviceTime: ['', Validators.required],
       frequency: ['One Time', Validators.required],
       entryMethod: ['', Validators.required],
-      discountCode: [''],
+      // discountCode: [''],
       specialInstructions: [''],
       sameDay: [false],
       deepCleaning: [false],
@@ -92,6 +95,11 @@ export class CalculatorComponent implements OnInit {
       this.onServiceTypeChange();
     });
 
+    this.calculatorForm.get('deepCleaning')!.valueChanges.subscribe((value) => {
+      this.deepCleaningChecked = value;
+      this.calculatePriceAndTime();
+    });
+
     this.calculatorForm.valueChanges.subscribe(() => {
       this.calculatePriceAndTime();
     });
@@ -120,8 +128,6 @@ export class CalculatorComponent implements OnInit {
           this.calculatorForm.get('serviceType')!.setValue('Move Out');
           break;
       }
-
-      this.scrollToTop();
     });
   }
 
@@ -206,37 +212,19 @@ export class CalculatorComponent implements OnInit {
         subTotalTime += 3.5;
         break;
       case 'Custom Cleaning':
-        basePrice += formValues.cleaners * formValues.hours * 55;
-        subTotalTime += formValues.hours;
-
-        // Include same day service and deep cleaning for Custom Cleaning
-        if (formValues.sameDay) {
-          basePrice += 40;
-        }
+        let hourlyRate = 55;
         if (formValues.deepCleaning) {
-          basePrice += 110;
-          subTotalTime += 1; // Assuming deep cleaning adds 1 hour
+          hourlyRate = 75; // Increase hourly rate if deep cleaning is selected
         }
-
-        // Include extra services in Custom Cleaning
-        Object.keys(formValues).forEach((service) => {
-          if (
-            formValues[service] &&
-            service !== 'deepCleaning' &&
-            service !== 'sameDay' &&
-            this.extraServicePrices[service]
-          ) {
-            basePrice += this.extraServicePrices[service];
-            subTotalTime += this.extraServiceTimes[service];
-          }
-        });
+        basePrice += formValues.cleaners * formValues.hours * hourlyRate;
+        subTotalTime += formValues.hours;
         break;
     }
 
-    let bedroomBasePrice = 0;
-    let bedroomTime = 0;
-
     if (formValues.serviceType !== 'Custom Cleaning') {
+      let bedroomBasePrice = 0;
+      let bedroomTime = 0;
+
       switch (formValues.bedrooms) {
         case 'studio':
           bedroomBasePrice = 140;
@@ -267,6 +255,7 @@ export class CalculatorComponent implements OnInit {
           bedroomTime = formValues.deepCleaning ? 10 : 6.5;
           break;
       }
+
       basePrice += bedroomBasePrice;
       subTotalTime += bedroomTime;
 
@@ -298,20 +287,18 @@ export class CalculatorComponent implements OnInit {
         }
         basePrice += 110;
       }
-
-      // Include extra services for non-custom cleaning
-      Object.keys(formValues).forEach((service) => {
-        if (
-          formValues[service] &&
-          service !== 'deepCleaning' &&
-          service !== 'sameDay' &&
-          this.extraServicePrices[service]
-        ) {
-          basePrice += this.extraServicePrices[service];
-          subTotalTime += this.extraServiceTimes[service];
-        }
-      });
     }
+
+    // Include extra services for both custom and non-custom cleaning
+    Object.keys(formValues).forEach((service) => {
+      if (
+        formValues[service] &&
+        this.extraServicePrices[service] // Ensure the extra service has a price
+      ) {
+        basePrice += this.extraServicePrices[service];
+        subTotalTime += this.extraServiceTimes[service];
+      }
+    });
 
     const frequencyDiscount =
       this.frequencies.find((freq) => freq.value === formValues.frequency)
@@ -350,136 +337,260 @@ export class CalculatorComponent implements OnInit {
     return `${formattedHour}:${minute.toString().padStart(2, '0')} ${ampm}`;
   }
 
-  onSubmit(): void {
-    if (this.calculatorForm.valid) {
-      const formValues = this.calculatorForm.value;
-
-      const contactInfo = this.calculatorForm.get('contactInfo')?.value;
-      const addressInfo = this.calculatorForm.get('addressInfo')?.value;
-
-      const booleanToYesNo = (value: boolean) => (value ? 'YES' : 'NO');
-
-      const serviceDate = this.isSameDayService
-        ? new Date().toISOString().split('T')[0]
-        : formValues.serviceDate;
-
-      const formattedServiceTime = this.formatTimeToAmPm(
-        formValues.serviceTime
-      );
-
-      const subTotalTimeText = this.isCustomCleaning
-        ? '0 hours and 0 minutes'
-        : this.formatTimeToHoursAndMinutes(this.subTotalTime ?? 0);
-
-      const totalTimeText = this.isCustomCleaning
-        ? ''
-        : this.formatTimeToHoursAndMinutes(this.totalTime ?? 0);
-
-      const customCleaningHoursText = this.formatTimeToHoursAndMinutes(
-        formValues.hours
-      );
-
-      const organizingHoursText = formValues.organizing
-        ? this.organizingHours
-        : 0;
-      const insideWindowsText = formValues.insideWindows
-        ? this.insideWindowsNumbers
-        : 0;
-      const vacuumOptionText = formValues.vacuum
-        ? this.selectedVacuumOption
-        : 'NO';
-
-      // Retrieve displayed text of city, state, and entry method select elements
-      const cityElement = document.querySelector(
-        '#city option:checked'
-      ) as HTMLOptionElement;
-      const stateElement = document.querySelector(
-        '#state option:checked'
-      ) as HTMLOptionElement;
-      const entryMethodElement = document.querySelector(
-        '#entryMethod option:checked'
-      ) as HTMLOptionElement;
-
-      const cityText = cityElement ? cityElement.textContent : 'N/A';
-      const stateText = stateElement ? stateElement.textContent : 'N/A';
-      const entryMethodText = entryMethodElement
-        ? entryMethodElement.textContent
-        : 'N/A';
-
-      const emailPayload = {
-        email: 'ciyvi94@gmail.com', // Recipient email address
-        subject: 'New Booking',
-        text: `
-          Booking Details:
-  
-          Service Type: ${formValues.serviceType}
-          Bedrooms: ${formValues.bedrooms ?? 'None'}
-          Bathrooms: ${formValues.bathrooms ?? 'None'}
-          Service Date: ${serviceDate}
-          Service Time: ${formattedServiceTime}
-          Frequency: ${formValues.frequency}
-          Entry Method: ${entryMethodText}
-          Special Instructions: ${formValues.specialInstructions}
-          Same Day Service: ${booleanToYesNo(formValues.sameDay)}
-          Deep Cleaning: ${booleanToYesNo(formValues.deepCleaning)}
-          Inside of Closets: ${booleanToYesNo(formValues.insideOfClosets)}
-          Inside the Oven: ${booleanToYesNo(formValues.insideTheOven)}
-          Inside the Fridge: ${booleanToYesNo(formValues.insideTheFridge)}
-          Washing Dishes: ${booleanToYesNo(formValues.washingDishes)}
-          Wall Cleaning: ${booleanToYesNo(formValues.wallCleaning)}
-          Inside Windows: ${insideWindowsText}
-          Pet Hair Clean: ${booleanToYesNo(formValues.petHairClean)}
-          Inside Kitchen Cabinets: ${booleanToYesNo(formValues.insideCabinets)}
-          Balcony Cleaning: ${booleanToYesNo(formValues.balcony)}
-          Use Cleaner Supplies: ${booleanToYesNo(formValues.supplies)}
-          Office: ${booleanToYesNo(formValues.office)}
-          Laundry: ${booleanToYesNo(formValues.laundy)}
-          Folding/Organizing: ${booleanToYesNo(formValues.folding)}
-          Hours of Organizing: ${organizingHoursText}
-          Bring Vacuum Cleaner: ${vacuumOptionText}
-          Number of Cleaners: ${this.requiredCleaners}
-          Number of Hours: ${
-            this.isCustomCleaning ? customCleaningHoursText : 'N/A'
-          }
-          ${!this.isCustomCleaning ? `Sub-total Time: ${subTotalTimeText}` : ''}
-          ${!this.isCustomCleaning ? `Total Time: ${totalTimeText}` : ''}
-          Sub-total Price: ${this.totalPrice}
-          Sales Tax: ${this.salesTax}
-          Total Price: ${this.total}
-  
-          Contact Info:
-          
-          Name: ${contactInfo.name}
-          Last Name: ${contactInfo.lastName}
-          Email: ${contactInfo.email}
-          Cell Number: ${contactInfo.cellNumber || 'None'}
-  
-          Address Info:
-  
-          Address: ${addressInfo.address}
-          Apartment: ${addressInfo.apartment || 'N/A'}
-          City: ${cityText}
-          State: ${stateText}
-          Zip Code: ${addressInfo.zipCode}
-        `,
-      };
-
-      this.http
-        .post('http://localhost:3000/send-email', emailPayload)
-        .subscribe(
-          (response) => {
-            console.log('Email sent successfully', response);
-          },
-          (error) => {
-            console.error('Error sending email', error);
-          }
-        );
-    } else {
+  onBookNowClick(): void {
+    if (this.calculatorForm.invalid) {
       this.calculatorForm.markAllAsTouched();
+    } else {
+      this.onSubmit();
     }
   }
 
-  private scrollToTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  onSubmit(): void {
+    if (this.calculatorForm.valid) {
+      this.openPaymentForm();
+    }
+  }
+
+  openPaymentForm(): void {
+    this.showPaymentForm = true;
+  }
+
+  closePaymentForm(): void {
+    this.showPaymentForm = false;
+  }
+
+  onPaymentSuccess(event: any): void {
+    this.sendEmail();
+    this.calculatorForm.reset({
+      serviceType: '',
+      bedrooms: 'studio',
+      bathrooms: 1,
+      serviceDate: '',
+      serviceTime: '',
+      frequency: 'One Time',
+      entryMethod: '',
+      specialInstructions: '',
+      sameDay: false,
+      deepCleaning: false,
+      insideOfClosets: false,
+      insideTheOven: false,
+      insideTheFridge: false,
+      washingDishes: false,
+      wallCleaning: false,
+      insideWindows: false,
+      petHairClean: false,
+      insideCabinets: false,
+      balcony: false,
+      supplies: false,
+      office: false,
+      laundy: false,
+      folding: false,
+      organizing: false,
+      vacuum: false,
+      cleaners: 1,
+      hours: 3,
+    });
+    // this.closePaymentForm();
+  }
+
+  sendEmail(): void {
+    const formValues = this.calculatorForm.value;
+
+    const contactInfo = this.calculatorForm.get('contactInfo')?.value;
+    const addressInfo = this.calculatorForm.get('addressInfo')?.value;
+
+    const booleanToYesNo = (value: boolean) => (value ? 'YES' : 'NO');
+
+    const serviceDate = this.isSameDayService
+      ? new Date().toISOString().split('T')[0]
+      : formValues.serviceDate;
+
+    const formattedServiceTime = this.formatTimeToAmPm(formValues.serviceTime);
+
+    const subTotalTimeText = this.isCustomCleaning
+      ? '0 hours and 0 minutes'
+      : this.formatTimeToHoursAndMinutes(this.subTotalTime ?? 0);
+
+    const totalTimeText = this.isCustomCleaning
+      ? ''
+      : this.formatTimeToHoursAndMinutes(this.totalTime ?? 0);
+
+    const customCleaningHoursText = this.formatTimeToHoursAndMinutes(
+      formValues.hours
+    );
+
+    const organizingHoursText = formValues.organizing
+      ? this.organizingHours
+      : 0;
+    const insideWindowsText = formValues.insideWindows
+      ? this.insideWindowsNumbers
+      : 0;
+    const vacuumOptionText = formValues.vacuum
+      ? this.selectedVacuumOption
+      : 'NO';
+
+    // Function to conditionally include information based on boolean value
+    const conditionalInclude = (label: string, value: boolean) => {
+      return value ? `${label}: ${booleanToYesNo(value)}\n` : '';
+    };
+
+    const extraServicesText = [
+      conditionalInclude('Same Day Service', formValues.sameDay),
+      conditionalInclude('Deep Cleaning', formValues.deepCleaning),
+      conditionalInclude('Inside of Closets', formValues.insideOfClosets),
+      conditionalInclude('Inside the Oven', formValues.insideTheOven),
+      conditionalInclude('Inside the Fridge', formValues.insideTheFridge),
+      conditionalInclude('Washing Dishes', formValues.washingDishes),
+      conditionalInclude('Wall Cleaning', formValues.wallCleaning),
+      conditionalInclude('Pet Hair Clean', formValues.petHairClean),
+      conditionalInclude('Inside Kitchen Cabinets', formValues.insideCabinets),
+      conditionalInclude('Balcony Cleaning', formValues.balcony),
+      conditionalInclude('Use Cleaner Supplies', formValues.supplies),
+      conditionalInclude('Office', formValues.office),
+      conditionalInclude('Laundry', formValues.laundy),
+      conditionalInclude('Folding/Organizing', formValues.folding),
+    ]
+      .filter(Boolean)
+      .join('\n');
+
+    // Retrieve displayed text of city, state, and entry method select elements
+    const cityElement = document.querySelector(
+      '#city option:checked'
+    ) as HTMLOptionElement;
+    const stateElement = document.querySelector(
+      '#state option:checked'
+    ) as HTMLOptionElement;
+    const entryMethodElement = document.querySelector(
+      '#entryMethod option:checked'
+    ) as HTMLOptionElement;
+
+    const cityText = cityElement ? cityElement.textContent : 'N/A';
+    const stateText = stateElement ? stateElement.textContent : 'N/A';
+    const entryMethodText = entryMethodElement
+      ? entryMethodElement.textContent
+      : 'N/A';
+
+    const emailText = `
+        Booking Details:
+
+        Service Type: ${formValues.serviceType}
+        Bedrooms: ${formValues.bedrooms ?? 'None'}
+        Bathrooms: ${formValues.bathrooms ?? 'None'}
+        Service Date: ${serviceDate}
+        Service Time: ${formattedServiceTime}
+        Frequency: ${formValues.frequency}
+        Entry Method: ${entryMethodText}
+        Special Instructions: ${formValues.specialInstructions || 'None'}
+        ${extraServicesText}
+        Inside Windows: ${insideWindowsText}
+        Hours of Organizing: ${organizingHoursText}
+        Bring Vacuum Cleaner: ${vacuumOptionText}
+        Number of Cleaners: ${this.requiredCleaners}
+        Number of Hours: ${
+          this.isCustomCleaning ? customCleaningHoursText : 'N/A'
+        }
+        ${!this.isCustomCleaning ? `Sub-total Time: ${subTotalTimeText}\n` : ''}
+        ${!this.isCustomCleaning ? `Total Time: ${totalTimeText}\n` : ''}
+        Sub-total Price: $${this.totalPrice?.toFixed(2)}
+        Sales Tax: $${this.salesTax?.toFixed(2)}
+        Total Price: $${this.total?.toFixed(2)}
+
+        Contact Info:
+        
+        Name: ${contactInfo.name}
+        Last Name: ${contactInfo.lastName}
+        Email: ${contactInfo.email}
+        Cell Number: ${contactInfo.cellNumber || 'None'}
+
+        Address Info:
+
+        Address: ${addressInfo.address}
+        Apartment: ${addressInfo.apartment || 'N/A'}
+        City: ${cityText}
+        State: ${stateText}
+        Zip Code: ${addressInfo.zipCode}
+    `;
+
+    const clientEmailText = `
+        Thank you for booking with us!
+
+        Here are your booking details:
+
+        Service Type: ${formValues.serviceType}
+        Bedrooms: ${formValues.bedrooms ?? 'None'}
+        Bathrooms: ${formValues.bathrooms ?? 'None'}
+        Service Date: ${serviceDate}
+        Service Time: ${formattedServiceTime}
+        Frequency: ${formValues.frequency}
+        Entry Method: ${entryMethodText}
+        Special Instructions For Cleaners: ${
+          formValues.specialInstructions || 'None'
+        }
+        ${extraServicesText}
+        Inside Windows: ${insideWindowsText}
+        Hours of Organizing: ${organizingHoursText}
+        Bring Vacuum Cleaner: ${vacuumOptionText}
+        Number of Cleaners: ${this.requiredCleaners}
+        Number of Hours: ${
+          this.isCustomCleaning ? customCleaningHoursText : 'N/A'
+        }
+        ${!this.isCustomCleaning ? `Sub-total Time: ${subTotalTimeText}\n` : ''}
+        ${!this.isCustomCleaning ? `Total Time: ${totalTimeText}\n` : ''}
+        Sub-total Price: $${this.totalPrice?.toFixed(2)}
+        Sales Tax: $${this.salesTax?.toFixed(2)}
+        Total Price: $${this.total?.toFixed(2)}
+
+        Contact Info:
+        
+        Your Name: ${contactInfo.name}
+        Your Last Name: ${contactInfo.lastName}
+        Your Email: ${contactInfo.email}
+        Your Cell Number: ${contactInfo.cellNumber || 'None'}
+
+        Address Info:
+
+        Your Address: ${addressInfo.address}
+        Your Apartment: ${addressInfo.apartment || 'N/A'}
+        Your City: ${cityText}
+        Your State: ${stateText}
+        Your Zip Code: ${addressInfo.zipCode}
+    `;
+
+    const yourEmailPayload = {
+      email: 'DreamCleaningInfos@gmail.com', // Your email address
+      subject: 'New Booking',
+      text: emailText,
+    };
+
+    const clientEmailPayload = {
+      email: contactInfo.email, // Client's email address
+      subject: 'Booking Confirmation',
+      text: clientEmailText,
+      from: 'DreamCleaningInfos@gmail.com', // Ensure this field is added
+    };
+
+    // Send email to you
+    this.http
+      .post('http://localhost:3000/send-email', yourEmailPayload)
+      .subscribe(
+        (response) => {
+          console.log('Email sent to you successfully', response);
+        },
+        (error) => {
+          console.error('Error sending email to you', error);
+        }
+      );
+
+    // Send email to the client
+    this.http
+      .post('http://localhost:3000/send-email', clientEmailPayload)
+      .subscribe(
+        (response) => {
+          console.log('Email sent to client successfully', response);
+        },
+        (error) => {
+          console.error('Error sending email to client', error);
+        }
+      );
   }
 }
