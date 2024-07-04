@@ -14,6 +14,7 @@ import { ExtraServicesComponent } from './calculator/extra-services/extra-servic
 import { TooltipComponent } from './calculator/extra-services/tooltip/tooltip.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PaymentFormComponent } from './calculator/payment-form/payment-form.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { PaymentFormComponent } from './calculator/payment-form/payment-form.com
     ExtraServicesComponent,
     TooltipComponent,
     PaymentFormComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,

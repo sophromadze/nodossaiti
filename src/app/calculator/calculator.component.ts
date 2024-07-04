@@ -33,14 +33,14 @@ export class CalculatorComponent implements OnInit {
   salesTax: number | null = null;
   total: number | null = null;
   isCustomCleaning = false;
-  deepCleaningChecked = false; // Add this line
+  deepCleaningChecked = false;
   requiredCleaners: number | null = null;
   extraServicePrices: { [key: string]: number } = {};
   extraServiceTimes: { [key: string]: number } = {};
   originalServiceDate: string | null = null;
-  organizingHours: number | null = 0; // Initialize organizing hours
-  insideWindowsNumbers: number | null = 0; // Initialize windows number
-  selectedVacuumOption: string = 'None'; // Initialize vacuum option
+  organizingHours: number | null = 0;
+  insideWindowsNumbers: number | null = 0;
+  selectedVacuumOption: string = 'None';
 
   showPaymentForm: boolean = false;
 
@@ -129,6 +129,9 @@ export class CalculatorComponent implements OnInit {
           break;
       }
     });
+
+    // Scroll to top when the component initializes
+    window.scrollTo(0, 0);
   }
 
   setMinDate(): void {
@@ -201,7 +204,7 @@ export class CalculatorComponent implements OnInit {
     switch (formValues.serviceType) {
       case 'Residential':
         basePrice += 0;
-        subTotalTime += 0;
+        subTotalTime += 1;
         break;
       case 'Move In':
         basePrice += 150;
@@ -228,7 +231,7 @@ export class CalculatorComponent implements OnInit {
       switch (formValues.bedrooms) {
         case 'studio':
           bedroomBasePrice = 140;
-          bedroomTime = formValues.deepCleaning ? 3.5 : 1.5;
+          bedroomTime = formValues.deepCleaning ? 3.0 : 1.5;
           break;
         case 'one':
           bedroomBasePrice = 150;
