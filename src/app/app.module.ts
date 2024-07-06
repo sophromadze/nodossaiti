@@ -15,10 +15,8 @@ import { TooltipComponent } from './calculator/extra-services/tooltip/tooltip.co
 import { HttpClientModule } from '@angular/common/http';
 import { PaymentFormComponent } from './calculator/payment-form/payment-form.component';
 import { AboutComponent } from './about/about.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { CardDetailsModalComponent } from './main/card-details/card-details.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CardDetailComponent } from './main/card-detail/card-detail.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +31,7 @@ import { CardDetailsModalComponent } from './main/card-details/card-details.comp
     TooltipComponent,
     PaymentFormComponent,
     AboutComponent,
-    CardDetailsModalComponent,
+    CardDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,9 +39,7 @@ import { CardDetailsModalComponent } from './main/card-details/card-details.comp
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

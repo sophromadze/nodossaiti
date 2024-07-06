@@ -9,7 +9,6 @@ html {
   scroll-behavior: smooth;
   -webkit-scroll-behavior: smooth;
   background-image: url(/assets/images/claeaningSuppliesBack.png);
-  position: relative;
   user-select: none;
 }
 
@@ -18,5 +17,7 @@ app-root {
   padding-top: 99px;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.no-scroll {
+  overflow: hidden;
+  height: 100%;
+}

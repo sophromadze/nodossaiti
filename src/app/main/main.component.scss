@@ -9,9 +9,10 @@
   background-position: center;
   background-size: cover;
   transition: background-image 1s ease-in-out;
+
   h2 {
-    max-width: 650px;
     font-size: 3.2rem;
+    line-height: 3.5rem;
     text-align: center;
     transition: color 1s ease-in-out; // Add transition for color
   }
@@ -37,6 +38,10 @@
       background: #00f2f7;
       border-radius: 50px;
       cursor: pointer;
+    }
+
+    h5 {
+      font-size: 18px;
     }
 
     #bookNow {
@@ -91,7 +96,6 @@
     flex-direction: column;
     justify-content: center;
     border: 1px solid #e5e7eb;
-    justify-content: center;
     width: 100%;
     max-width: 400px;
     height: auto;
@@ -142,10 +146,6 @@
       color: #fff;
     }
   }
-
-  // div:hover {
-  //   scale: 1.02;
-  // }
 
   ul li {
     list-style-position: inside;

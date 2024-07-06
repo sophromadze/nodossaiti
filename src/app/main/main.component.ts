@@ -1,7 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { CardDetailsModalComponent } from './card-details/card-details.component';
 
 @Component({
   selector: 'app-main',
@@ -20,40 +18,32 @@ export class MainComponent implements OnInit, OnDestroy {
   h2Color: string = '#fff';
   pColor: string = '#fff';
 
+  isModalOpen = false;
+  modalTitle = '';
+
   private imageInterval: any;
   private currentIndex: number = 0;
 
-  moveInDescription =
-    'A move-in cleaning service is designed to prepare a new residence or commercial space for occupancy. It focuses on thorough cleaning to ensure the space is fresh, sanitized, and welcoming for the new occupants.';
-  moveInDetails =
-    'Deep Cleaning, Sanitization, Fixture Cleaning, Floor Care, Window Cleaning, Dusting, Trash Removal';
-
-  constructor(private router: Router, private dialog: MatDialog) {}
-
-  openServiceDetail(title: string, description: string, details: string): void {
-    this.dialog.open(CardDetailsModalComponent, {
-      width: '100vw', // 100% of viewport width
-      height: '100vh', // 100% of viewport height
-      maxWidth: '100vw', // Ensures the dialog doesn't exceed the viewport width
-      maxHeight: '100vh', // Ensures the dialog doesn't exceed the viewport height
-      data: {
-        serviceTitle: title,
-        serviceDescription: description,
-        serviceDetails: details,
-      },
-    });
-  }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
+    this.preloadImages();
     this.imageInterval = setInterval(() => {
       this.changeBackgroundImage();
-    }, 5000);
+    }, 3000);
   }
 
   ngOnDestroy(): void {
     if (this.imageInterval) {
       clearInterval(this.imageInterval);
     }
+  }
+
+  private preloadImages(): void {
+    this.images.forEach((image) => {
+      const img = new Image();
+      img.src = image;
+    });
   }
 
   private changeBackgroundImage(): void {
@@ -88,5 +78,16 @@ export class MainComponent implements OnInit, OnDestroy {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  openModal(title: string): void {
+    this.modalTitle = title;
+    this.isModalOpen = true;
+    document.body.classList.add('no-scroll'); // Disable background scrolling
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+    document.body.classList.remove('no-scroll'); // Enable background scrolling
   }
 }
