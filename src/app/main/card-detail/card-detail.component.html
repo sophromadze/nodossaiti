@@ -1,6 +1,8 @@
 <div class="modal" *ngIf="isOpen">
   <div class="modal-content">
-    <span class="close" (click)="closeModal()">&times;</span>
+    <span class="close" (click)="closeModal()">
+      <img src="/assets/images/macclos.png" alt="" />
+    </span>
     <h2>{{ modalTitle }}</h2>
     <div [ngSwitch]="modalTitle">
       <div *ngSwitchCase="'Regular Cleaning'">

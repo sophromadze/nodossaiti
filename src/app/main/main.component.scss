@@ -102,15 +102,35 @@
 
     filter: drop-shadow(0 20px 13px rgba(0, 0, 0, 0.03))
       drop-shadow(0 8px 5px rgba(0, 0, 0, 0.08));
+
     h2 {
       background-color: #00f2f7;
       border-top-left-radius: 1rem;
       border-top-right-radius: 1rem;
       text-align: center;
       padding: 10px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      button {
+        background: #03752f;
+        border: 1px solid #00ca4e;
+        border-radius: 50%;
+        height: 30px;
+        width: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #000000;
+      }
     }
 
-    i {
+    .bookBtns i {
       display: none;
     }
 
