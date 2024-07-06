@@ -5,35 +5,28 @@
   align-items: center;
   height: 820px;
   padding: 10px 50px;
-  background-image: url(/assets/images/esa.png);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  transition: background-image 1s ease-in-out;
+  h2 {
+    max-width: 650px;
+    font-size: 3.2rem;
+    text-align: center;
+    transition: color 1s ease-in-out; // Add transition for color
+  }
 
   p {
     width: 100%;
-    max-width: 500px;
+    max-width: 700px;
+    font-size: 1.2rem;
+    transition: color 1s ease-in-out; // Add transition for color
   }
-  h2 {
-    max-width: 400px;
-    font-size: 35px;
-  }
-  // img {
-  //   position: absolute;
-  //   z-index: -1;
-  //   width: 100%;
-  //   top: 0;
-  //   left: 0;
-  //   bottom: 0;
-  //   right: 0;
-  // }
 
   .cleanings {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    gap: 20px;
     font-size: 20px;
     div {
       display: flex;
@@ -41,9 +34,46 @@
       align-items: center;
       height: 80px;
       width: 300px;
-      border: 1px solid yellow;
+      background: #00f2f7;
       border-radius: 50px;
       cursor: pointer;
+    }
+
+    #bookNow {
+      border: 1px solid #fff;
+      animation: colorChange 1.4s infinite;
+    }
+
+    @keyframes colorChange {
+      0% {
+        background: #00f3f7e7;
+      }
+      50% {
+        background: #00f3f79d;
+      }
+      100% {
+        background: #00f3f7e7;
+      }
+    }
+
+    #ourPopular {
+      border: 1px solid #fff;
+      background: #00f3f77a;
+      font-weight: bolder;
+    }
+
+    #ourPopular:hover {
+      background: #00f3f7d8;
+      border: 1px solid #fff;
+      color: #222831;
+    }
+
+    .fa-chevron-right {
+      display: none;
+    }
+
+    #bookNow:hover .fa-chevron-right {
+      display: inline;
     }
   }
 }
@@ -53,6 +83,7 @@
   align-items: center;
   justify-content: space-around;
   padding: 10px;
+
   div {
     background-color: #fff;
     border-radius: 1rem;
@@ -64,14 +95,23 @@
     width: 100%;
     max-width: 400px;
     height: auto;
+
     filter: drop-shadow(0 20px 13px rgba(0, 0, 0, 0.03))
       drop-shadow(0 8px 5px rgba(0, 0, 0, 0.08));
     h2 {
-      background-color: rgb(69 242 152);
+      background-color: #00f2f7;
       border-top-left-radius: 1rem;
       border-top-right-radius: 1rem;
       text-align: center;
       padding: 10px;
+    }
+
+    i {
+      display: none;
+    }
+
+    .bookBtns:hover i {
+      display: inline;
     }
 
     p,
@@ -82,7 +122,31 @@
     h4 {
       padding: 0 10px;
     }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    b {
+      color: #00f2f7;
+    }
   }
+
+  .moveIn,
+  .moveOut,
+  .deepCleaning,
+  .regularCleaning {
+    p,
+    ul {
+      background-color: #36454f;
+      color: #fff;
+    }
+  }
+
+  // div:hover {
+  //   scale: 1.02;
+  // }
+
   ul li {
     list-style-position: inside;
   }
@@ -90,8 +154,20 @@
   .bookBtns {
     width: 50%;
     align-self: center;
-    padding: 5px;
+    padding: 10px 5px;
     margin: 10px 0;
     cursor: pointer;
+    background: #36454f;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-weight: 900;
+    border: 1px solid #fff;
+  }
+
+  .bookBtns:hover {
+    color: #36454f;
+    background: #fff;
+    border: 1px solid #36454f;
   }
 }

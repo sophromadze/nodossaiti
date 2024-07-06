@@ -1,80 +1,92 @@
-<div class="main">
-  <!-- <img src="assets/images/esa.png" alt="" /> -->
+<div
+  class="main"
+  [ngStyle]="{ 'background-image': 'url(' + currentImage + ')' }"
+>
   <div>
-    <h2>Save your time and energy, we bring you comfort and cleanliness.</h2>
-    <p>
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi,
-      consequuntur atque! Facere ipsa voluptatum accusamus delectus
-      exercitationem culpa labore velit deleniti corrupti quaerat voluptatibus
-      dolor, odit voluptates modi excepturi in.
+    <h2 [ngStyle]="{ color: h2Color }">
+      Save Time and Energy, <span>Enjoy <br /></span> Comfort and Cleanliness.
+    </h2>
+    <br />
+    <p [ngStyle]="{ color: pColor }">
+      Dream Cleaning is here to save you time and energy. Let us bring the
+      comfort and cleanliness you deserve, so you can relax and enjoy life's
+      precious moments. Our team is ready to revive your home.
     </p>
   </div>
   <div class="cleanings">
-    <div (click)="navigateToCalculator('regular')">
-      <h5>BOOK NOW</h5>
+    <div id="bookNow" (click)="navigateToCalculator('regular')">
+      <h5>BOOK NOW <i class="fa-solid fa-chevron-right"></i></h5>
     </div>
     <div id="ourPopular" class="clickable-div" (click)="scrollToCards()">
-      <h5>OUR POPULAR</h5>
+      <h5>OUR POPULAR <i class="fa-solid fa-chevron-down"></i></h5>
     </div>
   </div>
 </div>
+
 <section class="cards" id="cards">
   <div class="regularCleaning">
     <h2>Regular Cleaning</h2>
-    <h3>$ 140</h3>
-    <hr />
+    <h3>$ 120</h3>
     <p>
-      Purpose: Regular cleaning refers to routine maintenance cleaning that is
-      scheduled regularly to maintain a desired level of cleanliness and
+      <b>Purpose:</b> Regular cleaning refers to routine maintenance cleaning
+      that is scheduled regularly to maintain a desired level of cleanliness and
       tidiness.
     </p>
     <p>
-      Tasks: It typically includes basic tasks performed on a recurring basis,
-      such as dusting, vacuuming, mopping floors, wiping surfaces, and cleaning
-      bathrooms and kitchens.
+      <b>Tasks:</b> It typically includes basic tasks performed on a recurring
+      basis, such as dusting, vacuuming, mopping floors, wiping surfaces, and
+      cleaning bathrooms and kitchens.
     </p>
     <p>
-      Frequency: It is done on a frequent basis, often weekly, bi-weekly, or
-      monthly, depending on the needs and preferences of the homeowner or
+      <b>Frequency:</b> It is done on a frequent basis, often weekly, bi-weekly,
+      or monthly, depending on the needs and preferences of the homeowner or
       business.
     </p>
+    <br />
     <h4>FREE Supplies</h4>
     <h4>2 Hours and 30 Minutes</h4>
     <button class="bookBtns" (click)="navigateToCalculator('regular')">
-      Book Now
+      Book Now <i class="fa-solid fa-chevron-right"></i>
     </button>
   </div>
   <div class="deepCleaning">
     <h2>Deep Cleaning</h2>
     <h3>$ 360</h3>
-    <hr />
     <p>
-      Purpose: Deep cleaning is a more thorough and intensive cleaning process
-      aimed at tackling accumulated dirt, grime, and buildup that may not be
-      addressed in regular cleaning sessions.
+      <b>Purpose:</b> Deep cleaning is a more thorough and intensive cleaning
+      process aimed at tackling accumulated dirt, grime, and buildup that may
+      not be addressed in regular cleaning sessions.
     </p>
     <p>
-      Tasks: It involves cleaning tasks that go beyond the routine, such as
-      scrubbing tiles and grout, cleaning inside appliances (like ovens and
+      <b>Tasks:</b> It involves cleaning tasks that go beyond the routine, such
+      as scrubbing tiles and grout, cleaning inside appliances (like ovens and
       refrigerators), washing baseboards, cleaning light fixtures, and removing
       dust and cobwebs from corners and high surfaces.
     </p>
     <p>
-      Frequency: It is typically done less frequently than regular cleaning and
-      is often performed on a seasonal basis or as needed to maintain a higher
-      level of cleanliness.
+      <b>Frequency:</b> It is typically done less frequently than regular
+      cleaning and is often performed on a seasonal basis or as needed to
+      maintain a higher level of cleanliness.
     </p>
+    <br />
     <h4>Free Supplies</h4>
     <h4>Free balcony regular cleaning</h4>
     <h4>5 Hours</h4>
     <button class="bookBtns" (click)="navigateToCalculator('deep')">
-      Book Now
+      Book Now <i class="fa-solid fa-chevron-right"></i>
     </button>
   </div>
   <div class="moveIn">
-    <h2>Move In</h2>
+    <h2>
+      Move In
+      <button
+        mat-button
+        (click)="openServiceDetail('Move In', moveInDescription, moveInDetails)"
+      >
+        Details
+      </button>
+    </h2>
     <h3>$ 290</h3>
-    <hr />
     <p>
       <b>Move-In Cleaning Service:</b> A move-in cleaning service is designed to
       prepare a new residence or commercial space for occupancy. It focuses on
@@ -105,15 +117,15 @@
       </li>
       <li><b>Trash Removal:</b> Disposing of any leftover trash or debris.</li>
     </ul>
+    <br />
     <h4>5 Hours</h4>
     <button class="bookBtns" (click)="navigateToCalculator('moveIn')">
-      Book Now
+      Book Now <i class="fa-solid fa-chevron-right"></i>
     </button>
   </div>
   <div class="moveOut">
     <h2>Move Out</h2>
     <h3>$ 290</h3>
-    <hr />
     <p>
       <b>Move-Out Cleaning Service:</b> A move-out cleaning service is performed
       when occupants are vacating a property. It focuses on deep cleaning to
@@ -154,9 +166,10 @@
       condition, meeting the expectations of landlords, property managers, or
       new occupants moving in.
     </p>
+    <br />
     <h4>5 Hours</h4>
     <button class="bookBtns" (click)="navigateToCalculator('moveOut')">
-      Book Now
+      Book Now <i class="fa-solid fa-chevron-right"></i>
     </button>
   </div>
 </section>

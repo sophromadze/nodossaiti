@@ -2,15 +2,21 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Fraunces", serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
   -webkit-scroll-behavior: smooth;
+  background-image: url(/assets/images/claeaningSuppliesBack.png);
+  position: relative;
+  user-select: none;
 }
 
 app-root {
   display: block;
-  padding-top: 100px;
+  padding-top: 99px;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
