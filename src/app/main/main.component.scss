@@ -105,17 +105,18 @@
 
     h2 {
       background-color: #00f2f7;
+      // color: #00f2f7;
       border-top-left-radius: 1rem;
       border-top-right-radius: 1rem;
       text-align: center;
       padding: 10px;
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       align-items: center;
 
       button {
-        background: #03752f;
-        border: 1px solid #00ca4e;
+        background: #11bdc0;
+        border: 1px solid #00f2f7;
         border-radius: 50%;
         height: 30px;
         width: 30px;
@@ -126,7 +127,7 @@
       }
 
       button:hover {
-        background: #000000;
+        background: #00f2f7;
       }
     }
 
@@ -177,8 +178,8 @@
     padding: 10px 5px;
     margin: 10px 0;
     cursor: pointer;
-    background: #36454f;
-    color: #fff;
+    background: #00f2f7;
+    color: #000;
     border: none;
     border-radius: 20px;
     font-weight: 900;

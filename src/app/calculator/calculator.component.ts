@@ -75,10 +75,11 @@ export class CalculatorComponent implements OnInit {
       balcony: [false],
       supplies: [false],
       office: [false],
-      laundy: [false],
+      laundry: [false],
       folding: [false],
       organizing: [false],
-      vacuum: [false],
+      // vacuum: [false],
+      vacuum2: [false],
       cleaners: [1],
       hours: [3],
     });
@@ -386,10 +387,11 @@ export class CalculatorComponent implements OnInit {
       balcony: false,
       supplies: false,
       office: false,
-      laundy: false,
+      laundry: false,
       folding: false,
       organizing: false,
-      vacuum: false,
+      // vacuum: false,
+      vacuum2: false,
       cleaners: 1,
       hours: 3,
     });
@@ -432,6 +434,8 @@ export class CalculatorComponent implements OnInit {
       ? this.selectedVacuumOption
       : 'NO';
 
+    // Bring Vacuum Cleaner: ${vacuumOptionText}
+
     // Function to conditionally include information based on boolean value
     const conditionalInclude = (label: string, value: boolean) => {
       return value ? `${label}: ${booleanToYesNo(value)}\n` : '';
@@ -450,8 +454,9 @@ export class CalculatorComponent implements OnInit {
       conditionalInclude('Balcony Cleaning', formValues.balcony),
       conditionalInclude('Use Cleaner Supplies', formValues.supplies),
       conditionalInclude('Office', formValues.office),
-      conditionalInclude('Laundry', formValues.laundy),
-      conditionalInclude('Folding/Organizing', formValues.folding),
+      conditionalInclude('Laundry', formValues.laundry),
+      conditionalInclude('Folding / Organizing', formValues.folding),
+      conditionalInclude('Bring Vacuum Cleaner', formValues.vacuum2),
     ]
       .filter(Boolean)
       .join('\n');
@@ -487,7 +492,6 @@ export class CalculatorComponent implements OnInit {
         ${extraServicesText}
         Inside Windows: ${insideWindowsText}
         Hours of Organizing: ${organizingHoursText}
-        Bring Vacuum Cleaner: ${vacuumOptionText}
         Number of Cleaners: ${this.requiredCleaners}
         Number of Hours: ${
           this.isCustomCleaning ? customCleaningHoursText : 'N/A'
@@ -532,7 +536,6 @@ export class CalculatorComponent implements OnInit {
         ${extraServicesText}
         Inside Windows: ${insideWindowsText}
         Hours of Organizing: ${organizingHoursText}
-        Bring Vacuum Cleaner: ${vacuumOptionText}
         Number of Cleaners: ${this.requiredCleaners}
         Number of Hours: ${
           this.isCustomCleaning ? customCleaningHoursText : 'N/A'

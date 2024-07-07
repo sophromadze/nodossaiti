@@ -7,7 +7,7 @@
       <div class="relative-container">
         <div class="form-group col bordered-group">
           <div class="col">
-            <h3>Service Type</h3>
+            <h3>Service Type **</h3>
             <div class="col">
               <select
                 formControlName="serviceType"
@@ -41,7 +41,7 @@
       <div *ngIf="!isCustomCleaning" class="relative-container">
         <div class="form-group row bordered-group typeRow">
           <div class="col">
-            <h3>Tell us about your home.</h3>
+            <h3>Tell us about your apartment **</h3>
             <select
               formControlName="bedrooms"
               id="bedrooms"
@@ -124,14 +124,14 @@
       <!-- Service Date and Time -->
       <div class="relative-container">
         <div class="form-group col bordered-group">
-          <h3>Service Date & Time</h3>
+          <h3>Service Date & Time **</h3>
           <div class="row">
             <div class="col">
               <input
                 type="date"
                 formControlName="serviceDate"
                 id="serviceDate"
-                class="form-control"
+                class="form-control date-input"
                 [min]="minDate"
                 placeholder="Service Date**"
               />
@@ -150,7 +150,7 @@
                 type="time"
                 formControlName="serviceTime"
                 id="serviceTime"
-                class="form-control"
+                class="form-control time-input"
                 placeholder="Service Time**"
               />
             </div>
@@ -161,7 +161,7 @@
       <!-- Frequency -->
       <div class="relative-container">
         <div class="form-group bordered-group">
-          <label><h3>Frequency</h3></label>
+          <label><h3>Frequency **</h3></label>
           <div class="frequency-buttons">
             <button
               type="button"
@@ -190,7 +190,7 @@
       <!-- Entry Method -->
       <div class="relative-container">
         <div class="form-group bordered-group">
-          <label for="entryMethod"><h3>Entry Method</h3></label>
+          <label for="entryMethod"><h3>Entry Method **</h3></label>
           <select
             formControlName="entryMethod"
             id="entryMethod"
@@ -201,6 +201,15 @@
             <option value="leaveOpen">Leave Open</option>
             <option value="meetInPerson">Meet in Person</option>
           </select>
+          <div
+            *ngIf="
+              calculatorForm.get('entryMethod')!.invalid &&
+              calculatorForm.get('entryMethod')!.touched
+            "
+            class="errorEntry"
+          >
+            Please select a entry method.
+          </div>
         </div>
       </div>
 

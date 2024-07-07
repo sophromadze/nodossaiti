@@ -4,18 +4,35 @@
   gap: 0.5rem;
 }
 
+.btn-container {
+  position: relative; /* Ensure the tooltip has a positioning context */
+}
+
 .extra-services-buttons .btn {
   text-align: center;
-  background-color: #f8f9fa;
+  background: #ebf5ff;
   border: 1px solid #ccc;
   padding: 0.75rem;
   box-sizing: border-box;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  span {
+    font-size: 20px;
+  }
 }
 
-.extra-services-buttons .btn.selected,
 .extra-services-buttons .btn:hover {
-  background-color: #007bff;
+  border: 1px solid #676cff;
+}
+
+.extra-services-buttons .btn.selected {
+  background: #676cff;
   color: #fff;
 }
 
@@ -54,7 +71,7 @@
 
 .organizing-input input,
 .insideWindows-input input {
-  width: 50%; /* Adjust the width as needed */
+  width: 50px; /* Adjust the width as needed */
   text-align: center;
 }
 

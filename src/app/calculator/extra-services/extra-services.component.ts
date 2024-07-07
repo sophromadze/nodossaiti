@@ -17,9 +17,9 @@ import {
 interface ExtraServiceData {
   prices: { [key: string]: number };
   times: { [key: string]: number };
-  organizingHours: number; // Add organizingHours property
-  insideWindowsNumbers: number; // Add windowsNumbers property
-  selectedVacuumOption: string; // Add selectedVacuumOption property
+  organizingHours: number;
+  insideWindowsNumbers: number;
+  selectedVacuumOption: string;
 }
 
 @Component({
@@ -30,27 +30,100 @@ interface ExtraServiceData {
 export class ExtraServicesComponent implements OnInit, OnChanges {
   @Input() parentForm!: FormGroup;
   @Input() isCustomCleaning = false;
-  @Output() extraServiceChanged = new EventEmitter<ExtraServiceData>(); // Update the type here
+  @Output() extraServiceChanged = new EventEmitter<ExtraServiceData>();
   @Output() sameDayServiceChanged = new EventEmitter<boolean>();
 
   extraServices = [
-    { controlName: 'sameDay', label: 'Same Day Service' },
-    { controlName: 'deepCleaning', label: 'Deep Cleaning' },
-    { controlName: 'insideOfClosets', label: 'Inside of Closets' },
-    { controlName: 'insideTheOven', label: 'Inside the Oven' },
-    { controlName: 'insideTheFridge', label: 'Inside the Fridge' },
-    { controlName: 'insideWindows', label: 'Inside Windows' },
-    { controlName: 'washingDishes', label: 'Washing Dishes' },
-    { controlName: 'wallCleaning', label: 'Walls' },
-    { controlName: 'petHairClean', label: "Pet's in the Apartment" },
-    { controlName: 'insideCabinets', label: 'Inside Kitchen Cabinets' },
-    { controlName: 'balcony', label: 'Balcony Cleaning' },
-    { controlName: 'supplies', label: 'Use Cleaner Supplies' },
-    { controlName: 'office', label: 'Office' },
-    { controlName: 'laundy', label: 'Laundy' },
-    { controlName: 'folding', label: 'Folding/Organizing' },
-    { controlName: 'organizing', label: 'Hours of Organizing' },
-    { controlName: 'vacuum', label: 'Bring Vacuum Cleaner' },
+    {
+      controlName: 'sameDay',
+      label: 'Same Day Service',
+      iconPath: '/assets/images/sameDay3.png',
+    },
+    {
+      controlName: 'deepCleaning',
+      label: 'Deep Cleaning',
+      iconPath: '/assets/images/deepCleaning.png',
+    },
+    {
+      controlName: 'insideOfClosets',
+      label: 'Inside of Closets',
+      iconPath: '/assets/images/closets.png',
+    },
+    {
+      controlName: 'insideTheOven',
+      label: 'Inside the Oven',
+      iconPath: '/assets/images/oven.png',
+    },
+    {
+      controlName: 'insideTheFridge',
+      label: 'Inside the Fridge',
+      iconPath: '/assets/images/fridge.png',
+    },
+    {
+      controlName: 'insideWindows',
+      label: 'Inside Windows',
+      iconPath: '/assets/images/windows.png',
+    },
+    {
+      controlName: 'washingDishes',
+      label: 'Washing Dishes',
+      iconPath: '/assets/images/dishes.png',
+    },
+    {
+      controlName: 'wallCleaning',
+      label: 'Walls',
+      iconPath: '/assets/images/wall.png',
+    },
+    {
+      controlName: 'petHairClean',
+      label: "Pet's in the Apartment",
+      iconPath: '/assets/images/pets.png',
+    },
+    {
+      controlName: 'insideCabinets',
+      label: 'Inside Kitchen Cabinets',
+      iconPath: '/assets/images/kitchen.png',
+    },
+    {
+      controlName: 'balcony',
+      label: 'Balcony Cleaning',
+      iconPath: '/assets/images/balcony.png',
+    },
+    {
+      controlName: 'supplies',
+      label: 'Use Cleaner Supplies',
+      iconPath: '/assets/images/supplies.png',
+    },
+    {
+      controlName: 'office',
+      label: 'Office',
+      iconPath: '/assets/images/office.png',
+    },
+    {
+      controlName: 'laundry',
+      label: 'Laundry',
+      iconPath: '/assets/images/laundry.png',
+    },
+    {
+      controlName: 'folding',
+      label: 'Folding / Organizing',
+      iconPath: '/assets/images/folding.png',
+    },
+    {
+      controlName: 'organizing',
+      label: 'Hours of Organizing',
+      iconPath: '/assets/images/organizing.png',
+    },
+    // {
+    //   controlName: 'vacuum',
+    //   label: 'Bring Vacuum Cleaner',
+    //   iconPath: '/assets/images/vacuum.png',
+    // },
+    {
+      controlName: 'vacuum2',
+      label: 'Bring Vacuum Cleaner',
+      iconPath: '/assets/images/vacuum.png',
+    },
   ];
 
   extraServicePrices: { [key: string]: number } = {
@@ -61,16 +134,17 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     insideTheFridge: 40,
     insideWindows: 30,
     washingDishes: 30,
-    wallCleaning: 25, //დასაზუსტებელია
+    wallCleaning: 25,
     petHairClean: 0,
     insideCabinets: 30,
     balcony: 55,
     supplies: 0,
-    office: 50, // დასაზუსტებელია
-    laundy: 40,
+    office: 50,
+    laundry: 40,
     folding: 25,
     organizing: 27.5,
-    vacuum: 90,
+    // vacuum: 90,
+    vacuum2: 90,
   };
 
   extraServiceTimes: { [key: string]: number } = {
@@ -87,34 +161,32 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     balcony: 1.0,
     supplies: 0.0,
     office: 1.0,
-    laundy: 1.0,
+    laundry: 1.0,
     folding: 1.0,
     organizing: 0.5,
-    vacuum: 1.0,
+    // vacuum: 1.0,
+    vacuum2: 1.0,
   };
 
-  selectedVacuumOption = ''; // Default to empty
+  selectedVacuumOption = '';
   showVacuumOptions = false;
-  organizingHours = 0.5; // Default to 0.5 hours
-  insideWindowsNumbers = 1; // Default to 1
-  showOrganizingInput = false; // Track whether to show organizing input
-  showWindowsInput = false; // Track whether to show windows input
-
-  // Tooltip properties
+  organizingHours = 0.5;
+  insideWindowsNumbers = 1;
+  showOrganizingInput = false;
+  showWindowsInput = false;
   tooltipVisible = false;
   currentTooltip: string | null = null;
 
   constructor() {}
 
   ngOnInit(): void {
-    // Initialize form controls with validators
     this.parentForm.addControl(
       'insideWindows',
       new FormControl(1, [
         Validators.required,
         Validators.min(1),
         Validators.max(20),
-        Validators.pattern(/^\d+$/), // Only integers
+        Validators.pattern(/^\d+$/),
       ])
     );
     this.parentForm.addControl(
@@ -123,18 +195,16 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
         Validators.required,
         Validators.min(0.5),
         Validators.max(5),
-        this.validateOrganizingHours, // Custom validator for 0.5 increments
+        this.validateOrganizingHours,
       ])
     );
 
-    // Ensure the vacuum option is defaulted to Standard
     if (this.parentForm.get('vacuum')!.value) {
       this.showVacuumOptions = true;
       this.extraServicePrices['vacuum'] = 90;
     }
   }
 
-  // Custom validator for organizing hours (must be multiple of 0.5)
   validateOrganizingHours(
     control: FormControl
   ): { [key: string]: boolean } | null {
@@ -152,7 +222,7 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
       } else {
         this.parentForm.get('organizing')!.enable();
       }
-      this.emitChanges(); // Emit changes to notify parent form
+      this.emitChanges();
     }
   }
 
@@ -174,8 +244,8 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     } else if (service === 'organizing') {
       if (!currentValue) {
         this.showOrganizingInput = true;
-        this.extraServicePrices['organizing'] = 27.5; // Default to 0.5 hours
-        this.extraServiceTimes['organizing'] = 0.5; // Set default time
+        this.extraServicePrices['organizing'] = 27.5;
+        this.extraServiceTimes['organizing'] = 0.5;
       } else {
         this.showOrganizingInput = false;
         this.extraServicePrices['organizing'] = 0;
@@ -185,8 +255,8 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     } else if (service === 'insideWindows') {
       if (!currentValue) {
         this.showWindowsInput = true;
-        this.extraServicePrices['insideWindows'] = 30; // Default to1 window
-        this.extraServiceTimes['insideWindows'] = 0.5; // Set default time
+        this.extraServicePrices['insideWindows'] = 30;
+        this.extraServiceTimes['insideWindows'] = 0.5;
       } else {
         this.showWindowsInput = false;
         this.extraServicePrices['insideWindows'] = 0;
@@ -196,7 +266,7 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     }
 
     if (service === 'sameDay') {
-      this.sameDayServiceChanged.emit(!currentValue); // Emit event when same day service is toggled
+      this.sameDayServiceChanged.emit(!currentValue);
     }
 
     this.emitChanges();
@@ -219,14 +289,14 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     } else if (value > 5) {
       value = 5;
     } else {
-      value = Math.round(value * 2) / 2; // Round to nearest 0.5
+      value = Math.round(value * 2) / 2;
     }
 
     input.value = value.toString();
     this.organizingHours = value;
     this.extraServicePrices['organizing'] = value * 55;
-    this.extraServiceTimes['organizing'] = value; // Update time
-    this.parentForm.get('organizing')!.setValue(value, { emitEvent: false }); // Ensure organizing button stays checked
+    this.extraServiceTimes['organizing'] = value;
+    this.parentForm.get('organizing')!.setValue(value, { emitEvent: false });
     this.emitChanges();
   }
 
@@ -253,8 +323,8 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     input.value = value.toString();
     this.insideWindowsNumbers = value;
     this.extraServicePrices['insideWindows'] = value * 30;
-    this.extraServiceTimes['insideWindows'] = value; // Update time
-    this.parentForm.get('insideWindows')!.setValue(value, { emitEvent: false }); // Ensure windows button stays checked
+    this.extraServiceTimes['insideWindows'] = value;
+    this.parentForm.get('insideWindows')!.setValue(value, { emitEvent: false });
     this.emitChanges();
   }
 
@@ -282,9 +352,9 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     this.extraServiceChanged.emit({
       prices: this.extraServicePrices,
       times: this.extraServiceTimes,
-      organizingHours: this.organizingHours, // Emit organizingHours
-      insideWindowsNumbers: this.insideWindowsNumbers, // Emit organizingHours
-      selectedVacuumOption: this.selectedVacuumOption, // Emit selectedVacuumOption
+      organizingHours: this.organizingHours,
+      insideWindowsNumbers: this.insideWindowsNumbers,
+      selectedVacuumOption: this.selectedVacuumOption,
     });
   }
 }

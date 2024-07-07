@@ -3,125 +3,134 @@
     <label><h3>Extra Services</h3></label>
     <div class="extra-services-buttons">
       <ng-container *ngFor="let extra of extraServices">
-        <button
-          type="button"
-          class="btn"
-          [class.selected]="parentForm.get(extra.controlName)!.value"
-          (click)="toggleExtraService(extra.controlName)"
+        <div
+          class="btn-container"
           (mouseover)="showTooltip(extra.controlName)"
           (mouseout)="hideTooltip()"
-          *ngIf="!(isCustomCleaning && extra.controlName === 'organizing')"
         >
-          <span
-            *ngIf="
-              !(
-                (extra.controlName === 'organizing' && showOrganizingInput) ||
-                (extra.controlName === 'insideWindows' && showWindowsInput)
-              )
-            "
+          <button
+            type="button"
+            class="btn"
+            [class.selected]="parentForm.get(extra.controlName)!.value"
+            (click)="toggleExtraService(extra.controlName)"
+            *ngIf="!(isCustomCleaning && extra.controlName === 'organizing')"
           >
-            {{ extra.label }}
-          </span>
+            <img
+              [src]="extra.iconPath"
+              alt="{{ extra.label }} icon"
+              class="icon"
+            />
+            <span
+              *ngIf="
+                !(
+                  (extra.controlName === 'organizing' && showOrganizingInput) ||
+                  (extra.controlName === 'insideWindows' && showWindowsInput)
+                )
+              "
+            >
+              {{ extra.label }}
+            </span>
 
-          <div *ngIf="extra.controlName === 'vacuum' && showVacuumOptions">
-            <div class="vacuum-options">
+            <div *ngIf="extra.controlName === 'vacuum' && showVacuumOptions">
+              <div class="vacuum-options">
+                <button
+                  type="button"
+                  class="btn"
+                  [class.selected]="selectedVacuumOption === 'Standard'"
+                  (click)="selectVacuumOption('Standard', $event)"
+                >
+                  Standard
+                </button>
+                <button
+                  type="button"
+                  class="btn"
+                  [class.selected]="selectedVacuumOption === 'Steam'"
+                  (click)="selectVacuumOption('Steam', $event)"
+                >
+                  Steam
+                </button>
+              </div>
+            </div>
+            <div
+              *ngIf="
+                extra.controlName === 'vacuum' &&
+                parentForm.get('vacuum')!.value &&
+                selectedVacuumOption
+              "
+              class="vacuum-selection"
+            >
+              Selected: {{ selectedVacuumOption }}
+            </div>
+
+            <div
+              *ngIf="extra.controlName === 'insideWindows' && showWindowsInput"
+              class="insideWindows-input"
+            >
+              <input
+                type="number"
+                [min]="1"
+                [max]="20"
+                [step]="1"
+                [(ngModel)]="insideWindowsNumbers"
+                (click)="$event.stopPropagation()"
+                (input)="onInsideWindowsChange($event)"
+              />
               <button
                 type="button"
-                class="btn"
-                [class.selected]="selectedVacuumOption === 'Standard'"
-                (click)="selectVacuumOption('Standard', $event)"
+                class="btn confirm-btn"
+                (click)="confirminsideWindowsHours($event)"
               >
-                Standard
-              </button>
-              <button
-                type="button"
-                class="btn"
-                [class.selected]="selectedVacuumOption === 'Steam'"
-                (click)="selectVacuumOption('Steam', $event)"
-              >
-                Steam
+                Confirm
               </button>
             </div>
-          </div>
-          <div
-            *ngIf="
-              extra.controlName === 'vacuum' &&
-              parentForm.get('vacuum')!.value &&
-              selectedVacuumOption
-            "
-            class="vacuum-selection"
-          >
-            Selected: {{ selectedVacuumOption }}
-          </div>
-
-          <div
-            *ngIf="extra.controlName === 'insideWindows' && showWindowsInput"
-            class="insideWindows-input"
-          >
-            <input
-              type="number"
-              [min]="1"
-              [max]="20"
-              [step]="1"
-              [(ngModel)]="insideWindowsNumbers"
-              (click)="$event.stopPropagation()"
-              (input)="onInsideWindowsChange($event)"
-            />
-            <button
-              type="button"
-              class="btn confirm-btn"
-              (click)="confirminsideWindowsHours($event)"
+            <div
+              *ngIf="
+                extra.controlName === 'insideWindows' &&
+                parentForm.get('insideWindows')!.value &&
+                !showWindowsInput
+              "
+              class="insideWindows-selection"
             >
-              Confirm
-            </button>
-          </div>
-          <div
-            *ngIf="
-              extra.controlName === 'insideWindows' &&
-              parentForm.get('insideWindows')!.value &&
-              !showWindowsInput
-            "
-            class="insideWindows-selection"
-          >
-            Selected: extra {{ insideWindowsNumbers }} hours
-          </div>
-          <div
-            *ngIf="extra.controlName === 'organizing' && showOrganizingInput"
-            class="organizing-input"
-          >
-            <input
-              type="number"
-              [min]="0.5"
-              [max]="5"
-              [step]="0.5"
-              [(ngModel)]="organizingHours"
-              (click)="$event.stopPropagation()"
-              (input)="onOrganizingHoursChange($event)"
-            />
-            <button
-              type="button"
-              class="btn confirm-btn"
-              (click)="confirmOrganizingHours($event)"
+              Selected: {{ insideWindowsNumbers }} Windows
+            </div>
+            <div
+              *ngIf="extra.controlName === 'organizing' && showOrganizingInput"
+              class="organizing-input"
             >
-              Confirm
-            </button>
-          </div>
+              <input
+                type="number"
+                [min]="0.5"
+                [max]="5"
+                [step]="0.5"
+                [(ngModel)]="organizingHours"
+                (click)="$event.stopPropagation()"
+                (input)="onOrganizingHoursChange($event)"
+              />
+              <button
+                type="button"
+                class="btn confirm-btn"
+                (click)="confirmOrganizingHours($event)"
+              >
+                Confirm
+              </button>
+            </div>
 
-          <div
-            *ngIf="
-              extra.controlName === 'organizing' &&
-              parentForm.get('organizing')!.value &&
-              !showOrganizingInput
-            "
-            class="organizing-selection"
-          >
-            Selected: extra {{ organizingHours }} hours
-          </div>
+            <div
+              *ngIf="
+                extra.controlName === 'organizing' &&
+                parentForm.get('organizing')!.value &&
+                !showOrganizingInput
+              "
+              class="organizing-selection"
+            >
+              Selected: extra {{ organizingHours }} hours
+            </div>
+          </button>
           <app-tooltip
             *ngIf="tooltipVisible && currentTooltip === extra.controlName"
             [controlName]="extra.controlName"
           ></app-tooltip>
-        </button>
+        </div>
       </ng-container>
     </div>
   </div>

@@ -1,5 +1,3 @@
-/* src/app/calculator/calculator.component.scss */
-
 .container {
   display: flex;
   gap: 2rem;
@@ -85,7 +83,7 @@ button.btn-success.disabled {
 }
 
 button.btn-success.disabled:hover::after {
-  content: "Please fill out all required fields which have red ** symbols";
+  content: "Please fill out all required fields which have '**' symbols";
   position: absolute;
   background: #000;
   color: #fff;
@@ -97,6 +95,20 @@ button.btn-success.disabled:hover::after {
   transform: translateX(-50%);
   white-space: nowrap;
   z-index: 1;
+}
+
+.error {
+  position: absolute;
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 3.3rem;
+}
+
+.errorEntry {
+  position: absolute;
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.3rem;
 }
 
 .discountBtn {
@@ -156,4 +168,18 @@ h3 {
 
 .deep-cleaning-text {
   color: red;
+}
+
+.date-input,
+.time-input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+  }
 }
