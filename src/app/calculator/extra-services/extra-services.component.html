@@ -31,7 +31,7 @@
               {{ extra.label }}
             </span>
 
-            <div *ngIf="extra.controlName === 'vacuum' && showVacuumOptions">
+            <!-- <div *ngIf="extra.controlName === 'vacuum' && showVacuumOptions">
               <div class="vacuum-options">
                 <button
                   type="button"
@@ -60,7 +60,7 @@
               class="vacuum-selection"
             >
               Selected: {{ selectedVacuumOption }}
-            </div>
+            </div> -->
 
             <div
               *ngIf="extra.controlName === 'insideWindows' && showWindowsInput"
@@ -78,7 +78,7 @@
               <button
                 type="button"
                 class="btn confirm-btn"
-                (click)="confirminsideWindowsHours($event)"
+                (click)="confirminsideWindowsNumbers($event)"
               >
                 Confirm
               </button>

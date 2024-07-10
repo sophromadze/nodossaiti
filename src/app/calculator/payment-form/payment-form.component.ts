@@ -62,7 +62,7 @@ export class PaymentFormComponent implements OnInit {
       // Create a payment intent on the server and retrieve the client secret
       const amountInCents = Math.round(this.amount * 100);
       this.http
-        .post('http://localhost:3000/create-payment-intent', {
+        .post('https://thedreamcleaning.com/create-payment-intent', {
           amount: amountInCents,
         })
         .subscribe(async (response: any) => {

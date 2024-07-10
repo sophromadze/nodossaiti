@@ -35,6 +35,16 @@
   gap: 20px;
 }
 
-input {
-  padding: 6px;
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  border-color: #42a5f5;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
+  outline: none;
+  resize: none;
 }

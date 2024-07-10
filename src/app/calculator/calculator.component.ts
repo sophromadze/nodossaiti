@@ -1,14 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  Renderer2,
+  ElementRef,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import flatpickr from 'flatpickr';
 
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator.component.html',
   styleUrls: ['./calculator.component.scss'],
 })
-export class CalculatorComponent implements OnInit {
+export class CalculatorComponent implements OnInit, AfterViewInit {
   calculatorForm: FormGroup;
   minDate!: string;
   isSameDayService: boolean = false;
@@ -18,7 +25,7 @@ export class CalculatorComponent implements OnInit {
     { value: 'Weekly', label: 'Weekly 10% Discount', discount: 10 },
     { value: 'Every 2 Weeks', label: 'Every 2 Weeks 8% Discount', discount: 8 },
     { value: 'Every 3 Weeks', label: '3 Weekly 5.5%', discount: 5.5 },
-    { value: 'Monthly', label: 'Monthly Discount 3%', discount: 99.347 }, // 3 უნდა ეწეროს აქ!!! სატესტოდაა ჯერ.
+    { value: 'Monthly', label: 'Monthly Discount 3%', discount: 99.5 },
   ];
   cleanersOptions = [1, 2, 3, 4, 5];
   hoursOptions = [
@@ -40,14 +47,16 @@ export class CalculatorComponent implements OnInit {
   originalServiceDate: string | null = null;
   organizingHours: number | null = 0;
   insideWindowsNumbers: number | null = 0;
-  selectedVacuumOption: string = 'None';
+  // selectedVacuumOption: string = 'None';
 
   showPaymentForm: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private renderer: Renderer2,
+    private el: ElementRef
   ) {
     this.calculatorForm = this.fb.group({
       serviceType: ['', Validators.required],
@@ -84,13 +93,13 @@ export class CalculatorComponent implements OnInit {
       hours: [3],
     });
 
-    this.calculatorForm.get('serviceDate')!.valueChanges.subscribe((value) => {
-      if (value) {
-        this.calculatorForm
-          .get('serviceTime')!
-          .setValue('07:00', { emitEvent: false });
-      }
-    });
+    // this.calculatorForm.get('serviceDate')!.valueChanges.subscribe((value) => {
+    //   if (value) {
+    //     this.calculatorForm
+    //       .get('serviceTime')!
+    //       .setValue('07:00 AM', { emitEvent: false });
+    //   }
+    // });
 
     this.calculatorForm.get('serviceType')!.valueChanges.subscribe(() => {
       this.onServiceTypeChange();
@@ -135,6 +144,39 @@ export class CalculatorComponent implements OnInit {
     window.scrollTo(0, 0);
   }
 
+  ngAfterViewInit(): void {
+    this.initializeFlatpickr();
+  }
+
+  initializeFlatpickr(): void {
+    const dateInput = this.el.nativeElement.querySelector('#datePickerWrapper');
+    const timeInput = this.el.nativeElement.querySelector('#timePickerWrapper');
+
+    if (dateInput) {
+      flatpickr(dateInput, {
+        enableTime: false,
+        dateFormat: 'Y-m-d',
+        minDate: this.minDate,
+        wrap: true,
+        onDayCreate: function (dObj, dStr, fp, dayElem) {
+          if (dayElem.dateObj < new Date()) {
+            dayElem.classList.add('past');
+          }
+        },
+      });
+    }
+
+    if (timeInput) {
+      flatpickr(timeInput, {
+        noCalendar: true,
+        enableTime: true,
+        dateFormat: 'h:i K',
+        time_24hr: false,
+        wrap: true,
+      });
+    }
+  }
+
   setMinDate(): void {
     const today = new Date();
     const tomorrow = new Date(today);
@@ -170,13 +212,13 @@ export class CalculatorComponent implements OnInit {
     times: { [key: string]: number };
     organizingHours: number;
     insideWindowsNumbers: number;
-    selectedVacuumOption: string;
+    // selectedVacuumOption: string;
   }): void {
     this.extraServicePrices = extraServiceData.prices;
     this.extraServiceTimes = extraServiceData.times;
     this.organizingHours = extraServiceData.organizingHours; // Capture organizing hours
     this.insideWindowsNumbers = extraServiceData.insideWindowsNumbers; // Capture windows numbers
-    this.selectedVacuumOption = extraServiceData.selectedVacuumOption; // Capture vacuum option
+    // this.selectedVacuumOption = extraServiceData.selectedVacuumOption; // Capture vacuum option
     this.calculatePriceAndTime();
   }
 
@@ -335,10 +377,25 @@ export class CalculatorComponent implements OnInit {
   }
 
   formatTimeToAmPm(time: string): string {
-    const [hour, minute] = time.split(':').map(Number);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const formattedHour = hour % 12 || 12;
-    return `${formattedHour}:${minute.toString().padStart(2, '0')} ${ampm}`;
+    console.log('Input time:', time);
+    if (!time) {
+      return '';
+    }
+    const parts = time.split(':');
+    console.log('Split parts:', parts);
+    if (parts.length !== 2) {
+      return '';
+    }
+    const hours = parseInt(parts[0], 10);
+    const minutes = parseInt(parts[1], 10);
+    console.log('Parsed hours and minutes:', hours, minutes);
+    if (isNaN(hours) || isNaN(minutes)) {
+      return '';
+    }
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    return `${formattedHours}:${formattedMinutes} ${period}`;
   }
 
   onBookNowClick(): void {
@@ -411,6 +468,7 @@ export class CalculatorComponent implements OnInit {
       : formValues.serviceDate;
 
     const formattedServiceTime = this.formatTimeToAmPm(formValues.serviceTime);
+    // შესამოწმებელია ლაივზე.
 
     const subTotalTimeText = this.isCustomCleaning
       ? '0 hours and 0 minutes'
@@ -430,11 +488,9 @@ export class CalculatorComponent implements OnInit {
     const insideWindowsText = formValues.insideWindows
       ? this.insideWindowsNumbers
       : 0;
-    const vacuumOptionText = formValues.vacuum
-      ? this.selectedVacuumOption
-      : 'NO';
-
-    // Bring Vacuum Cleaner: ${vacuumOptionText}
+    // const vacuumOptionText = formValues.vacuum
+    //   ? this.selectedVacuumOption
+    //   : 'NO';
 
     // Function to conditionally include information based on boolean value
     const conditionalInclude = (label: string, value: boolean) => {
@@ -480,7 +536,7 @@ export class CalculatorComponent implements OnInit {
 
     const emailText = `
         Booking Details:
-
+  
         Service Type: ${formValues.serviceType}
         Bedrooms: ${formValues.bedrooms ?? 'None'}
         Bathrooms: ${formValues.bathrooms ?? 'None'}
@@ -501,16 +557,16 @@ export class CalculatorComponent implements OnInit {
         Sub-total Price: $${this.totalPrice?.toFixed(2)}
         Sales Tax: $${this.salesTax?.toFixed(2)}
         Total Price: $${this.total?.toFixed(2)}
-
+  
         Contact Info:
         
         Name: ${contactInfo.name}
         Last Name: ${contactInfo.lastName}
         Email: ${contactInfo.email}
         Cell Number: ${contactInfo.cellNumber || 'None'}
-
+  
         Address Info:
-
+  
         Address: ${addressInfo.address}
         Apartment: ${addressInfo.apartment || 'N/A'}
         City: ${cityText}
@@ -520,9 +576,9 @@ export class CalculatorComponent implements OnInit {
 
     const clientEmailText = `
         Thank you for booking with us!
-
+  
         Here are your booking details:
-
+  
         Service Type: ${formValues.serviceType}
         Bedrooms: ${formValues.bedrooms ?? 'None'}
         Bathrooms: ${formValues.bathrooms ?? 'None'}
@@ -545,16 +601,16 @@ export class CalculatorComponent implements OnInit {
         Sub-total Price: $${this.totalPrice?.toFixed(2)}
         Sales Tax: $${this.salesTax?.toFixed(2)}
         Total Price: $${this.total?.toFixed(2)}
-
+  
         Contact Info:
         
         Your Name: ${contactInfo.name}
         Your Last Name: ${contactInfo.lastName}
         Your Email: ${contactInfo.email}
         Your Cell Number: ${contactInfo.cellNumber || 'None'}
-
+  
         Address Info:
-
+  
         Your Address: ${addressInfo.address}
         Your Apartment: ${addressInfo.apartment || 'N/A'}
         Your City: ${cityText}
@@ -577,7 +633,7 @@ export class CalculatorComponent implements OnInit {
 
     // Send email to you
     this.http
-      .post('http://localhost:3000/send-email', yourEmailPayload)
+      .post('https://thedreamcleaning.com/send-email', yourEmailPayload)
       .subscribe(
         (response) => {
           console.log('Email sent to you successfully', response);
@@ -589,7 +645,7 @@ export class CalculatorComponent implements OnInit {
 
     // Send email to the client
     this.http
-      .post('http://localhost:3000/send-email', clientEmailPayload)
+      .post('https://thedreamcleaning.com/send-email', clientEmailPayload)
       .subscribe(
         (response) => {
           console.log('Email sent to client successfully', response);

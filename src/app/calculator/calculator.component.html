@@ -127,14 +127,37 @@
           <h3>Service Date & Time **</h3>
           <div class="row">
             <div class="col">
-              <input
-                type="date"
-                formControlName="serviceDate"
-                id="serviceDate"
-                class="form-control date-input"
-                [min]="minDate"
-                placeholder="Service Date**"
-              />
+              <div class="flatpickr" id="datePickerWrapper">
+                <input
+                  type="text"
+                  formControlName="serviceDate"
+                  id="serviceDate"
+                  class="form-control date-input"
+                  placeholder="Service Date**"
+                  data-input
+                />
+                <a class="input-button" title="toggle" data-toggle>
+                  <img
+                    style="height: 40px; width: 40px"
+                    class="icon-calendar"
+                    src="/assets/images/calendar2.gif"
+                    alt=""
+                  />
+                </a>
+                <a
+                  class="input-button"
+                  title="clear"
+                  data-clear
+                  id="clearDateButton"
+                >
+                  <img
+                    style="height: 35px; width: 35px"
+                    class="icon-close"
+                    src="/assets/images/close.png"
+                    alt=""
+                  />
+                </a>
+              </div>
               <div
                 *ngIf="
                   calculatorForm.get('serviceDate')!.invalid &&
@@ -146,13 +169,41 @@
               </div>
             </div>
             <div class="col">
-              <input
-                type="time"
-                formControlName="serviceTime"
-                id="serviceTime"
-                class="form-control time-input"
-                placeholder="Service Time**"
-              />
+              <div class="flatpickr" id="timePickerWrapper">
+                <input
+                  type="text"
+                  formControlName="serviceTime"
+                  id="serviceTime"
+                  class="form-control time-input"
+                  placeholder="Service Time**"
+                  data-input
+                />
+                <a class="input-button" title="toggle" data-toggle>
+                  <img
+                    style="height: 35px; width: 35px"
+                    class="icon-clock"
+                    src="/assets/images/clock.gif"
+                    alt=""
+                  />
+                </a>
+                <a class="input-button" title="clear" data-clear>
+                  <img
+                    style="height: 35px; width: 35px"
+                    class="icon-close"
+                    src="/assets/images/close.png"
+                    alt=""
+                  />
+                </a>
+              </div>
+              <div
+                *ngIf="
+                  calculatorForm.get('serviceTime')!.invalid &&
+                  calculatorForm.get('serviceTime')!.touched
+                "
+                class="error"
+              >
+                Please select a service time.
+              </div>
             </div>
           </div>
         </div>

@@ -52,9 +52,18 @@ input,
 select,
 textarea {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.4rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 1rem;
+  border-color: #42a5f5;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
+  outline: none;
+  resize: none;
+}
+
+select {
+  cursor: pointer;
 }
 
 button {
@@ -170,16 +179,27 @@ h3 {
   color: red;
 }
 
+.flatpickr {
+  display: flex;
+  align-items: center;
+}
+
+.input-button {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+/* Custom styles for date and time inputs */
 .date-input,
 .time-input {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 0.5rem;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none; /* Remove default outline */
+  border: 1px solid #42a5f5; /* Custom border color */
+  text-align: center; /* Center text */
+  border-radius: 4px; /* Adjust border-radius if needed */
+}
 
-  &:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    outline: none;
-  }
+.date-input:focus,
+.time-input:focus {
+  border-color: #42a5f5;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }

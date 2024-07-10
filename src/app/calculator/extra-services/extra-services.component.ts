@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   Input,
   OnInit,
@@ -19,7 +20,7 @@ interface ExtraServiceData {
   times: { [key: string]: number };
   organizingHours: number;
   insideWindowsNumbers: number;
-  selectedVacuumOption: string;
+  // selectedVacuumOption: string;
 }
 
 @Component({
@@ -168,8 +169,8 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     vacuum2: 1.0,
   };
 
-  selectedVacuumOption = '';
-  showVacuumOptions = false;
+  // selectedVacuumOption = '';
+  // showVacuumOptions = false;
   organizingHours = 0.5;
   insideWindowsNumbers = 1;
   showOrganizingInput = false;
@@ -199,9 +200,28 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
       ])
     );
 
-    if (this.parentForm.get('vacuum')!.value) {
-      this.showVacuumOptions = true;
-      this.extraServicePrices['vacuum'] = 90;
+    // if (this.parentForm.get('vacuum')!.value) {
+    //   this.showVacuumOptions = true;
+    //   this.extraServicePrices['vacuum'] = 90;
+    // }
+  }
+
+  ngAfterViewInit(): void {
+    // Adding event listener to the clear button for the date picker
+    const clearDateButton = document.getElementById('clearDateButton');
+    if (clearDateButton) {
+      clearDateButton.addEventListener('click', () => {
+        this.clearDateAndUncheckSameDayService();
+      });
+    }
+  }
+
+  clearDateAndUncheckSameDayService(): void {
+    this.parentForm.get('serviceDate')?.setValue(null);
+    if (this.parentForm.get('sameDay')?.value) {
+      this.parentForm.get('sameDay')?.setValue(false);
+      this.emitChanges();
+      this.sameDayServiceChanged.emit(false);
     }
   }
 
@@ -231,17 +251,20 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     this.parentForm.get(service)!.setValue(!currentValue);
     this.parentForm.updateValueAndValidity();
 
-    if (service === 'vacuum') {
-      if (!currentValue) {
-        this.showVacuumOptions = true;
-        this.selectedVacuumOption = 'Standard';
-        this.extraServicePrices['vacuum'] = 90;
-      } else {
-        this.showVacuumOptions = false;
-        this.selectedVacuumOption = '';
-        this.extraServicePrices['vacuum'] = 90;
-      }
-    } else if (service === 'organizing') {
+    // if (service === 'vacuum')
+    //    {
+    //   if (!currentValue) {
+    //     this.showVacuumOptions = true;
+    //     this.selectedVacuumOption = 'Standard';
+    //     this.extraServicePrices['vacuum'] = 90;
+    //   } else {
+    //     this.showVacuumOptions = false;
+    //     this.selectedVacuumOption = '';
+    //     this.extraServicePrices['vacuum'] = 90;
+    //   }
+    // }
+    //  else
+    if (service === 'organizing') {
       if (!currentValue) {
         this.showOrganizingInput = true;
         this.extraServicePrices['organizing'] = 27.5;
@@ -272,13 +295,13 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     this.emitChanges();
   }
 
-  selectVacuumOption(option: string, event: Event): void {
-    event.stopPropagation();
-    this.selectedVacuumOption = option;
-    this.extraServicePrices['vacuum'] = option === 'Standard' ? 90 : 150;
-    this.parentForm.get('vacuum')!.setValue(true);
-    this.emitChanges();
-  }
+  // selectVacuumOption(option: string, event: Event): void {
+  //   event.stopPropagation();
+  //   this.selectedVacuumOption = option;
+  //   this.extraServicePrices['vacuum'] = option === 'Standard' ? 90 : 150;
+  //   this.parentForm.get('vacuum')!.setValue(true);
+  //   this.emitChanges();
+  // }
 
   onOrganizingHoursChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -328,7 +351,7 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     this.emitChanges();
   }
 
-  confirminsideWindowsHours(event: Event): void {
+  confirminsideWindowsNumbers(event: Event): void {
     event.stopPropagation();
     if (!this.insideWindowsNumbers || this.insideWindowsNumbers < 1) {
       this.insideWindowsNumbers = 1;
@@ -354,7 +377,7 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
       times: this.extraServiceTimes,
       organizingHours: this.organizingHours,
       insideWindowsNumbers: this.insideWindowsNumbers,
-      selectedVacuumOption: this.selectedVacuumOption,
+      // selectedVacuumOption: this.selectedVacuumOption,
     });
   }
 }

@@ -21,3 +21,51 @@ app-root {
   overflow: hidden;
   height: 100%;
 }
+
+.flatpickr-calendar {
+  background-color: #ebf5ff !important; /* Custom background color for the entire calendar */
+}
+
+.flatpickr-day {
+  color: #000 !important; /* Ensure the text color contrasts with the background */
+}
+
+.flatpickr-day:hover {
+  background: none !important;
+  border: 1px solid #42a5f5 !important;
+}
+
+.flatpickr-day.selected {
+  background-color: #1e90ff !important; /* Custom background color for selected date */
+  color: #fff !important;
+}
+
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+  color: #b0bec5 !important; /* Different color for days of other months */
+}
+
+.flatpickr-day.past {
+  color: #b0bec5 !important; /* Different color for days before the current day */
+}
+
+.flatpickr-innerContainer {
+  background-color: #ebf5ff !important; /* Custom background color for different parts of the calendar */
+}
+
+/* Custom styling for time picker */
+.flatpickr-time {
+  background-color: #ebf5ff !important; /* Custom background color for time picker */
+}
+
+.flatpickr-time input:hover,
+.flatpickr-time .flatpickr-am-pm:hover {
+  background-color: #42a5f5 !important; /* Custom hover effect color for time picker and AM/PM selector */
+  color: #fff !important; /* Ensure text is readable on hover */
+}
+
+.flatpickr-time input:focus,
+.flatpickr-am-pm:focus {
+  background-color: #42a5f5 !important; /* Custom focus effect color for time picker and AM/PM selector */
+  color: #fff;
+}

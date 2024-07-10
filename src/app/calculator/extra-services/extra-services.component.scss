@@ -67,11 +67,12 @@
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
+  width: 100%;
 }
 
 .organizing-input input,
 .insideWindows-input input {
-  width: 50px; /* Adjust the width as needed */
+  width: 50%; /* Adjust the width as needed */
   text-align: center;
 }
 
@@ -82,10 +83,11 @@
   border: none;
   padding: 0.5rem;
   cursor: pointer;
+  width: 50%;
 }
 
 .organizing-input .btn.confirm-btn:hover,
-.insideWindows-input .btn.confirm-btn {
+.insideWindows-input .btn.confirm-btn:hover {
   background-color: #218838;
 }
 
@@ -105,4 +107,10 @@
 
 h3 {
   margin-top: 0;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: inner-spin-button;
+  opacity: 1;
 }
