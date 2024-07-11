@@ -77,6 +77,31 @@
               </option>
             </select>
           </div>
+          <div class="col">
+            <div class="col">
+              <select
+                formControlName="squareFeet"
+                id="squareFeet"
+                class="form-control"
+              >
+                <option
+                  *ngFor="let sqft of squareFeetOptions"
+                  [value]="sqft.value"
+                >
+                  {{ sqft.label }}
+                </option>
+              </select>
+              <div
+                *ngIf="
+                  calculatorForm.get('squareFeet')!.invalid &&
+                  calculatorForm.get('squareFeet')!.touched
+                "
+                class="error"
+              >
+                Please select a square feet option.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -135,6 +160,17 @@
                   class="form-control date-input"
                   placeholder="Service Date**"
                   data-input
+                  [class.disabled]="calculatorForm.get('serviceDate')!.disabled"
+                  [attr.disabled]="
+                    calculatorForm.get('serviceDate')!.disabled ? true : null
+                  "
+                  [attr.readonly]="
+                    calculatorForm.get('serviceDate')!.disabled ? true : null
+                  "
+                  (mouseenter)="
+                    showTooltip = calculatorForm.get('serviceDate')!.disabled
+                  "
+                  (mouseleave)="showTooltip = false"
                 />
                 <a class="input-button" title="toggle" data-toggle>
                   <img
@@ -157,6 +193,9 @@
                     alt=""
                   />
                 </a>
+                <div *ngIf="showTooltip" class="tooltip">
+                  Same Day Service is Checked!
+                </div>
               </div>
               <div
                 *ngIf="

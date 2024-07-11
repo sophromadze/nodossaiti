@@ -19,6 +19,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   calculatorForm: FormGroup;
   minDate!: string;
   isSameDayService: boolean = false;
+  showTooltip = false;
   bathroomOptions = [1, 2, 3, 4, 5, 6];
   frequencies = [
     { value: 'One Time', label: 'One Time', discount: 0 },
@@ -48,6 +49,101 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   organizingHours: number | null = 0;
   insideWindowsNumbers: number | null = 0;
   // selectedVacuumOption: string = 'None';
+  squareFeetOptions: Array<{ value: string; label: string }> = [];
+  squareFeetPriceValues: { [key: string]: number } = {
+    'studio_<400': 50,
+    'studio_401-650': 90,
+    'studio_651-900': 130,
+    'one_<650': 50,
+    'one_651-900': 90,
+    'one_901-1200': 130,
+    'one_1201-1500': 170,
+    'one_1501-2000': 230,
+    'two_<850': 50,
+    'two_851-1000': 90,
+    'two_1001-1300': 130,
+    'two_1301-1600': 170,
+    'two_1601-2000': 210,
+    'three_<1000': 50,
+    'three_1001-1300': 90,
+    'three_1301-1600': 130,
+    'three_1601-2000': 170,
+    'three_2001-2400': 210,
+    'three_2401-3000': 270,
+    'three_3001-3500': 330,
+    'three_3501-4000': 370,
+    'three_4001-5000': 450,
+    'four_<1500': 50,
+    'four_1500-1800': 90,
+    'four_1801-2100': 130,
+    'four_2101-2500': 170,
+    'four_2501-3000': 210,
+    'four_3001-3500': 250,
+    'four_3501-4000': 290,
+    'four_4001+': 370,
+    'five_<1800': 50,
+    'five_1800-2100': 90,
+    'five_2101-2500': 130,
+    'five_2501-2900': 170,
+    'five_2901-3300': 210,
+    'five_3301-3800': 270,
+    'five_3801-4200': 310,
+    'five_4201-5000': 370,
+    'six_<2000': 50,
+    'six_2001-2500': 130,
+    'six_2501-3000': 170,
+    'six_3001-3500': 250,
+    'six_3501-4000': 330,
+    'six_4001-5000': 410,
+    'six_5001+': 490,
+  };
+  squareFeetTimeValues: { [key: string]: number } = {
+    'studio_<400': 0.5,
+    'studio_401-650': 1.5,
+    'studio_651-900': 2.5,
+    'one_<650': 0.5,
+    'one_651-900': 1.5,
+    'one_901-1200': 2.5,
+    'one_1201-1500': 3.5,
+    'one_1501-2000': 5,
+    'two_<850': 0.5,
+    'two_851-1000': 1.5,
+    'two_1001-1300': 2.5,
+    'two_1301-1600': 3.5,
+    'two_1601-2000': 4.5,
+    'three_<1000': 1,
+    'three_1001-1300': 2,
+    'three_1301-1600': 3,
+    'three_1601-2000': 4,
+    'three_2001-2400': 5,
+    'three_2401-3000': 6.5,
+    'three_3001-3500': 8,
+    'three_3501-4000': 9,
+    'three_4001-5000': 11,
+    'four_<1500': 1,
+    'four_1500-1800': 2,
+    'four_1801-2100': 3,
+    'four_2101-2500': 4,
+    'four_2501-3000': 5,
+    'four_3001-3500': 6,
+    'four_3501-4000': 7,
+    'four_4001+': 9,
+    'five_<1800': 1,
+    'five_1800-2100': 2,
+    'five_2101-2500': 3,
+    'five_2501-2900': 4,
+    'five_2901-3300': 5,
+    'five_3301-3800': 6.5,
+    'five_3801-4200': 7.5,
+    'five_4201-5000': 9,
+    'six_<2000': 1,
+    'six_2001-2500': 3,
+    'six_2501-3000': 4,
+    'six_3001-3500': 6,
+    'six_3501-4000': 8,
+    'six_4001-5000': 10,
+    'six_5001+': 12,
+  };
 
   showPaymentForm: boolean = false;
 
@@ -62,6 +158,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       serviceType: ['', Validators.required],
       bedrooms: ['studio'],
       bathrooms: [1],
+      squareFeet: ['', Validators.required],
       serviceDate: [
         { value: '', disabled: this.isSameDayService },
         Validators.required,
@@ -103,6 +200,10 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
 
     this.calculatorForm.get('serviceType')!.valueChanges.subscribe(() => {
       this.onServiceTypeChange();
+    });
+
+    this.calculatorForm.get('bedrooms')!.valueChanges.subscribe(() => {
+      this.updateSquareFeetOptions();
     });
 
     this.calculatorForm.get('deepCleaning')!.valueChanges.subscribe((value) => {
@@ -152,14 +253,19 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     const dateInput = this.el.nativeElement.querySelector('#datePickerWrapper');
     const timeInput = this.el.nativeElement.querySelector('#timePickerWrapper');
 
+    // Create a new date object representing tomorrow
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
     if (dateInput) {
       flatpickr(dateInput, {
         enableTime: false,
-        dateFormat: 'Y-m-d',
-        minDate: this.minDate,
+        dateFormat: 'M-d-Y',
+        minDate: tomorrow,
         wrap: true,
         onDayCreate: function (dObj, dStr, fp, dayElem) {
-          if (dayElem.dateObj < new Date()) {
+          if (dayElem.dateObj < today) {
             dayElem.classList.add('past');
           }
         },
@@ -199,7 +305,92 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       this.calculatorForm.get('cleaners')!.disable();
       this.calculatorForm.get('hours')!.disable();
     }
+    this.updateSquareFeetOptions();
     this.calculatePriceAndTime();
+  }
+
+  updateSquareFeetOptions(): void {
+    const bedrooms = this.calculatorForm.get('bedrooms')!.value;
+    let options: { value: string; label: string }[] = [];
+
+    switch (bedrooms) {
+      case 'studio':
+        options = [
+          { value: '<400', label: '< 400 sq.ft' },
+          { value: '401-650', label: '401-650 sq.ft' },
+          { value: '651-900', label: '651-900 sq.ft' },
+        ];
+        break;
+      case 'one':
+        options = [
+          { value: '<650', label: '< 650 sq.ft' },
+          { value: '651-900', label: '651-900 sq.ft' },
+          { value: '901-1200', label: '901-1200 sq.ft' },
+          { value: '1201-1500', label: '1201-1500 sq.ft' },
+          { value: '1501-2000', label: '1501-2000 sq.ft' },
+        ];
+        break;
+      case 'two':
+        options = [
+          { value: '<850', label: '< 850 sq.ft' },
+          { value: '851-1000', label: '851-1000 sq.ft' },
+          { value: '1001-1300', label: '1001-1300 sq.ft' },
+          { value: '1301-1600', label: '1301-1600 sq.ft' },
+          { value: '1601-2000', label: '1601-2000 sq.ft' },
+        ];
+        break;
+      case 'three':
+        options = [
+          { value: '<1000', label: '< 1000 sq.ft' },
+          { value: '1001-1300', label: '1001-1300 sq.ft' },
+          { value: '1301-1600', label: '1301-1600 sq.ft' },
+          { value: '1601-2000', label: '1601-2000 sq.ft' },
+          { value: '2001-2400', label: '2001-2400 sq.ft' },
+          { value: '2401-3000', label: '2401-3000 sq.ft' },
+          { value: '3001-3500', label: '3001-3500 sq.ft' },
+          { value: '3501-4000', label: '3501-4000 sq.ft' },
+          { value: '4001-5000', label: '4001-5000 sq.ft' },
+        ];
+        break;
+      case 'four':
+        options = [
+          { value: '<1500', label: '< 1500 sq.ft' },
+          { value: '1500-1800', label: '1500-1800 sq.ft' },
+          { value: '1801-2100', label: '1801-2100 sq.ft' },
+          { value: '2101-2500', label: '2101-2500 sq.ft' },
+          { value: '2501-3000', label: '2501-3000 sq.ft' },
+          { value: '3001-3500', label: '3001-3500 sq.ft' },
+          { value: '3501-4000', label: '3501-4000 sq.ft' },
+          { value: '4001+', label: '> 4001 sq.ft' },
+        ];
+        break;
+      case 'five':
+        options = [
+          { value: '<1800', label: '< 1800 sq.ft' },
+          { value: '1800-2100', label: '1800-2100 sq.ft' },
+          { value: '2101-2500', label: '2101-2500 sq.ft' },
+          { value: '2501-2900', label: '2501-2900 sq.ft' },
+          { value: '2901-3300', label: '2901-3300 sq.ft' },
+          { value: '3301-3800', label: '3301-3800 sq.ft' },
+          { value: '3801-4200', label: '3801-4200 sq.ft' },
+          { value: '4201-5000', label: '4201-5000 sq.ft' },
+        ];
+        break;
+      case 'six':
+        options = [
+          { value: '<2000', label: '< 2000 sq.ft' },
+          { value: '2001-2500', label: '2001-2500 sq.ft' },
+          { value: '2501-3000', label: '2501-3000 sq.ft' },
+          { value: '3001-3500', label: '3001-3500 sq.ft' },
+          { value: '3501-4000', label: '3501-4000 sq.ft' },
+          { value: '4001-5000', label: '4001-5000 sq.ft' },
+          { value: '5001+', label: '> 5001 sq.ft' },
+        ];
+        break;
+    }
+
+    this.squareFeetOptions = options;
+    this.calculatorForm.get('squareFeet')!.setValue(options[0].value);
   }
 
   setFrequency(frequency: string): void {
@@ -244,6 +435,13 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     let basePrice = 0;
     let subTotalTime = 0;
 
+    // Retrieve the square feet value
+    const squareFeetKey = `${formValues.bedrooms}_${formValues.squareFeet}`;
+    const squareFeetPrice = this.squareFeetPriceValues[squareFeetKey] || 0;
+    const squareFeetTime = this.squareFeetTimeValues[squareFeetKey] || 0;
+    basePrice += squareFeetPrice;
+    subTotalTime += squareFeetTime;
+
     switch (formValues.serviceType) {
       case 'Residential':
         basePrice += 0;
@@ -273,32 +471,32 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
 
       switch (formValues.bedrooms) {
         case 'studio':
-          bedroomBasePrice = 140;
-          bedroomTime = formValues.deepCleaning ? 3.0 : 1.5;
+          bedroomBasePrice = formValues.deepCleaning ? 85 : 55;
+          bedroomTime = formValues.deepCleaning ? 1.5 : 0.5;
           break;
         case 'one':
-          bedroomBasePrice = 150;
-          bedroomTime = formValues.deepCleaning ? 5 : 2;
+          bedroomBasePrice = formValues.deepCleaning ? 95 : 65;
+          bedroomTime = formValues.deepCleaning ? 2.5 : 1;
           break;
         case 'two':
-          bedroomBasePrice = 180;
-          bedroomTime = formValues.deepCleaning ? 6 : 2.5;
+          bedroomBasePrice = formValues.deepCleaning ? 115 : 85;
+          bedroomTime = formValues.deepCleaning ? 3 : 1.5;
           break;
         case 'three':
-          bedroomBasePrice = 220;
-          bedroomTime = formValues.deepCleaning ? 7 : 3.5;
+          bedroomBasePrice = formValues.deepCleaning ? 135 : 105;
+          bedroomTime = formValues.deepCleaning ? 3 : 2;
           break;
         case 'four':
-          bedroomBasePrice = 260;
-          bedroomTime = formValues.deepCleaning ? 8 : 4.5;
+          bedroomBasePrice = formValues.deepCleaning ? 155 : 125;
+          bedroomTime = formValues.deepCleaning ? 3.5 : 2.5;
           break;
         case 'five':
-          bedroomBasePrice = 300;
-          bedroomTime = formValues.deepCleaning ? 9 : 5.5;
+          bedroomBasePrice = formValues.deepCleaning ? 175 : 145;
+          bedroomTime = formValues.deepCleaning ? 4 : 3;
           break;
         case 'six':
-          bedroomBasePrice = 340;
-          bedroomTime = formValues.deepCleaning ? 10 : 6.5;
+          bedroomBasePrice = formValues.deepCleaning ? 195 : 165;
+          bedroomTime = formValues.deepCleaning ? 4.5 : 3.5;
           break;
       }
 
@@ -308,30 +506,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       const bathrooms = formValues.bathrooms;
       if (bathrooms > 1) {
         const extraBathrooms = bathrooms - 1;
-        basePrice += extraBathrooms * 50;
+        basePrice += extraBathrooms * 25;
         subTotalTime += extraBathrooms * 0.5;
-      }
-
-      if (formValues.deepCleaning) {
-        let deepCleaningBase = 110 + bedroomBasePrice;
-        switch (formValues.bedrooms) {
-          case 'two':
-            basePrice += deepCleaningBase * 0.2;
-            break;
-          case 'three':
-            basePrice += deepCleaningBase * 0.3;
-            break;
-          case 'four':
-            basePrice += deepCleaningBase * 0.4;
-            break;
-          case 'five':
-            basePrice += deepCleaningBase * 0.5;
-            break;
-          case 'six':
-            basePrice += deepCleaningBase * 0.6;
-            break;
-        }
-        basePrice += 110;
       }
     }
 
@@ -377,18 +553,15 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   }
 
   formatTimeToAmPm(time: string): string {
-    console.log('Input time:', time);
     if (!time) {
       return '';
     }
     const parts = time.split(':');
-    console.log('Split parts:', parts);
     if (parts.length !== 2) {
       return '';
     }
     const hours = parseInt(parts[0], 10);
     const minutes = parseInt(parts[1], 10);
-    console.log('Parsed hours and minutes:', hours, minutes);
     if (isNaN(hours) || isNaN(minutes)) {
       return '';
     }
@@ -426,6 +599,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       serviceType: '',
       bedrooms: 'studio',
       bathrooms: 1,
+      squareFeet: '',
       serviceDate: '',
       serviceTime: '',
       frequency: 'One Time',
@@ -540,6 +714,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         Service Type: ${formValues.serviceType}
         Bedrooms: ${formValues.bedrooms ?? 'None'}
         Bathrooms: ${formValues.bathrooms ?? 'None'}
+        Square Feet: ${formValues.squareFeet ?? 'None'}
         Service Date: ${serviceDate}
         Service Time: ${formattedServiceTime}
         Frequency: ${formValues.frequency}
@@ -582,6 +757,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         Service Type: ${formValues.serviceType}
         Bedrooms: ${formValues.bedrooms ?? 'None'}
         Bathrooms: ${formValues.bathrooms ?? 'None'}
+        Square Feet: ${formValues.squareFeet ?? 'None'}
         Service Date: ${serviceDate}
         Service Time: ${formattedServiceTime}
         Frequency: ${formValues.frequency}

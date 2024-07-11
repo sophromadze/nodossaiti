@@ -91,7 +91,7 @@
               "
               class="insideWindows-selection"
             >
-              Selected: {{ insideWindowsNumbers }} Windows
+              Selected: {{ insideWindowsNumbers }} {{ getWindowsText() }}
             </div>
             <div
               *ngIf="extra.controlName === 'organizing' && showOrganizingInput"

@@ -182,6 +182,7 @@ h3 {
 .flatpickr {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .input-button {
@@ -202,4 +203,24 @@ h3 {
 .time-input:focus {
   border-color: #42a5f5;
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
+}
+
+/* Styles for disabled inputs */
+input.disabled {
+  cursor: not-allowed;
+  background-color: #e0dddd; /* Optional: change background color for disabled inputs */
+}
+
+/* Tooltip styles */
+.tooltip {
+  position: absolute;
+  background-color: #333333d5;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 70px;
+  // margin-left: 20px;
+  z-index: 5;
+  font-size: 12px;
+  white-space: nowrap;
 }

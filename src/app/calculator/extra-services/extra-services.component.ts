@@ -129,7 +129,7 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
 
   extraServicePrices: { [key: string]: number } = {
     sameDay: 30,
-    deepCleaning: 110,
+    deepCleaning: 50,
     insideOfClosets: 25,
     insideTheOven: 45,
     insideTheFridge: 40,
@@ -379,5 +379,9 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
       insideWindowsNumbers: this.insideWindowsNumbers,
       // selectedVacuumOption: this.selectedVacuumOption,
     });
+  }
+
+  getWindowsText(): string {
+    return this.insideWindowsNumbers === 1 ? 'Window' : 'Windows';
   }
 }
