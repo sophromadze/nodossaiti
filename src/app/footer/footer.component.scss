@@ -1,0 +1,103 @@
+.footerContainer {
+  width: 100%;
+  background: #36454f;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .upper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+
+    .socialMedia {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .bN {
+      background: none;
+      border: none;
+      padding: 10px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .bN:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .mid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+
+    ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      li a {
+        padding: 10px;
+      }
+    }
+  }
+
+  .rights {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+  }
+}
+
+.logo {
+  cursor: pointer;
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  img {
+    height: 80px;
+    width: 80px;
+  }
+}
+
+.socialMedia {
+  a .fa-facebook-f {
+    scale: 0.8;
+  }
+
+  i {
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  a:hover,
+  i:hover {
+    transform: scale(1.2);
+  }
+}

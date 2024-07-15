@@ -3,6 +3,7 @@ import { Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js';
 import { StripePaymentService } from '../../stripe-payment.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-payment-form',
@@ -62,7 +63,7 @@ export class PaymentFormComponent implements OnInit {
       // Create a payment intent on the server and retrieve the client secret
       const amountInCents = Math.round(this.amount * 100);
       this.http
-        .post('https://thedreamcleaning.com/create-payment-intent', {
+        .post(`${environment.api}/create-payment-intent`, {
           amount: amountInCents,
         })
         .subscribe(async (response: any) => {

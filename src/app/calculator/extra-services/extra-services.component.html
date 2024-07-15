@@ -7,13 +7,13 @@
           class="btn-container"
           (mouseover)="showTooltip(extra.controlName)"
           (mouseout)="hideTooltip()"
+          *ngIf="!(isCustomCleaning && extra.controlName === 'organizing')"
         >
           <button
             type="button"
             class="btn"
             [class.selected]="parentForm.get(extra.controlName)!.value"
             (click)="toggleExtraService(extra.controlName)"
-            *ngIf="!(isCustomCleaning && extra.controlName === 'organizing')"
           >
             <img
               [src]="extra.iconPath"
@@ -31,57 +31,45 @@
               {{ extra.label }}
             </span>
 
-            <!-- <div *ngIf="extra.controlName === 'vacuum' && showVacuumOptions">
-              <div class="vacuum-options">
-                <button
-                  type="button"
-                  class="btn"
-                  [class.selected]="selectedVacuumOption === 'Standard'"
-                  (click)="selectVacuumOption('Standard', $event)"
-                >
-                  Standard
-                </button>
-                <button
-                  type="button"
-                  class="btn"
-                  [class.selected]="selectedVacuumOption === 'Steam'"
-                  (click)="selectVacuumOption('Steam', $event)"
-                >
-                  Steam
-                </button>
-              </div>
-            </div>
-            <div
-              *ngIf="
-                extra.controlName === 'vacuum' &&
-                parentForm.get('vacuum')!.value &&
-                selectedVacuumOption
-              "
-              class="vacuum-selection"
-            >
-              Selected: {{ selectedVacuumOption }}
-            </div> -->
-
             <div
               *ngIf="extra.controlName === 'insideWindows' && showWindowsInput"
               class="insideWindows-input"
             >
-              <input
-                type="number"
-                [min]="1"
-                [max]="20"
-                [step]="1"
-                [(ngModel)]="insideWindowsNumbers"
-                (click)="$event.stopPropagation()"
-                (input)="onInsideWindowsChange($event)"
-              />
-              <button
-                type="button"
-                class="btn confirm-btn"
-                (click)="confirminsideWindowsNumbers($event)"
-              >
-                Confirm
-              </button>
+              <div class="number-input-container">
+                <input
+                  type="number"
+                  [min]="1"
+                  [max]="20"
+                  [step]="1"
+                  [(ngModel)]="insideWindowsNumbers"
+                  (click)="$event.stopPropagation()"
+                  (input)="onInsideWindowsChange($event)"
+                />
+                <div class="arrowsContainer">
+                  <button
+                    type="button"
+                    class="arrow-btn"
+                    (click)="increaseInsideWindows($event)"
+                  >
+                    <img src="/assets/images/arrowUp.png" alt="Up" />
+                  </button>
+                  <button
+                    type="button"
+                    class="arrow-btn"
+                    (click)="decreaseInsideWindows($event)"
+                  >
+                    <img src="/assets/images/arrowDown.png" alt="Down" />
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn confirm-btn"
+                  (click)="confirminsideWindowsNumbers($event)"
+                >
+                  Confirm
+                </button>
+              </div>
             </div>
             <div
               *ngIf="
@@ -97,22 +85,41 @@
               *ngIf="extra.controlName === 'organizing' && showOrganizingInput"
               class="organizing-input"
             >
-              <input
-                type="number"
-                [min]="0.5"
-                [max]="5"
-                [step]="0.5"
-                [(ngModel)]="organizingHours"
-                (click)="$event.stopPropagation()"
-                (input)="onOrganizingHoursChange($event)"
-              />
-              <button
-                type="button"
-                class="btn confirm-btn"
-                (click)="confirmOrganizingHours($event)"
-              >
-                Confirm
-              </button>
+              <div class="number-input-container">
+                <input
+                  type="number"
+                  [min]="0.5"
+                  [max]="5"
+                  [step]="0.5"
+                  [(ngModel)]="organizingHours"
+                  (click)="$event.stopPropagation()"
+                  (input)="onOrganizingHoursChange($event)"
+                />
+                <div class="arrowsContainer">
+                  <button
+                    type="button"
+                    class="arrow-btn"
+                    (click)="increaseOrganizingHours($event)"
+                  >
+                    <img src="/assets/images/arrowUp.png" alt="Up" />
+                  </button>
+                  <button
+                    type="button"
+                    class="arrow-btn"
+                    (click)="decreaseOrganizingHours($event)"
+                  >
+                    <img src="/assets/images/arrowDown.png" alt="Down" />
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn confirm-btn"
+                  (click)="confirmOrganizingHours($event)"
+                >
+                  Confirm
+                </button>
+              </div>
             </div>
 
             <div

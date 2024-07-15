@@ -16,7 +16,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { PaymentFormComponent } from './calculator/payment-form/payment-form.component';
 import { AboutComponent } from './about/about.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CardDetailComponent } from './main/card-detail/card-detail.component';
+import { FooterComponent } from './footer/footer.component';
+import { SliderComponent } from './main/slider/slider.component';
+import { CitiesComponent } from './main/cities/cities.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { CardDetailComponent } from './main/card-detail/card-detail.component';
     TooltipComponent,
     PaymentFormComponent,
     AboutComponent,
-    CardDetailComponent,
+    FooterComponent,
+    SliderComponent,
+    CitiesComponent,
   ],
   imports: [
     BrowserModule,

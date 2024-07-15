@@ -1,4 +1,7 @@
-<div class="fixedHeader">
+<div
+  class="fixedHeader"
+  [ngClass]="{ scrolled: isScrolled, transparentPage: isTransparentPage }"
+>
   <div class="upperDiv">
     <!-- <div>
       <i class="fa-regular fa-envelope"></i
@@ -8,7 +11,10 @@
   </div>
   <div class="mainDiv">
     <div class="headLeft">
-      <h1 class="logo" (click)="navigateToHome()">DREAM CLEANING</h1>
+      <h1 class="logo" (click)="navigateToHome()">
+        <img [src]="logoSrc" alt="Logo" />
+        DREAM CLEANING
+      </h1>
       <div>
         <ul class="mainMenu">
           <li class="cleaningService">
@@ -60,9 +66,7 @@
             </ul>
           </li>
           <li><a (click)="navigateToCalculator('regular')">Book Now</a></li>
-          <!-- <li><a href="#">FAQs</a></li> -->
           <li><a routerLink="/about">About</a></li>
-          <!-- <li class="bAC"><a href="#">Become a Cleaner</a></li> -->
           <li><a href="#">Contact</a></li>
         </ul>
       </div>

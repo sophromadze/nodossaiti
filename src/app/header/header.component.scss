@@ -1,5 +1,37 @@
 @import "/src/assets/variables.scss";
 
+@keyframes color-change-default {
+  0%,
+  100% {
+    color: $secondary-color;
+  }
+  16.67%,
+  50%,
+  83.33% {
+    color: #000;
+  }
+  33.33%,
+  66.67% {
+    color: $secondary-color;
+  }
+}
+
+@keyframes color-change-scrolled {
+  0%,
+  100% {
+    color: $secondary-color;
+  }
+  16.67%,
+  50%,
+  83.33% {
+    color: #fff;
+  }
+  33.33%,
+  66.67% {
+    color: $secondary-color;
+  }
+}
+
 .fixedHeader {
   position: fixed;
   top: 0;
@@ -8,135 +40,218 @@
   z-index: 10;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  transition: background 0.3s, color 0.3s;
 
-.upperDiv {
-  display: flex;
-  align-items: center;
-  background: #ebf5ff;
-  width: 100%;
-  padding: 10px 50px;
-  div:hover {
-    color: $secondary-color;
-    cursor: pointer;
-  }
-}
+  &.scrolled {
+    background: transparent;
+    color: #fff;
 
-.mainDiv {
-  color: #000;
-  padding: 10px 50px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  z-index: 10;
-
-  .headLeft {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 50px;
-  }
-
-  .mainMenu {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-    font-size: 1.3rem;
-
-    li.bAC a {
-      color: green;
+    .upperDiv {
+      background: #ebf5ff1f;
     }
 
-    a {
-      text-decoration: none;
-      color: #000;
-      padding: 5px;
+    .mainMenu a {
+      color: #fff !important;
+
+      &:hover {
+        color: $secondary-color;
+      }
+    }
+
+    .socialMedia i {
+      color: #fff;
+
+      &:hover {
+        color: $secondary-color;
+      }
+    }
+
+    .logo {
+      color: #fff;
+
+      &:hover {
+        animation: color-change-scrolled 450ms steps(6) forwards !important;
+      }
+    }
+  }
+
+  &.transparentPage {
+    background: #fff !important;
+    color: #000 !important;
+
+    .upperDiv {
+      background: #ebf5ff !important;
+    }
+
+    .mainMenu a {
+      color: #000 !important;
+
+      &:hover {
+        color: $secondary-color !important;
+      }
+    }
+
+    .socialMedia i {
+      color: #000 !important;
+
+      &:hover {
+        color: $secondary-color !important;
+      }
+    }
+
+    .logo {
+      color: #000 !important;
+
+      &:hover {
+        color: $secondary-color !important;
+      }
+    }
+  }
+
+  .upperDiv {
+    display: flex;
+    align-items: center;
+    background: #ebf5ff;
+    width: 100%;
+    padding: 10px 50px;
+    transition: background 0.3s;
+
+    div:hover {
+      color: $secondary-color;
       cursor: pointer;
     }
-
-    a:hover {
-      color: $secondary-color;
-    }
-
-    .active {
-      color: $secondary-color;
-    }
-
-    .cleaningServiceDropdown {
-      list-style: none;
-      display: none;
-      position: absolute;
-      background: #fff;
-      padding: 10px;
-      margin-top: 5px;
-      min-width: 300px;
-      gap: 40px;
-      border-bottom-left-radius: 10px;
-      border-bottom-right-radius: 10px;
-      top: 100%;
-      margin-top: 0;
-      z-index: 5;
-      li {
-        cursor: pointer;
-        padding: 10px 0px;
-        &:not(:last-child) {
-          border-bottom: 1px dotted $secondary-color;
-        }
-        a:hover {
-          border-top: none;
-        }
-      }
-      li:hover {
-        a {
-          color: $secondary-color;
-        }
-      }
-    }
-
-    .cleaningService {
-      position: relative;
-    }
-
-    .cleaningService:hover .cleaningServiceDropdown {
-      display: block;
-    }
   }
 
-  .logo {
-    font-weight: 500;
-    cursor: pointer;
-  }
-
-  .logo:hover {
-    color: $secondary-color;
-  }
-
-  .socialMedia {
+  .mainDiv {
+    color: #000;
+    padding: 10px 50px;
     display: flex;
-    gap: 15px;
-    cursor: pointer;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 10;
 
-    .fa-facebook-f {
-      scale: 0.8;
+    .headLeft {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 50px;
     }
 
-    a {
-      text-decoration: none;
-      color: #000;
+    .mainMenu {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+      font-size: 1.3rem;
+
+      li.bAC a {
+        color: green;
+      }
+
+      a {
+        text-decoration: none;
+        color: #000;
+        padding: 5px;
+        cursor: pointer;
+      }
+
+      a:hover {
+        color: $secondary-color;
+      }
+
+      .active {
+        color: $secondary-color;
+      }
+
+      .cleaningServiceDropdown {
+        list-style: none;
+        display: none;
+        position: absolute;
+        background: #fff;
+        padding: 10px;
+        margin-top: 5px;
+        min-width: 300px;
+        gap: 40px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        top: 100%;
+        margin-top: 0;
+        z-index: 5;
+
+        li {
+          cursor: pointer;
+          padding: 10px 0px;
+
+          &:not(:last-child) {
+            border-bottom: 1px dotted $secondary-color;
+          }
+
+          a:hover {
+            border-top: none;
+          }
+        }
+
+        li:hover {
+          a {
+            color: $secondary-color;
+          }
+        }
+      }
+
+      .cleaningService {
+        position: relative;
+      }
+
+      .cleaningService:hover .cleaningServiceDropdown {
+        display: block;
+      }
     }
 
-    i {
-      transition: transform 0.3s ease;
+    .logo {
+      cursor: pointer;
+      background: none;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      img {
+        height: 35px;
+        width: 35px;
+      }
+
+      &:hover {
+        animation: color-change-default 450ms steps(6) forwards;
+      }
     }
 
-    i:hover {
-      transform: scale(1.2);
-      color: $secondary-color;
-    }
-  }
+    .socialMedia {
+      display: flex;
+      gap: 15px;
+      cursor: pointer;
 
-  span {
-    font-size: 18px;
+      .fa-facebook-f {
+        scale: 0.8;
+      }
+
+      a {
+        text-decoration: none;
+        color: #000;
+      }
+
+      i {
+        transition: transform 0.3s ease;
+      }
+
+      i:hover {
+        transform: scale(1.2);
+        color: $secondary-color;
+      }
+    }
+
+    span {
+      font-size: 18px;
+    }
   }
 }

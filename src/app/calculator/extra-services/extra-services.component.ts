@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   Component,
   Input,
-  OnInit,
   Output,
   EventEmitter,
   OnChanges,
@@ -28,7 +26,7 @@ interface ExtraServiceData {
   templateUrl: './extra-services.component.html',
   styleUrls: ['./extra-services.component.scss'],
 })
-export class ExtraServicesComponent implements OnInit, OnChanges {
+export class ExtraServicesComponent implements OnChanges {
   @Input() parentForm!: FormGroup;
   @Input() isCustomCleaning = false;
   @Output() extraServiceChanged = new EventEmitter<ExtraServiceData>();
@@ -359,6 +357,46 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
     this.showWindowsInput = false;
     this.parentForm.get('insideWindows')!.setValue(this.insideWindowsNumbers);
     this.emitChanges();
+  }
+
+  decreaseInsideWindows(event: Event): void {
+    event.stopPropagation();
+    if (this.insideWindowsNumbers > 1) {
+      this.insideWindowsNumbers--;
+      this.onInsideWindowsChange({
+        target: { value: this.insideWindowsNumbers },
+      } as any);
+    }
+  }
+
+  increaseInsideWindows(event: Event): void {
+    event.stopPropagation();
+    if (this.insideWindowsNumbers < 20) {
+      this.insideWindowsNumbers++;
+      this.onInsideWindowsChange({
+        target: { value: this.insideWindowsNumbers },
+      } as any);
+    }
+  }
+
+  decreaseOrganizingHours(event: Event): void {
+    event.stopPropagation();
+    if (this.organizingHours > 0.5) {
+      this.organizingHours -= 0.5;
+      this.onOrganizingHoursChange({
+        target: { value: this.organizingHours },
+      } as any);
+    }
+  }
+
+  increaseOrganizingHours(event: Event): void {
+    event.stopPropagation();
+    if (this.organizingHours < 5) {
+      this.organizingHours += 0.5;
+      this.onOrganizingHoursChange({
+        target: { value: this.organizingHours },
+      } as any);
+    }
   }
 
   showTooltip(controlName: string): void {

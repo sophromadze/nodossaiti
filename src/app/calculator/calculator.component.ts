@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import flatpickr from 'flatpickr';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-calculator',
@@ -155,10 +156,10 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     private el: ElementRef
   ) {
     this.calculatorForm = this.fb.group({
-      serviceType: ['', Validators.required],
+      serviceType: ['Residential', Validators.required],
       bedrooms: ['studio'],
       bathrooms: [1],
-      squareFeet: ['', Validators.required],
+      squareFeet: ['<400', Validators.required],
       serviceDate: [
         { value: '', disabled: this.isSameDayService },
         Validators.required,
@@ -240,6 +241,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
           break;
       }
     });
+
+    this.updateSquareFeetOptions(); // Ensure options are initialized
 
     // Scroll to top when the component initializes
     window.scrollTo(0, 0);
@@ -390,7 +393,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     }
 
     this.squareFeetOptions = options;
-    this.calculatorForm.get('squareFeet')!.setValue(options[0].value);
+    const initialValue = options.length > 0 ? options[0].value : '';
+    this.calculatorForm.get('squareFeet')!.setValue(initialValue);
   }
 
   setFrequency(frequency: string): void {
@@ -414,17 +418,38 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   }
 
   onSameDayServiceChanged(isSameDay: boolean): void {
+    function formatDateToMDY(date: Date): string {
+      const monthNames = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ];
+      const month = monthNames[date.getMonth()];
+      const day = date.getDate();
+      const year = date.getFullYear();
+      return `${month}-${day}-${year}`;
+    }
+
     this.isSameDayService = isSameDay;
     if (isSameDay) {
       this.originalServiceDate = this.calculatorForm.get('serviceDate')!.value;
-      const today = new Date().toISOString().split('T')[0];
+      const today = formatDateToMDY(new Date()); // Use the updated helper function
       this.calculatorForm.get('serviceDate')!.setValue(today);
       this.calculatorForm.get('serviceDate')!.disable({ emitEvent: false });
     } else {
       this.calculatorForm.get('serviceDate')!.enable({ emitEvent: false });
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      const tomorrowDateString = tomorrow.toISOString().split('T')[0];
+      const tomorrowDateString = formatDateToMDY(tomorrow); // Use the updated helper function
       this.calculatorForm.get('serviceDate')!.setValue(tomorrowDateString);
       this.originalServiceDate = null;
     }
@@ -448,12 +473,12 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         subTotalTime += 1;
         break;
       case 'Move In':
-        basePrice += 150;
-        subTotalTime += 3.5;
+        basePrice += 90;
+        subTotalTime += 4;
         break;
       case 'Move Out':
-        basePrice += 150;
-        subTotalTime += 3.5;
+        basePrice += 90;
+        subTotalTime += 4;
         break;
       case 'Custom Cleaning':
         let hourlyRate = 55;
@@ -808,20 +833,18 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     };
 
     // Send email to you
-    this.http
-      .post('https://thedreamcleaning.com/send-email', yourEmailPayload)
-      .subscribe(
-        (response) => {
-          console.log('Email sent to you successfully', response);
-        },
-        (error) => {
-          console.error('Error sending email to you', error);
-        }
-      );
+    this.http.post(`${environment.api}/send-email`, yourEmailPayload).subscribe(
+      (response) => {
+        console.log('Email sent to you successfully', response);
+      },
+      (error) => {
+        console.error('Error sending email to you', error);
+      }
+    );
 
     // Send email to the client
     this.http
-      .post('https://thedreamcleaning.com/send-email', clientEmailPayload)
+      .post(`${environment.api}/send-email`, clientEmailPayload)
       .subscribe(
         (response) => {
           console.log('Email sent to client successfully', response);

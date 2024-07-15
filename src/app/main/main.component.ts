@@ -18,9 +18,6 @@ export class MainComponent implements OnInit, OnDestroy {
   h2Color: string = '#fff';
   pColor: string = '#fff';
 
-  isModalOpen = false;
-  modalTitle = '';
-
   private imageInterval: any;
   private currentIndex: number = 0;
 
@@ -78,16 +75,5 @@ export class MainComponent implements OnInit, OnDestroy {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-  }
-
-  openModal(title: string): void {
-    this.modalTitle = title;
-    this.isModalOpen = true;
-    document.body.classList.add('no-scroll'); // Disable background scrolling
-  }
-
-  closeModal(): void {
-    this.isModalOpen = false;
-    document.body.classList.remove('no-scroll'); // Enable background scrolling
   }
 }

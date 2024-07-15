@@ -18,9 +18,13 @@
 }
 
 .fixed {
-  position: fixed;
-  bottom: 10px; /* Adjust this value based on your layout */
-  width: 32%;
+  position: sticky;
+  top: 580px; /* Adjust this value based on your layout */
+  max-width: 100%;
+}
+
+.right-side-description {
+  position: absolute;
 }
 
 .calculator-card {

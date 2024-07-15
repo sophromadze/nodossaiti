@@ -1,0 +1,358 @@
+<div class="demo-cont">
+  <div class="fnc-slider example-slider">
+    <div class="fnc-slider__slides">
+      <div class="fnc-slide m--blend-green m--active-slide" data-slide-id="1">
+        <div class="fnc-slide__inner">
+          <div class="fnc-slide__mask">
+            <div class="fnc-slide__mask-inner"></div>
+          </div>
+          <div class="fnc-slide__content">
+            <h2 class="fnc-slide__heading" (click)="onReadMoreButtonClick()">
+              <div class="fnc-slide__heading-line">
+                <span>Regular</span>
+              </div>
+              <div class="fnc-slide__heading-line">
+                <span>Cleaning</span>
+              </div>
+            </h2>
+            <button
+              type="button"
+              class="fnc-slide__action-btn"
+              (click)="onReadMoreButtonClick()"
+            >
+              Read More
+              <span data-text="Read More">Read More</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="fnc-slide m--blend-dark" data-slide-id="2">
+        <div class="fnc-slide__inner">
+          <div class="fnc-slide__mask">
+            <div class="fnc-slide__mask-inner"></div>
+          </div>
+          <div class="fnc-slide__content">
+            <h2 class="fnc-slide__heading" (click)="onReadMoreButtonClick()">
+              <div class="fnc-slide__heading-line">
+                <span>Deep</span>
+              </div>
+              <div class="fnc-slide__heading-line">
+                <span>Cleaning</span>
+              </div>
+            </h2>
+            <button
+              type="button"
+              class="fnc-slide__action-btn"
+              (click)="onReadMoreButtonClick()"
+            >
+              Read More
+              <span data-text="Read More">Read More</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="fnc-slide m--blend-red" data-slide-id="3">
+        <div class="fnc-slide__inner">
+          <div class="fnc-slide__mask">
+            <div class="fnc-slide__mask-inner"></div>
+          </div>
+          <div class="fnc-slide__content">
+            <h2 class="fnc-slide__heading" (click)="onReadMoreButtonClick()">
+              <div class="fnc-slide__heading-line">
+                <span>Move In</span>
+              </div>
+              <div class="fnc-slide__heading-line">
+                <span>Service</span>
+              </div>
+            </h2>
+            <button
+              type="button"
+              class="fnc-slide__action-btn"
+              (click)="onReadMoreButtonClick()"
+            >
+              Read More
+              <span data-text="Read More">Read More</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="fnc-slide m--blend-blue" data-slide-id="4">
+        <div class="fnc-slide__inner">
+          <div class="fnc-slide__mask">
+            <div class="fnc-slide__mask-inner"></div>
+          </div>
+          <div class="fnc-slide__content">
+            <h2 class="fnc-slide__heading" (click)="onReadMoreButtonClick()">
+              <div class="fnc-slide__heading-line">
+                <span>Move Out</span>
+              </div>
+              <div class="fnc-slide__heading-line">
+                <span>Service</span>
+              </div>
+            </h2>
+            <button
+              type="button"
+              class="fnc-slide__action-btn"
+              (click)="onReadMoreButtonClick()"
+            >
+              Read More
+              <span data-text="Read More">Read More</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="fnc-nav">
+      <div class="fnc-nav__bgs">
+        <div class="fnc-nav__bg m--navbg-green m--active-nav-bg"></div>
+        <div class="fnc-nav__bg m--navbg-dark"></div>
+        <div class="fnc-nav__bg m--navbg-red"></div>
+        <div class="fnc-nav__bg m--navbg-blue"></div>
+      </div>
+      <div class="fnc-nav__controls">
+        <button class="fnc-nav__control">
+          Regular Cleaning
+          <span class="fnc-nav__control-progress"></span>
+        </button>
+        <button class="fnc-nav__control">
+          Deep Cleaning
+          <span class="fnc-nav__control-progress"></span>
+        </button>
+        <button class="fnc-nav__control">
+          Move In Service
+          <span class="fnc-nav__control-progress"></span>
+        </button>
+        <button class="fnc-nav__control">
+          Move Out Service
+          <span class="fnc-nav__control-progress"></span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <div class="demo-cont__credits">
+    <div
+      *ngIf="activeSlideId === '1'"
+      class="demo-cont__credits demo-cont__credits-1 regularCleaning"
+    >
+      <div class="cardHeads">
+        <h2>Regular Cleaning</h2>
+        <button class="demo-cont__close-btn" (click)="onCloseButtonClick()">
+          <img src="/assets/images/macclos.png" alt="" />
+        </button>
+      </div>
+      <h3>$ 105</h3>
+      <p>
+        <b>Purpose:</b> Regular cleaning refers to routine maintenance cleaning
+        that is scheduled regularly to maintain a desired level of cleanliness
+        and tidiness. <br /><br />
+        <b>Tasks:</b> It typically includes basic tasks performed on a recurring
+        basis, such as dusting, vacuuming, mopping floors, wiping surfaces, and
+        cleaning bathrooms and kitchens. <br /><br />
+        <b>Frequency:</b> It is done on a frequent basis, often weekly,
+        bi-weekly, or monthly, depending on the needs and preferences of the
+        homeowner or business.
+      </p>
+      <h4>FREE Supplies</h4>
+      <button
+        class="blob-btn bookBtns"
+        (click)="navigateToCalculator('regular')"
+      >
+        Book Now
+        <span class="blob-btn__inner">
+          <span class="blob-btn__blobs">
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+          </span>
+        </span>
+      </button>
+    </div>
+
+    <div
+      *ngIf="activeSlideId === '2'"
+      class="demo-cont__credits demo-cont__credits-2 deepCleaning"
+    >
+      <div class="cardHeads">
+        <h2>Deep Cleaning</h2>
+        <button class="demo-cont__close-btn" (click)="onCloseButtonClick()">
+          <img src="/assets/images/macclos.png" alt="" />
+        </button>
+      </div>
+      <h3>$ 185</h3>
+      <p>
+        <b>Purpose:</b> Deep cleaning is a more thorough and intensive cleaning
+        process aimed at tackling accumulated dirt, grime, and buildup that may
+        not be addressed in regular cleaning sessions. <br /><br />
+        <b>Tasks:</b> It involves cleaning tasks that go beyond the routine,
+        such as scrubbing tiles and grout, cleaning inside appliances (like
+        ovens and refrigerators), washing baseboards, cleaning light fixtures,
+        and removing dust and cobwebs from corners and high surfaces.
+        <br /><br />
+        <b>Frequency:</b> It is typically done less frequently than regular
+        cleaning and is often performed on a seasonal basis or as needed to
+        maintain a higher level of cleanliness.
+      </p>
+      <h4>Free Supplies</h4>
+      <h4>Free balcony regular cleaning</h4>
+      <button class="blob-btn bookBtns" (click)="navigateToCalculator('deep')">
+        Book Now
+        <span class="blob-btn__inner">
+          <span class="blob-btn__blobs">
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+          </span>
+        </span>
+      </button>
+    </div>
+
+    <div
+      *ngIf="activeSlideId === '3'"
+      class="demo-cont__credits demo-cont__credits-3 moveIn"
+    >
+      <div class="cardHeads">
+        <h2>Move In</h2>
+        <button class="demo-cont__close-btn" (click)="onCloseButtonClick()">
+          <img src="/assets/images/macclos.png" alt="" />
+        </button>
+      </div>
+      <h3>$ 195</h3>
+      <ul>
+        <p>
+          <b>Move-In Cleaning Service:</b> A move-in cleaning service is
+          designed to prepare a new residence or commercial space for occupancy.
+          It focuses on thorough cleaning to ensure the space is fresh,
+          sanitized, and welcoming for the new occupants. Key tasks typically
+          include:
+        </p>
+        <li>
+          <b>Deep Cleaning:</b> Cleaning all surfaces, including floors, walls,
+          and ceilings.
+        </li>
+        <li>
+          <b>Sanitization:</b> Disinfecting bathrooms and kitchens to ensure
+          hygiene.
+        </li>
+        <li>
+          <b>Fixture Cleaning:</b> Wiping down fixtures such as cabinets,
+          countertops, and appliances.
+        </li>
+        <li><b>Floor Care:</b> Sweeping, vacuuming, and mopping all floors.</li>
+        <li>
+          <b>Window Cleaning:</b> Washing interior windows to remove dust and
+          grime.
+        </li>
+        <li>
+          <b>Dusting:</b> Removing dust from baseboards, light fixtures, and
+          other surfaces.
+        </li>
+        <li>
+          <b>Trash Removal:</b> Disposing of any leftover trash or debris.
+        </li>
+      </ul>
+      <button
+        class="blob-btn bookBtns"
+        (click)="navigateToCalculator('moveIn')"
+      >
+        Book Now
+        <span class="blob-btn__inner">
+          <span class="blob-btn__blobs">
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+          </span>
+        </span>
+      </button>
+    </div>
+
+    <div
+      *ngIf="activeSlideId === '4'"
+      class="demo-cont__credits demo-cont__credits-4 moveOut"
+    >
+      <div class="cardHeads">
+        <h2>Move Out</h2>
+        <button class="demo-cont__close-btn" (click)="onCloseButtonClick()">
+          <img src="/assets/images/macclos.png" alt="" />
+        </button>
+      </div>
+      <h3>$ 195</h3>
+      <ul>
+        <p>
+          <b>Move-Out Cleaning Service:</b> A move-out cleaning service is
+          performed when occupants are vacating a property. It focuses on deep
+          cleaning to prepare the space for new tenants or owners. Key tasks
+          typically include:
+        </p>
+        <li>
+          <b>Detailed Cleaning:</b> Thoroughly cleaning all areas of the
+          property, including bathrooms, kitchens, and living spaces.
+        </li>
+        <li>
+          <b>Stain Removal:</b> Addressing any stains or marks on walls, floors,
+          or carpets.
+        </li>
+        <li>
+          <b>Appliance Cleaning:</b> Cleaning inside and outside of appliances
+          like refrigerators and ovens.
+        </li>
+        <li>
+          <b>Window and Blind Cleaning:</b> Washing windows and cleaning blinds
+          or curtains.
+        </li>
+        <li>
+          <b>Baseboard and Trim Cleaning:</b> Wiping down baseboards, door
+          frames, and trim.
+        </li>
+        <li>
+          <b>Carpet Cleaning:</b> Vacuuming and spot-treating carpets to remove
+          dirt and stains.
+        </li>
+        <li>
+          <b>Final Touches:</b> Ensuring all areas are spotless and ready for
+          the next occupants.
+        </li>
+        <p>
+          <b>Move-Out Cleaning Service</b> aims to restore the property to a
+          pristine condition, meeting the expectations of landlords, property
+          managers, or new occupants moving in.
+        </p>
+      </ul>
+      <button
+        class="blob-btn bookBtns"
+        (click)="navigateToCalculator('moveOut')"
+      >
+        Book Now
+        <span class="blob-btn__inner">
+          <span class="blob-btn__blobs">
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <defs>
+      <filter id="goo">
+        <feGaussianBlur
+          in="SourceGraphic"
+          result="blur"
+          stdDeviation="10"
+        ></feGaussianBlur>
+        <feColorMatrix
+          in="blur"
+          mode="matrix"
+          values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7"
+          result="goo"
+        ></feColorMatrix>
+        <feBlend in2="goo" in="SourceGraphic" result="mix"></feBlend>
+      </filter>
+    </defs>
+  </svg>
+</div>
