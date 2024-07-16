@@ -244,10 +244,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       bedrooms: ['studio', Validators.required],
       bathrooms: [1, Validators.required],
       squareFeet: ['<400', Validators.required],
-      serviceDate: [
-        { value: tomorrowDateString, disabled: this.isSameDayService },
-        Validators.required,
-      ],
+      serviceDate: [tomorrowDateString, Validators.required],
       serviceTime: ['09:00', Validators.required],
       frequency: ['One Time', Validators.required],
       entryMethod: ['', Validators.required],
@@ -307,7 +304,29 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     this.setMinDate();
 
     this.route.queryParams.subscribe((params) => {
-      const today = new Date();
+      function formatDateToMDY(date: Date): string {
+        const monthNames = [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+        ];
+        const month = monthNames[date.getMonth()];
+        const day = date.getDate();
+        const year = date.getFullYear();
+        return `${month}-${day}-${year}`;
+      }
+
+      const today = formatDateToMDY(new Date());
+
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -330,6 +349,14 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       const day = tomorrow.getDate();
       const year = tomorrow.getFullYear();
       const tomorrowDateString = `${month}-${day}-${year}`;
+
+      this.calculatorForm
+        .get('serviceDate')!
+        .valueChanges.subscribe((value) => {
+          value === today
+            ? this.calculatorForm.get('sameDay')!.setValue(true)
+            : this.calculatorForm.get('sameDay')!.setValue(false);
+        });
 
       this.calculatorForm.setValue({
         serviceType: params['serviceType'] || 'Residential',
@@ -367,7 +394,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         address: params['address'] || null,
         apartment: params['apartment'] || null,
         city: params['city'] || '',
-        state: params['state'] || '',
+        state: params['state'] || 'NY',
         zipCode: params['zipCode'] || null,
       });
 
@@ -620,7 +647,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       const today = formatDateToMDY(new Date());
       this.originalServiceDate = this.calculatorForm.get('serviceDate')!.value;
       this.calculatorForm.get('serviceDate')!.setValue(today);
-      this.calculatorForm.get('serviceDate')!.disable({ emitEvent: false });
+      // this.calculatorForm.get('serviceDate')!.disable({ emitEvent: false });
     } else {
       this.calculatorForm.get('serviceDate')!.enable({ emitEvent: false });
       const tomorrow = new Date();
