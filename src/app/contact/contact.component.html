@@ -1,0 +1,139 @@
+<!-- contact.component.html -->
+<div class="container">
+  <span class="big-circle"></span>
+  <div class="form">
+    <div class="contact-info">
+      <h3 class="title">Let's get in touch</h3>
+      <p class="text">
+        Have Questions or Need Assistance? Reach Out to Dream Cleaning Service!
+      </p>
+      <p class="text">
+        We'd love to hear from you. Simply fill out the form to get in touch
+        with us, and we'll respond as soon as possible.
+      </p>
+      <p class="text">
+        Booking a cleaner is easy - just fill out our straightforward
+        <a class="bForm" routerLink="/calculator">Booking Form.</a>
+      </p>
+      <div class="info">
+        <div class="information">
+          <i class="fas fa-map-marker-alt"></i>
+          <p>92 Cherry Drive Uniondale, NY 11553</p>
+        </div>
+        <div class="information">
+          <i class="fas fa-envelope"></i>
+          <p>DreamCleaningInfos@gmail.com</p>
+        </div>
+        <div class="information">
+          <i class="fas fa-phone"></i>
+          <p><a class="mobile" href="tel:929-930-1525"> 929-930-1525</a></p>
+        </div>
+      </div>
+      <div class="social-media">
+        <p>Connect with us :</p>
+        <div class="social-icons">
+          <a
+            href="https://www.facebook.com/profile.php?id=61562078646597&mibextid=LQQJ4d"
+            target="_blank"
+          >
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a
+            href="https://www.instagram.com/dremcleaning?utm_source=qr"
+            target="_blank"
+          >
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a>
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <span class="circle one"></span>
+      <span class="circle two"></span>
+      <form
+        (ngSubmit)="onSubmit(contactForm)"
+        #contactForm="ngForm"
+        autocomplete="off"
+      >
+        <h3 class="title">Contact us</h3>
+        <div class="input-container">
+          <input
+            type="text"
+            name="name"
+            class="input"
+            ngModel
+            required
+            #name="ngModel"
+          />
+          <label for="name">Full Name</label>
+          <span>Full Name</span>
+          <div *ngIf="name.invalid && name.touched" class="error-message">
+            Full Name is required
+          </div>
+        </div>
+        <div class="input-container">
+          <input
+            type="email"
+            name="email"
+            class="input"
+            ngModel
+            required
+            email
+            #email="ngModel"
+          />
+          <label for="email">Email</label>
+          <span>Email</span>
+          <div *ngIf="email.invalid && email.touched" class="error-message">
+            Valid Email is required
+          </div>
+        </div>
+        <div class="input-container">
+          <input
+            type="tel"
+            name="phone"
+            class="input"
+            ngModel
+            required
+            #phone="ngModel"
+          />
+          <label for="phone">Phone</label>
+          <span>Phone</span>
+          <div *ngIf="phone.invalid && phone.touched" class="error-message">
+            Phone is required
+          </div>
+        </div>
+        <div class="input-container textarea">
+          <textarea
+            name="message"
+            class="input"
+            ngModel
+            required
+            #message="ngModel"
+          ></textarea>
+          <label for="message">Message</label>
+          <span>Message</span>
+          <div *ngIf="message.invalid && message.touched" class="error-message">
+            Message is required
+          </div>
+        </div>
+        <input
+          type="submit"
+          value="Send"
+          class="btn"
+          [disabled]="!contactForm.valid"
+        />
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Success Popup -->
+<div *ngIf="showPopup" class="popup">
+  <div class="popup-content">
+    <p>Email sent successfully!</p>
+    <button (click)="closePopup()">OK</button>
+  </div>
+</div>

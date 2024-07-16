@@ -3,18 +3,26 @@
   [ngClass]="{ scrolled: isScrolled, transparentPage: isTransparentPage }"
 >
   <div class="upperDiv">
-    <!-- <div>
-      <i class="fa-regular fa-envelope"></i
-      ><span> DreamCleaningInfos@gmail.com</span>
-    </div> -->
-    <div><i class="fa-solid fa-phone"></i><span> 555-555-555</span></div>
+    <div>
+      <i class="fa-solid fa-phone"></i
+      ><a href="tel:929-930-1525"><span> 929-930-1525</span></a>
+    </div>
+    <div>
+      <i class="fa-regular fa-envelope"></i>
+      <a routerLink="/contact">
+        <span> DreamCleaningInfos@gmail.com</span>
+      </a>
+    </div>
   </div>
   <div class="mainDiv">
     <div class="headLeft">
-      <h1 class="logo" (click)="navigateToHome()">
-        <img [src]="logoSrc" alt="Logo" />
-        DREAM CLEANING
+      <h1 class="logo">
+        <a href="https://thedreamcleaning.com/">
+          <img [src]="logoSrc" alt="DREAM CLEANING Logo" />
+          <b class="gradient-text">DREAM CLEANING</b>
+        </a>
       </h1>
+
       <div>
         <ul class="mainMenu">
           <li class="cleaningService">
@@ -67,18 +75,22 @@
           </li>
           <li><a (click)="navigateToCalculator('regular')">Book Now</a></li>
           <li><a routerLink="/about">About</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a routerLink="/contact">Contact</a></li>
         </ul>
       </div>
     </div>
     <div>
       <div class="socialMedia">
         <a
-          href="https://www.facebook.com/DreamcleaningNY?mibextid=LQQJ4d"
+          href="https://www.facebook.com/profile.php?id=61562078646597&mibextid=LQQJ4d"
           target="_blank"
           ><i class="fa-brands fa-2x fa-facebook-f"></i
         ></a>
-        <i class="fa-brands fa-2x fa-instagram"></i>
+        <a
+          href="https://www.instagram.com/dremcleaning?utm_source=qr"
+          target="_blank"
+          ><i class="fa-brands fa-2x fa-instagram"></i
+        ></a>
         <i class="fa-brands fa-2x fa-whatsapp"></i>
       </div>
     </div>

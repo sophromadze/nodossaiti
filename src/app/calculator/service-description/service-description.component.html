@@ -1,179 +1,236 @@
-<div *ngIf="serviceType === 'Residential'">
-  <h4>Regular Cleaning:</h4>
-  <ul>
-    <li>
-      <span>Purpose: </span>Regular cleaning refers to routine maintenance
-      cleaning that is scheduled regularly to maintain a desired level of
-      cleanliness and tidiness.
-    </li>
-    <li>
-      <span>Tasks: </span>It typically includes basic tasks performed on a
-      recurring basis, such as dusting, vacuuming, mopping floors, wiping
-      surfaces, and cleaning bathrooms and kitchens.
-    </li>
-    <li>
-      <span>Frequency: </span>It is done on a frequent basis, often weekly,
-      bi-weekly, or monthly, depending on the needs and preferences of the
-      homeowner or business.
-    </li>
-  </ul>
-  <h4>Deep Cleaning:</h4>
-  <ul>
-    <li>
-      <span>Purpose: </span>Deep cleaning is a more thorough and intensive
-      cleaning process aimed at tackling accumulated dirt, grime, and buildup
-      that may not be addressed in regular cleaning sessions.
-    </li>
-    <li>
-      <span>Tasks: </span>It involves cleaning tasks that go beyond the routine,
-      such as scrubbing tiles and grout, cleaning inside appliances (like ovens
-      and refrigerators), washing baseboards, cleaning light fixtures, and
-      removing dust and cobwebs from corners and high surfaces.
-    </li>
-    <li>
-      <span>Frequency: </span> It is typically done less frequently than regular
-      cleaning and is often performed on a seasonal basis or as needed to
-      maintain a higher level of cleanliness.
-    </li>
-  </ul>
-</div>
-<div *ngIf="serviceType === 'Move In'">
-  <h4>
-    Move-In Cleaning Service:
-    <span style="font-weight: 400">
-      A move-in cleaning service is designed to prepare a new residence or
-      commercial space for occupancy. It focuses on thorough cleaning to ensure
-      the space is fresh, sanitized, and welcoming for the new occupants. Key
-      tasks typically include:
-    </span>
-  </h4>
+<div class="container">
+  <div *ngIf="serviceType === 'Residential'" class="content">
+    <h4>Regular Cleaning:</h4>
+    <ul>
+      <li>
+        <b>Purpose: </b>Regular cleaning refers to routine maintenance cleaning
+        that is scheduled regularly to maintain a desired level of cleanliness
+        and tidiness.
+      </li>
+      <li>
+        <b>Tasks: </b>It typically includes basic tasks performed on a recurring
+        basis, such as dusting, vacuuming, mopping floors, wiping surfaces, and
+        cleaning bathrooms and kitchens.
+      </li>
+      <li>
+        <b>Frequency: </b>It is done on a frequent basis, often weekly,
+        bi-weekly, or monthly, depending on the needs and preferences of the
+        homeowner or business.
+      </li>
+    </ul>
+    <h4 *ngIf="isDeepCleaningSelected">Deep Cleaning:</h4>
+    <ul *ngIf="isDeepCleaningSelected">
+      <li>
+        <b>Purpose: </b>Deep cleaning is a more thorough and intensive cleaning
+        process aimed at tackling accumulated dirt, grime, and buildup that may
+        not be addressed in regular cleaning sessions.
+      </li>
+      <li>
+        <b>Tasks: </b>It involves cleaning tasks that go beyond the routine,
+        such as scrubbing tiles and grout, cleaning inside appliances (like
+        ovens and refrigerators), washing baseboards, cleaning light fixtures,
+        and removing dust and cobwebs from corners and high surfaces.
+      </li>
+      <li>
+        <b>Frequency: </b> It is typically done less frequently than regular
+        cleaning and is often performed on a seasonal basis or as needed to
+        maintain a higher level of cleanliness.
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="serviceType === 'Move In'" class="content">
+    <h4>
+      Move-In Cleaning Service:
+      <b style="font-weight: 400">
+        A move-in cleaning service is designed to prepare a new residence or
+        commercial space for occupancy. It focuses on thorough cleaning to
+        ensure the space is fresh, sanitized, and welcoming for the new
+        occupants. Key tasks typically include:
+      </b>
+    </h4>
 
-  <ul>
-    <li>
-      <span>Deep Cleaning: </span>Cleaning all surfaces, including floors,
-      walls, and ceilings.
-    </li>
-    <li>
-      <span>Sanitization: </span>Disinfecting bathrooms and kitchens to ensure
-      hygiene.
-    </li>
-    <li>
-      <span>Fixture Cleaning: </span> Wiping down fixtures such as cabinets,
-      countertops, and appliances.
-    </li>
-    <li>
-      <span>Floor Care: </span> Sweeping, vacuuming, and mopping all floors.
-    </li>
-    <li>
-      <span>Window Cleaning: </span> Washing interior windows to remove dust and
-      grime.
-    </li>
-    <li>
-      <span>Dusting: </span> Removing dust from baseboards, light fixtures, and
-      other surfaces.
-    </li>
-    <li>
-      <span>Trash Removal: </span> Disposing of any leftover trash or debris.
-    </li>
-  </ul>
-</div>
-<div *ngIf="serviceType === 'Move Out'">
-  <h4>
-    Move-Out Cleaning Service:
-    <span style="font-weight: 400">
-      A move-out cleaning service is performed when occupants are vacating a
-      property. It focuses on deep cleaning to prepare the space for new tenants
-      or owners. Key tasks typically include:
-    </span>
-  </h4>
+    <ul>
+      <li>
+        <b>Deep Cleaning: </b>Cleaning all surfaces, including floors, walls,
+        and ceilings.
+      </li>
+      <li>
+        <b>Sanitization: </b>Disinfecting bathrooms and kitchens to ensure
+        hygiene.
+      </li>
+      <li>
+        <b>Fixture Cleaning: </b> Wiping down fixtures such as cabinets,
+        countertops, and appliances.
+      </li>
+      <li><b>Floor Care: </b> Sweeping, vacuuming, and mopping all floors.</li>
+      <li>
+        <b>Window Cleaning: </b> Washing interior windows to remove dust and
+        grime.
+      </li>
+      <li>
+        <b>Dusting: </b> Removing dust from baseboards, light fixtures, and
+        other surfaces.
+      </li>
+      <li><b>Trash Removal: </b> Disposing of any leftover trash or debris.</li>
+    </ul>
+    <h4 *ngIf="isDeepCleaningSelected">Deep Cleaning:</h4>
+    <ul *ngIf="isDeepCleaningSelected">
+      <li>
+        <b>Purpose: </b>Deep cleaning is a more thorough and intensive cleaning
+        process aimed at tackling accumulated dirt, grime, and buildup that may
+        not be addressed in regular cleaning sessions.
+      </li>
+      <li>
+        <b>Tasks: </b>It involves cleaning tasks that go beyond the routine,
+        such as scrubbing tiles and grout, cleaning inside appliances (like
+        ovens and refrigerators), washing baseboards, cleaning light fixtures,
+        and removing dust and cobwebs from corners and high surfaces.
+      </li>
+      <li>
+        <b>Frequency: </b> It is typically done less frequently than regular
+        cleaning and is often performed on a seasonal basis or as needed to
+        maintain a higher level of cleanliness.
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="serviceType === 'Move Out'" class="content">
+    <h4>
+      Move-Out Cleaning Service:
+      <b style="font-weight: 400">
+        A move-out cleaning service is performed when occupants are vacating a
+        property. It focuses on deep cleaning to prepare the space for new
+        tenants or owners. Key tasks typically include:
+      </b>
+    </h4>
 
-  <ul>
-    <li>
-      <span>Detailed Cleaning: </span>Thoroughly cleaning all areas of the
-      property, including bathrooms, kitchens, and living spaces.
-    </li>
-    <li>
-      <span>Stain Removal: </span>Addressing any stains or marks on walls,
-      floors, or carpets.
-    </li>
-    <li>
-      <span>Appliance Cleaning: </span> Cleaning inside and outside of
-      appliances like refrigerators and ovens.
-    </li>
-    <li>
-      <span>Window and Blind Cleaning: </span> Washing windows and cleaning
-      blinds or curtains.
-    </li>
-    <li>
-      <span>Baseboard and Trim Cleaning: </span> Wiping down baseboards, door
-      frames, and trim.
-    </li>
-    <li>
-      <span>Carpet Cleaning: </span> Vacuuming and spot-treating carpets to
-      remove dirt and stains.
-    </li>
-    <li>
-      <span>Final Touches: </span> Ensuring all areas are spotless and ready for
-      the next occupants.
-    </li>
-  </ul>
-</div>
-<div *ngIf="serviceType === 'Custom Cleaning'">
-  <h4>
-    Custom Cleaning Service:
-    <span style="font-weight: 400">
-      Custom cleaning" typically refers to tailored cleaning services that are
-      designed to meet specific needs and preferences of the client. In New York
-      (NY), custom cleaning services can vary widely depending on the cleaning
-      company and the requirements of the customer. Here's a general description
-      of what custom cleaning services in NY might involve:
-    </span>
-  </h4>
-  <ul>
-    <li>
-      Personalized Cleaning Plans: Custom cleaning services begin with a
-      consultation where the cleaning company assesses your cleaning needs,
-      preferences, and any specific instructions you may have. This allows them
-      to create a personalized cleaning plan that addresses your unique
-      requirements.
-    </li>
-    <li>
-      Flexible Scheduling: Custom cleaning services often offer flexibility in
-      scheduling to accommodate your busy lifestyle or specific timing
-      preferences. Whether you need cleaning weekly, bi-weekly, monthly, or on
-      an occasional basis, the service can be tailored to fit your schedule.
-    </li>
-    <li>
-      Tailored Cleaning Tasks: The scope of custom cleaning can vary widely
-      based on your preferences. It typically includes standard cleaning tasks
-      such as:
-      <ul>
-        <li>Dusting and wiping surfaces</li>
-        <li>Vacuuming and mopping floors</li>
-        <li>Cleaning bathrooms (including toilets, showers, and sinks)</li>
-        <li>
-          Cleaning kitchen surfaces (countertops, sinks, exterior of appliances)
-        </li>
-        <li>Emptying trash bins.</li>
-      </ul>
-    </li>
-    <li>
-      Additionally, custom cleaning may include:
-      <ul>
-        <li>
-          Deep cleaning specific areas or rooms (e.g., thorough kitchen
-          cleaning, detailed bathroom cleaning)
-        </li>
-        <li>Cleaning and organizing closets or cabinets</li>
-        <li>Interior window cleaning</li>
-        <li>Laundry and ironing services</li>
-      </ul>
-    </li>
-    <li>
-      Additional Services: Depending on the cleaning company, additional
-      services such as carpet cleaning, upholstery cleaning, post-construction
-      cleaning, and move-in/move-out cleaning may also be available as part of
-      their custom cleaning offerings.
-    </li>
-  </ul>
+    <ul>
+      <li>
+        <b>Detailed Cleaning: </b>Thoroughly cleaning all areas of the property,
+        including bathrooms, kitchens, and living spaces.
+      </li>
+      <li>
+        <b>Stain Removal: </b>Addressing any stains or marks on walls, floors,
+        or carpets.
+      </li>
+      <li>
+        <b>Appliance Cleaning: </b> Cleaning inside and outside of appliances
+        like refrigerators and ovens.
+      </li>
+      <li>
+        <b>Window and Blind Cleaning: </b> Washing windows and cleaning blinds
+        or curtains.
+      </li>
+      <li>
+        <b>Baseboard and Trim Cleaning: </b> Wiping down baseboards, door
+        frames, and trim.
+      </li>
+      <li>
+        <b>Carpet Cleaning: </b> Vacuuming and spot-treating carpets to remove
+        dirt and stains.
+      </li>
+      <li>
+        <b>Final Touches: </b> Ensuring all areas are spotless and ready for the
+        next occupants.
+      </li>
+    </ul>
+    <h4 *ngIf="isDeepCleaningSelected">Deep Cleaning:</h4>
+    <ul *ngIf="isDeepCleaningSelected">
+      <li>
+        <b>Purpose: </b>Deep cleaning is a more thorough and intensive cleaning
+        process aimed at tackling accumulated dirt, grime, and buildup that may
+        not be addressed in regular cleaning sessions.
+      </li>
+      <li>
+        <b>Tasks: </b>It involves cleaning tasks that go beyond the routine,
+        such as scrubbing tiles and grout, cleaning inside appliances (like
+        ovens and refrigerators), washing baseboards, cleaning light fixtures,
+        and removing dust and cobwebs from corners and high surfaces.
+      </li>
+      <li>
+        <b>Frequency: </b> It is typically done less frequently than regular
+        cleaning and is often performed on a seasonal basis or as needed to
+        maintain a higher level of cleanliness.
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="serviceType === 'Custom Cleaning'" class="content">
+    <h4>
+      Custom Cleaning Service:
+      <span>
+        Custom cleaning" typically refers to tailored cleaning services that are
+        designed to meet specific needs and preferences of the client. In New
+        York (NY), custom cleaning services can vary widely depending on the
+        cleaning company and the requirements of the customer. Here's a general
+        description of what custom cleaning services in NY might involve:
+      </span>
+    </h4>
+    <ul>
+      <li>
+        <b>Personalized Cleaning Plans: </b>Custom cleaning services begin with
+        a consultation where the cleaning company assesses your cleaning needs,
+        preferences, and any specific instructions you may have. This allows
+        them to create a personalized cleaning plan that addresses your unique
+        requirements.
+      </li>
+      <li>
+        <b>Flexible Scheduling: </b>Custom cleaning services often offer
+        flexibility in scheduling to accommodate your busy lifestyle or specific
+        timing preferences. Whether you need cleaning weekly, bi-weekly,
+        monthly, or on an occasional basis, the service can be tailored to fit
+        your schedule.
+      </li>
+      <li>
+        <b>Tailored Cleaning Tasks: </b>The scope of custom cleaning can vary
+        widely based on your preferences. It typically includes standard
+        cleaning tasks such as:
+        <ul>
+          <li>Dusting and wiping surfaces</li>
+          <li>Vacuuming and mopping floors</li>
+          <li>Cleaning bathrooms (including toilets, showers, and sinks)</li>
+          <li>
+            Cleaning kitchen surfaces (countertops, sinks, exterior of
+            appliances)
+          </li>
+          <li>Emptying trash bins.</li>
+        </ul>
+      </li>
+      <li>
+        <b>Additionally, custom cleaning may include:</b>
+        <ul>
+          <li>
+            Deep cleaning specific areas or rooms (e.g., thorough kitchen
+            cleaning, detailed bathroom cleaning)
+          </li>
+          <li>Cleaning and organizing closets or cabinets</li>
+          <li>Interior window cleaning</li>
+          <li>Laundry and ironing services</li>
+        </ul>
+      </li>
+      <li>
+        <b> Additional Services: </b>Depending on the cleaning company,
+        additional services such as carpet cleaning, upholstery cleaning,
+        post-construction cleaning, and move-in/move-out cleaning may also be
+        available as part of their custom cleaning offerings.
+      </li>
+    </ul>
+    <h4 *ngIf="isDeepCleaningSelected">Deep Cleaning:</h4>
+    <ul *ngIf="isDeepCleaningSelected">
+      <li>
+        <b>Purpose: </b>Deep cleaning is a more thorough and intensive cleaning
+        process aimed at tackling accumulated dirt, grime, and buildup that may
+        not be addressed in regular cleaning sessions.
+      </li>
+      <li>
+        <b>Tasks: </b>It involves cleaning tasks that go beyond the routine,
+        such as scrubbing tiles and grout, cleaning inside appliances (like
+        ovens and refrigerators), washing baseboards, cleaning light fixtures,
+        and removing dust and cobwebs from corners and high surfaces.
+      </li>
+      <li>
+        <b>Frequency: </b> It is typically done less frequently than regular
+        cleaning and is often performed on a seasonal basis or as needed to
+        maintain a higher level of cleanliness.
+      </li>
+    </ul>
+  </div>
 </div>

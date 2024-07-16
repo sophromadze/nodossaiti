@@ -13,6 +13,7 @@
 
   a:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 
   .upper {
@@ -80,6 +81,7 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
+  filter: drop-shadow(4px 5px 1px rgba(0, 0, 0, 0.41));
   img {
     height: 80px;
     width: 80px;

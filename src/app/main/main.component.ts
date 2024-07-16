@@ -1,10 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('1s', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('1s', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class MainComponent implements OnInit, OnDestroy {
   images: string[] = [
@@ -27,7 +37,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.preloadImages();
     this.imageInterval = setInterval(() => {
       this.changeBackgroundImage();
-    }, 3000);
+    }, 5000);
   }
 
   ngOnDestroy(): void {

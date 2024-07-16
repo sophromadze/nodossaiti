@@ -21,6 +21,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   minDate!: string;
   isSameDayService: boolean = false;
   showTooltip = false;
+  isDeepCleaningSelected: boolean = false;
+
   bathroomOptions = [1, 2, 3, 4, 5, 6];
   frequencies = [
     { value: 'One Time', label: 'One Time', discount: 0 },
@@ -155,16 +157,41 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     private renderer: Renderer2,
     private el: ElementRef
   ) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    // Function to get month name
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    const month = monthNames[tomorrow.getMonth()];
+    const day = tomorrow.getDate();
+    const year = tomorrow.getFullYear();
+
+    const tomorrowDateString = `${month}-${day}-${year}`;
+
     this.calculatorForm = this.fb.group({
       serviceType: ['Residential', Validators.required],
-      bedrooms: ['studio'],
-      bathrooms: [1],
+      bedrooms: ['studio', Validators.required],
+      bathrooms: [1, Validators.required],
       squareFeet: ['<400', Validators.required],
       serviceDate: [
-        { value: '', disabled: this.isSameDayService },
+        { value: tomorrowDateString, disabled: this.isSameDayService },
         Validators.required,
       ],
-      serviceTime: ['', Validators.required],
+      serviceTime: ['09:00', Validators.required],
       frequency: ['One Time', Validators.required],
       entryMethod: ['', Validators.required],
       // discountCode: [''],
@@ -250,6 +277,29 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initializeFlatpickr();
+  }
+
+  // Method to get the label for bedrooms
+  getBedroomLabel(bedroomValue: string): string {
+    const bedroomLabels: { [key: string]: string } = {
+      studio: 'Studio Clean',
+      one: 'One Bedroom Clean',
+      two: 'Two Bedrooms Clean',
+      three: 'Three Bedrooms Clean',
+      four: 'Four Bedrooms Clean',
+      five: 'Five Bedrooms Clean',
+      six: 'Six Bedrooms Clean',
+    };
+    return bedroomLabels[bedroomValue] || bedroomValue;
+  }
+
+  // Method to get the display text for service type
+  getServiceTypeDisplay(): string {
+    if (this.isCustomCleaning) {
+      return 'Custom Cleaning Service';
+    }
+    const bedrooms = this.calculatorForm.get('bedrooms')!.value;
+    return `${this.getBedroomLabel(bedrooms)}`;
   }
 
   initializeFlatpickr(): void {

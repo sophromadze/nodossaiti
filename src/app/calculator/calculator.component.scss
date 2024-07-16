@@ -1,7 +1,11 @@
 .container {
   display: flex;
   gap: 2rem;
-  padding: 10px 50px;
+  padding: 20px 50px;
+  margin-top: 100px;
+  background-image: url("/assets/images/try2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .left-side {
@@ -9,7 +13,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
-  background: #fff;
+  background: #ffffffc2;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
@@ -19,13 +23,13 @@
 
 .fixed {
   position: sticky;
-  top: 580px; /* Adjust this value based on your layout */
+  top: 45vh; /* Adjust this value based on your layout */
   max-width: 100%;
 }
 
-.right-side-description {
-  position: absolute;
-}
+// .right-side-description {
+//   position: absolute;
+// }
 
 .calculator-card {
   padding: 1rem;
@@ -37,14 +41,58 @@
 
 .summary {
   margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    color: #0006cf;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .summaryContent,
+  .summaryTime {
+    .timeForOneCleaner,
+    .numberOfCleaners {
+      padding: 0;
+      img {
+        height: 40px;
+        width: 40px;
+      }
+    }
+    div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 10px;
+      img {
+        height: 40px;
+        width: 40px;
+      }
+    }
+  }
 }
 
 .total-price {
-  border-top: 1px solid #ccc;
-  padding-top: 1rem;
-  text-align: center;
+  padding: 1rem;
   font-size: 1.2rem;
-  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .total {
+    p {
+      font-size: 25px;
+    }
+    .totalAmount {
+      font-size: 30px;
+      color: #0006cf;
+    }
+  }
 }
 
 label {
@@ -70,6 +118,10 @@ select {
   cursor: pointer;
 }
 
+.bookNowButton {
+  padding: 0 1rem;
+}
+
 button {
   padding: 0.75rem 1.5rem;
   border: none;
@@ -90,7 +142,7 @@ button.btn-success {
 }
 
 button.btn-success.disabled {
-  background-color: lightgray;
+  background-color: rgb(172, 172, 172);
   cursor: not-allowed;
   position: relative;
 }
@@ -173,10 +225,12 @@ h3 {
   gap: 10px;
 }
 
+.apartment {
+  padding: 0 10px;
+}
+
 .typeRow {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
+  padding: 10px 0;
 }
 
 .deep-cleaning-text {
@@ -227,4 +281,10 @@ input.disabled {
   z-index: 5;
   font-size: 12px;
   white-space: nowrap;
+}
+
+@media (max-height: 850px) {
+  .calculator-card {
+    top: 40vh;
+  }
 }

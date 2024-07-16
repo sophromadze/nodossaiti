@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ServiceDescriptionComponent {
   @Input() serviceType: string | null = null;
+  @Input() isDeepCleaningSelected: boolean = false;
 }

@@ -38,66 +38,68 @@
 
       <!-- Bedrooms and Bathrooms -->
       <div *ngIf="!isCustomCleaning" class="relative-container">
-        <div class="form-group row bordered-group typeRow">
-          <div class="col">
-            <h3>Tell us about your apartment **</h3>
-            <select
-              formControlName="bedrooms"
-              id="bedrooms"
-              class="form-control"
-            >
-              <option value="studio">Studio Clean</option>
-              <option value="one">One Bedroom Clean</option>
-              <option value="two">Two Bedrooms Clean</option>
-              <option value="three">Three Bedrooms Clean</option>
-              <option value="four">Four Bedrooms Clean</option>
-              <option value="five">Five Bedrooms Clean</option>
-              <option value="six">Six Bedrooms Clean</option>
-            </select>
-            <div
-              *ngIf="
-                calculatorForm.get('bedrooms')!.invalid &&
-                calculatorForm.get('bedrooms')!.touched
-              "
-              class="error"
-            >
-              Please select the number of bedrooms.
-            </div>
-          </div>
-          <div class="col">
-            <select
-              formControlName="bathrooms"
-              id="bathrooms"
-              class="form-control"
-            >
-              <option value="" disabled>Select number of bathrooms**</option>
-              <option *ngFor="let i of bathroomOptions" [value]="i">
-                {{ i }} {{ i === 1 ? "Bathroom" : "Bathrooms" }}
-              </option>
-            </select>
-          </div>
-          <div class="col">
+        <div class="apartment">
+          <h3>Tell us about your apartment **</h3>
+          <div class="form-group row typeRow">
             <div class="col">
               <select
-                formControlName="squareFeet"
-                id="squareFeet"
+                formControlName="bedrooms"
+                id="bedrooms"
                 class="form-control"
               >
-                <option
-                  *ngFor="let sqft of squareFeetOptions"
-                  [value]="sqft.value"
-                >
-                  {{ sqft.label }}
-                </option>
+                <option value="studio">Studio Clean</option>
+                <option value="one">One Bedroom Clean</option>
+                <option value="two">Two Bedrooms Clean</option>
+                <option value="three">Three Bedrooms Clean</option>
+                <option value="four">Four Bedrooms Clean</option>
+                <option value="five">Five Bedrooms Clean</option>
+                <option value="six">Six Bedrooms Clean</option>
               </select>
               <div
                 *ngIf="
-                  calculatorForm.get('squareFeet')!.invalid &&
-                  calculatorForm.get('squareFeet')!.touched
+                  calculatorForm.get('bedrooms')!.invalid &&
+                  calculatorForm.get('bedrooms')!.touched
                 "
                 class="error"
               >
-                Please select a square feet option.
+                Please select the number of bedrooms.
+              </div>
+            </div>
+            <div class="col">
+              <select
+                formControlName="bathrooms"
+                id="bathrooms"
+                class="form-control"
+              >
+                <option value="" disabled>Select number of bathrooms**</option>
+                <option *ngFor="let i of bathroomOptions" [value]="i">
+                  {{ i }} {{ i === 1 ? "Bathroom" : "Bathrooms" }}
+                </option>
+              </select>
+            </div>
+            <div class="col">
+              <div class="col">
+                <select
+                  formControlName="squareFeet"
+                  id="squareFeet"
+                  class="form-control"
+                >
+                  <option
+                    *ngFor="let sqft of squareFeetOptions"
+                    [value]="sqft.value"
+                  >
+                    {{ sqft.label }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    calculatorForm.get('squareFeet')!.invalid &&
+                    calculatorForm.get('squareFeet')!.touched
+                  "
+                  class="error"
+                >
+                  Please select a square feet option.
+                </div>
               </div>
             </div>
           </div>
@@ -173,9 +175,9 @@
                 />
                 <a class="input-button" title="toggle" data-toggle>
                   <img
-                    style="height: 40px; width: 40px"
+                    style="height: 35px; width: 35px"
                     class="icon-calendar"
-                    src="/assets/images/calendar2.gif"
+                    src="/assets/images/calendar.png"
                     alt=""
                   />
                 </a>
@@ -220,7 +222,7 @@
                   <img
                     style="height: 35px; width: 35px"
                     class="icon-clock"
-                    src="/assets/images/clock.gif"
+                    src="/assets/images/clock.png"
                     alt=""
                   />
                 </a>
@@ -325,14 +327,16 @@
         [parentForm]="calculatorForm"
       ></app-address-information>
 
-      <button
-        type="button"
-        class="btn btn-success"
-        [ngClass]="{ disabled: !calculatorForm.valid }"
-        (click)="onBookNowClick()"
-      >
-        Book Now
-      </button>
+      <div class="bookNowButton">
+        <button
+          type="button"
+          class="btn btn-success"
+          [ngClass]="{ disabled: !calculatorForm.valid }"
+          (click)="onBookNowClick()"
+        >
+          Book Now
+        </button>
+      </div>
 
       <div *ngIf="showPaymentForm && total !== null">
         <app-payment-form
@@ -349,63 +353,104 @@
     <div class="right-side-description">
       <app-service-description
         [serviceType]="calculatorForm.get('serviceType')!.value"
+        [isDeepCleaningSelected]="calculatorForm.get('deepCleaning')!.value"
       ></app-service-description>
     </div>
+
     <div class="calculator-card fixed">
       <div class="summary">
         <h1>Booking Summary</h1>
-        <p *ngIf="calculatorForm.get('serviceType')!.value">
-          Selected Service Type: {{ calculatorForm.get("serviceType")!.value }}
-        </p>
-        <p
-          *ngIf="!calculatorForm.get('serviceType')!.value"
-          class="placeholder"
-        >
-          Select service...
-        </p>
-        <p *ngIf="calculatorForm.get('serviceDate')!.value">
-          Service Date: {{ calculatorForm.get("serviceDate")!.value }} at
-          {{ formatTimeToAmPm(calculatorForm.get("serviceTime")!.value) }}
-        </p>
-        <p
-          *ngIf="!calculatorForm.get('serviceDate')!.value"
-          class="placeholder"
-        >
-          Choose service date...
-        </p>
-        <p>Frequency: {{ calculatorForm.get("frequency")!.value }}</p>
-        <p *ngIf="!isCustomCleaning">
-          Sub-total Time:
-          {{
-            subTotalTime !== null
-              ? formatTimeToHoursAndMinutes(subTotalTime)
-              : "N/A"
-          }}
-        </p>
-        <p *ngIf="isCustomCleaning">
-          Number of Hours:
-          {{ formatTimeToHoursAndMinutes(calculatorForm.get("hours")!.value) }}
-        </p>
+        <hr />
+        <div class="summaryContent">
+          <div *ngIf="calculatorForm.get('serviceType')!.value">
+            <img src="/assets/images/home.png" alt="" title="Service" />
+            <p>
+              {{ getServiceTypeDisplay() }}
+            </p>
+          </div>
 
-        <p>
-          Number of Cleaners:
-          {{
-            !isCustomCleaning
-              ? requiredCleaners
-              : calculatorForm.get("cleaners")!.value
-          }}
-        </p>
-        <p *ngIf="!isCustomCleaning">
-          Total Time:
-          {{
-            totalTime !== null ? formatTimeToHoursAndMinutes(totalTime) : "N/A"
-          }}
-        </p>
+          <div>
+            <img src="/assets/images/frequency.png" alt="" title="Frequency" />
+            <p>{{ calculatorForm.get("frequency")!.value }}</p>
+          </div>
+          <div *ngIf="calculatorForm.get('serviceDate')!.value">
+            <img src="/assets/images/calendar.png" alt="" title="Date" />
+            <p>
+              {{ calculatorForm.get("serviceDate")!.value }} at
+              {{ formatTimeToAmPm(calculatorForm.get("serviceTime")!.value) }}
+            </p>
+          </div>
+        </div>
+        <div class="summaryTime">
+          <!-- <div *ngIf="!isCustomCleaning">
+            <div class="timeForOneCleaner" title="Time For One Cleaner">
+              <img src="/assets/images/maid.png" alt="" />
+              <img src="/assets/images/clock.png" alt="" />
+            </div>
+            <p>
+              {{
+                subTotalTime !== null
+                  ? formatTimeToHoursAndMinutes(subTotalTime)
+                  : "N/A"
+              }}
+            </p>
+          </div> -->
+
+          <div>
+            <div class="numberOfCleaners" title="Number of Cleaners">
+              <!-- <img src="/assets/images/maid2.png" alt="" /> -->
+              <!-- <img src="/assets/images/maid3.png" alt="" /> -->
+              <img src="/assets/images/maid.png" alt="" />
+            </div>
+
+            <p>
+              {{
+                !isCustomCleaning
+                  ? requiredCleaners
+                  : calculatorForm.get("cleaners")!.value
+              }}
+            </p>
+          </div>
+          <div *ngIf="isCustomCleaning">
+            <img
+              src="/assets/images/clock.png"
+              alt=""
+              title="Number of Hours"
+            />
+            <p>
+              {{
+                formatTimeToHoursAndMinutes(calculatorForm.get("hours")!.value)
+              }}
+            </p>
+          </div>
+          <div *ngIf="!isCustomCleaning">
+            <img src="/assets/images/clock.png" alt="" title="Total Hours" />
+            <p>
+              {{
+                totalTime !== null
+                  ? formatTimeToHoursAndMinutes(totalTime)
+                  : "N/A"
+              }}
+            </p>
+          </div>
+        </div>
       </div>
+      <hr />
       <div class="total-price">
-        <p>Sub-total: {{ totalPrice | currency }}</p>
-        <p>Sales Tax: {{ salesTax | currency }}</p>
-        <p>Total: {{ total | currency }}</p>
+        <div>
+          <p>Sub-total:</p>
+          <p>{{ totalPrice | currency }}</p>
+        </div>
+        <div>
+          <p>Sales Tax:</p>
+          <p>{{ salesTax | currency }}</p>
+        </div>
+        <div class="total">
+          <p><b>Total:</b></p>
+          <p>
+            <b class="totalAmount">{{ total | currency }}</b>
+          </p>
+        </div>
       </div>
     </div>
   </div>

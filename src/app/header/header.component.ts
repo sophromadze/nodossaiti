@@ -10,7 +10,7 @@ import { ViewportScroller } from '@angular/common';
 export class HeaderComponent {
   isScrolled = false;
   isTransparentPage = false;
-  logoSrc = '/assets/images/smallLogoDark.png'; // Default logo
+  logoSrc = '/assets/images/smallLogoLight.png'; // Default logo
 
   constructor(
     private router: Router,
@@ -19,6 +19,7 @@ export class HeaderComponent {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.checkRoute(event.url);
+        this.scrollToTop();
       }
     });
   }
@@ -26,31 +27,32 @@ export class HeaderComponent {
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const offset = window.pageYOffset;
-    if (offset > 50) {
-      this.isScrolled = true;
-      if (!this.isTransparentPage) {
-        this.logoSrc = '/assets/images/smallLogoLight.png'; // Change logo on scroll
-      }
-    } else {
-      this.isScrolled = false;
-      this.logoSrc = '/assets/images/smallLogoDark.png'; // Revert to default logo
-    }
+    this.isScrolled = offset > 50;
   }
 
   navigateToCalculator(type: string) {
     this.router.navigate(['/calculator'], { queryParams: { type } });
   }
 
-  navigateToHome() {
-    this.router.navigate(['/']).then(() => {
-      this.viewportScroller.scrollToPosition([0, 0]);
-    });
-  }
-
   private checkRoute(url: string) {
-    const transparentPages = ['/calculator', '/about'];
+    const transparentPages = ['/calculator', '/about', '/contact'];
     this.isTransparentPage = transparentPages.some((page) =>
       url.includes(page)
     );
+    this.updateLogo(url);
+  }
+
+  private updateLogo(url: string) {
+    // Change logo based on the current route
+    if (url === '/') {
+      this.logoSrc = '/assets/images/smallLogoLight.png';
+    } else {
+      this.logoSrc = '/assets/images/smallLogoDark.png';
+    }
+  }
+
+  private scrollToTop() {
+    // Scroll to the top of the page
+    this.viewportScroller.scrollToPosition([0, 0]);
   }
 }

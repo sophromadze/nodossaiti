@@ -1,79 +1,13 @@
 @import "/src/assets/variables.scss";
 
-@keyframes color-change-default {
-  0%,
-  100% {
-    color: $secondary-color;
-  }
-  16.67%,
-  50%,
-  83.33% {
-    color: #000;
-  }
-  33.33%,
-  66.67% {
-    color: $secondary-color;
-  }
-}
-
-@keyframes color-change-scrolled {
-  0%,
-  100% {
-    color: $secondary-color;
-  }
-  16.67%,
-  50%,
-  83.33% {
-    color: #fff;
-  }
-  33.33%,
-  66.67% {
-    color: $secondary-color;
-  }
-}
-
 .fixedHeader {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10;
-  background: #fff;
+  background: rgb(0, 0, 0, 47%);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background 0.3s, color 0.3s;
-
-  &.scrolled {
-    background: transparent;
-    color: #fff;
-
-    .upperDiv {
-      background: #ebf5ff1f;
-    }
-
-    .mainMenu a {
-      color: #fff !important;
-
-      &:hover {
-        color: $secondary-color;
-      }
-    }
-
-    .socialMedia i {
-      color: #fff;
-
-      &:hover {
-        color: $secondary-color;
-      }
-    }
-
-    .logo {
-      color: #fff;
-
-      &:hover {
-        animation: color-change-scrolled 450ms steps(6) forwards !important;
-      }
-    }
-  }
 
   &.transparentPage {
     background: #fff !important;
@@ -81,6 +15,34 @@
 
     .upperDiv {
       background: #ebf5ff !important;
+      color: #000;
+      a {
+        text-decoration: none;
+        color: #000;
+        &:hover {
+          color: $secondary-color;
+        }
+      }
+      div:hover {
+        color: $secondary-color !important;
+      }
+
+      .logo:hover {
+        filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.41));
+      }
+    }
+
+    .mainDiv {
+      .gradient-text {
+        background: linear-gradient(
+          175deg,
+          #0077be 30%,
+          #1370b9 50%,
+          #3660ac 90%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
     }
 
     .mainMenu a {
@@ -101,7 +63,10 @@
 
     .logo {
       color: #000 !important;
-
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
       &:hover {
         color: $secondary-color !important;
       }
@@ -111,25 +76,45 @@
   .upperDiv {
     display: flex;
     align-items: center;
-    background: #ebf5ff;
+    justify-content: space-between;
+    background: rgb(0, 0, 0, 50%);
     width: 100%;
     padding: 10px 50px;
     transition: background 0.3s;
-
+    color: #fff;
     div:hover {
-      color: $secondary-color;
+      color: #0fe0f5;
       cursor: pointer;
+    }
+
+    a {
+      text-decoration: none;
+      color: #fff;
+      &:hover {
+        color: #0fe0f5;
+      }
     }
   }
 
   .mainDiv {
-    color: #000;
+    color: #fff;
     padding: 10px 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     z-index: 10;
+
+    .gradient-text {
+      background: linear-gradient(
+        175deg,
+        #a8a8a8 30%,
+        #cacaca 50%,
+        #ffffff 90%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
     .headLeft {
       display: flex;
@@ -150,17 +135,17 @@
 
       a {
         text-decoration: none;
-        color: #000;
+        color: #fff;
         padding: 5px;
         cursor: pointer;
       }
 
       a:hover {
-        color: $secondary-color;
+        color: #0fe0f5;
       }
 
       .active {
-        color: $secondary-color;
+        color: #0fe0f5;
       }
 
       .cleaningServiceDropdown {
@@ -186,14 +171,13 @@
             border-bottom: 1px dotted $secondary-color;
           }
 
+          a {
+            color: #000;
+          }
+
           a:hover {
             border-top: none;
-          }
-        }
-
-        li:hover {
-          a {
-            color: $secondary-color;
+            color: $secondary-color !important;
           }
         }
       }
@@ -215,14 +199,19 @@
       justify-content: center;
       align-items: center;
       gap: 10px;
+      &:hover {
+        filter: drop-shadow(2px 2px 3px rgba(255, 255, 255, 0.41));
+      }
 
+      a {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        align-items: center;
+      }
       img {
         height: 35px;
         width: 35px;
-      }
-
-      &:hover {
-        animation: color-change-default 450ms steps(6) forwards;
       }
     }
 
@@ -237,7 +226,7 @@
 
       a {
         text-decoration: none;
-        color: #000;
+        color: #fff;
       }
 
       i {
@@ -246,7 +235,7 @@
 
       i:hover {
         transform: scale(1.2);
-        color: $secondary-color;
+        color: #0fe0f5;
       }
     }
 

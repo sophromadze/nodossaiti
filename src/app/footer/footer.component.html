@@ -1,24 +1,30 @@
 <div class="footerContainer">
   <div class="upper">
-    <div class="logo" (click)="navigateToHome()">
-      <img src="/assets/images/logoLight.png" alt="" />
+    <div class="logo">
+      <a href="https://thedreamcleaning.com/">
+        <img src="/assets/images/logoLight.png" alt=""
+      /></a>
     </div>
     <button class="bN" (click)="navigateToCalculator()">Book Now</button>
     <div class="socialMedia">
       <a
-        href="https://www.facebook.com/DreamcleaningNY?mibextid=LQQJ4d"
+        href="https://www.facebook.com/profile.php?id=61562078646597&mibextid=LQQJ4d"
         target="_blank"
         ><i class="fa-brands fa-2x fa-facebook-f"></i
       ></a>
-      <i class="fa-brands fa-2x fa-instagram"></i>
+      <a
+        href="https://www.instagram.com/dremcleaning?utm_source=qr"
+        target="_blank"
+        ><i class="fa-brands fa-2x fa-instagram"></i
+      ></a>
       <i class="fa-brands fa-2x fa-whatsapp"></i>
     </div>
   </div>
   <div class="mid">
     <ul>
-      <li><a href="">Home</a></li>
-      <li><a href="">About</a></li>
-      <li><a href="">Contact</a></li>
+      <li><a (click)="navigateToHome()">Home</a></li>
+      <li><a routerLink="/about">About</a></li>
+      <li><a routerLink="/contact">Contact</a></li>
     </ul>
   </div>
   <div class="rights">

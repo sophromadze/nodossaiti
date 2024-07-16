@@ -19,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FooterComponent } from './footer/footer.component';
 import { SliderComponent } from './main/slider/slider.component';
 import { CitiesComponent } from './main/cities/cities.component';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { CitiesComponent } from './main/cities/cities.component';
     FooterComponent,
     SliderComponent,
     CitiesComponent,
+    ContactComponent,
   ],
   imports: [
     BrowserModule,
