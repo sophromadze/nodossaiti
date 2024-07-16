@@ -20,9 +20,24 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   calculatorForm: FormGroup;
   minDate!: string;
   isSameDayService: boolean = false;
-  showTooltip = false;
+  showTooltip: boolean = false;
   isDeepCleaningSelected: boolean = false;
-
+  totalPrice: number | null = null;
+  subTotalTime: number | null = null;
+  totalTime: number | null = null;
+  salesTax: number | null = null;
+  total: number | null = null;
+  isCustomCleaning: boolean = false;
+  deepCleaningChecked: boolean = false;
+  requiredCleaners: number | null = null;
+  showPaymentForm: boolean = false;
+  extraServicePrices: { [key: string]: number } = {};
+  extraServiceTimes: { [key: string]: number } = {};
+  originalServiceDate: string | null = null;
+  organizingHours: number | null = 0;
+  insideWindowsNumbers: number | null = 0;
+  // selectedVacuumOption: string = 'None';
+  squareFeetOptions: Array<{ value: string; label: string }> = [];
   bathroomOptions = [1, 2, 3, 4, 5, 6];
   frequencies = [
     { value: 'One Time', label: 'One Time', discount: 0 },
@@ -37,22 +52,6 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19,
     19.5, 20,
   ];
-
-  totalPrice: number | null = null;
-  subTotalTime: number | null = null;
-  totalTime: number | null = null;
-  salesTax: number | null = null;
-  total: number | null = null;
-  isCustomCleaning = false;
-  deepCleaningChecked = false;
-  requiredCleaners: number | null = null;
-  extraServicePrices: { [key: string]: number } = {};
-  extraServiceTimes: { [key: string]: number } = {};
-  originalServiceDate: string | null = null;
-  organizingHours: number | null = 0;
-  insideWindowsNumbers: number | null = 0;
-  // selectedVacuumOption: string = 'None';
-  squareFeetOptions: Array<{ value: string; label: string }> = [];
   squareFeetPriceValues: { [key: string]: number } = {
     'studio_<400': 50,
     'studio_401-650': 90,
@@ -147,8 +146,6 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     'six_4001-5000': 10,
     'six_5001+': 12,
   };
-
-  showPaymentForm: boolean = false;
 
   constructor(
     private fb: FormBuilder,
