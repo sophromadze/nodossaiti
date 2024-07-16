@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import flatpickr from 'flatpickr';
 import { environment } from 'src/environments/environment.development';
 
@@ -51,6 +51,65 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5,
     12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19,
     19.5, 20,
+  ];
+  optionsStudio = [
+    { value: '<400', label: '< 400 sq.ft' },
+    { value: '401-650', label: '401-650 sq.ft' },
+    { value: '651-900', label: '651-900 sq.ft' },
+  ];
+  optionsOne = [
+    { value: '<650', label: '< 650 sq.ft' },
+    { value: '651-900', label: '651-900 sq.ft' },
+    { value: '901-1200', label: '901-1200 sq.ft' },
+    { value: '1201-1500', label: '1201-1500 sq.ft' },
+    { value: '1501-2000', label: '1501-2000 sq.ft' },
+  ];
+  optionsTwo = [
+    { value: '<850', label: '< 850 sq.ft' },
+    { value: '851-1000', label: '851-1000 sq.ft' },
+    { value: '1001-1300', label: '1001-1300 sq.ft' },
+    { value: '1301-1600', label: '1301-1600 sq.ft' },
+    { value: '1601-2000', label: '1601-2000 sq.ft' },
+  ];
+  optionsThree = [
+    { value: '<1000', label: '< 1000 sq.ft' },
+    { value: '1001-1300', label: '1001-1300 sq.ft' },
+    { value: '1301-1600', label: '1301-1600 sq.ft' },
+    { value: '1601-2000', label: '1601-2000 sq.ft' },
+    { value: '2001-2400', label: '2001-2400 sq.ft' },
+    { value: '2401-3000', label: '2401-3000 sq.ft' },
+    { value: '3001-3500', label: '3001-3500 sq.ft' },
+    { value: '3501-4000', label: '3501-4000 sq.ft' },
+    { value: '4001-5000', label: '4001-5000 sq.ft' },
+  ];
+  optionsFour = [
+    { value: '<1500', label: '< 1500 sq.ft' },
+    { value: '1500-1800', label: '1500-1800 sq.ft' },
+    { value: '1801-2100', label: '1801-2100 sq.ft' },
+    { value: '2101-2500', label: '2101-2500 sq.ft' },
+    { value: '2501-3000', label: '2501-3000 sq.ft' },
+    { value: '3001-3500', label: '3001-3500 sq.ft' },
+    { value: '3501-4000', label: '3501-4000 sq.ft' },
+    { value: '4001+', label: '> 4001 sq.ft' },
+  ];
+  optionsFive = [
+    { value: '<1800', label: '< 1800 sq.ft' },
+    { value: '1800-2100', label: '1800-2100 sq.ft' },
+    { value: '2101-2500', label: '2101-2500 sq.ft' },
+    { value: '2501-2900', label: '2501-2900 sq.ft' },
+    { value: '2901-3300', label: '2901-3300 sq.ft' },
+    { value: '3301-3800', label: '3301-3800 sq.ft' },
+    { value: '3801-4200', label: '3801-4200 sq.ft' },
+    { value: '4201-5000', label: '4201-5000 sq.ft' },
+  ];
+  optionsSix = [
+    { value: '<2000', label: '< 2000 sq.ft' },
+    { value: '2001-2500', label: '2001-2500 sq.ft' },
+    { value: '2501-3000', label: '2501-3000 sq.ft' },
+    { value: '3001-3500', label: '3001-3500 sq.ft' },
+    { value: '3501-4000', label: '3501-4000 sq.ft' },
+    { value: '4001-5000', label: '4001-5000 sq.ft' },
+    { value: '5001+', label: '> 5001 sq.ft' },
   ];
   squareFeetPriceValues: { [key: string]: number } = {
     'studio_<400': 50,
@@ -151,6 +210,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private route: ActivatedRoute,
+    private router: Router,
     private renderer: Renderer2,
     private el: ElementRef
   ) {
@@ -213,15 +273,16 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       vacuum2: [false],
       cleaners: [1],
       hours: [3],
+      name: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      cellNumber: [''],
+      address: ['', Validators.required],
+      apartment: [''],
+      city: ['', Validators.required],
+      state: ['NY', Validators.required],
+      zipCode: ['', Validators.required],
     });
-
-    // this.calculatorForm.get('serviceDate')!.valueChanges.subscribe((value) => {
-    //   if (value) {
-    //     this.calculatorForm
-    //       .get('serviceTime')!
-    //       .setValue('07:00 AM', { emitEvent: false });
-    //   }
-    // });
 
     this.calculatorForm.get('serviceType')!.valueChanges.subscribe(() => {
       this.onServiceTypeChange();
@@ -246,6 +307,70 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     this.setMinDate();
 
     this.route.queryParams.subscribe((params) => {
+      const today = new Date();
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      // Format the date to 'M-d-Y'
+      const monthNames = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ];
+      const month = monthNames[tomorrow.getMonth()];
+      const day = tomorrow.getDate();
+      const year = tomorrow.getFullYear();
+      const tomorrowDateString = `${month}-${day}-${year}`;
+
+      this.calculatorForm.setValue({
+        serviceType: params['serviceType'] || 'Residential',
+        bedrooms: params['bedrooms'] || 'studio',
+        bathrooms: params['bathrooms'] || 1,
+        squareFeet: params['squareFeet'] || '<400',
+        serviceDate: params['serviceDate'] || tomorrowDateString,
+        serviceTime: params['serviceTime'] || '9:00' + ' ' + 'AM',
+        frequency: params['frequency'] || 'One Time',
+        entryMethod: params['entryMethod'] || '',
+        specialInstructions: params['specialInstructions'] || null,
+        sameDay: params['sameDay'] || false,
+        deepCleaning: params['deepCleaning'] || false,
+        insideOfClosets: params['insideOfClosets'] || false,
+        insideTheOven: params['insideTheOven'] || false,
+        insideTheFridge: params['insideTheFridge'] || false,
+        washingDishes: params['washingDishes'] || false,
+        wallCleaning: params['wallCleaning'] || false,
+        insideWindows: params['insideWindows'] || false,
+        petHairClean: params['petHairClean'] || false,
+        insideCabinets: params['insideCabinets'] || false,
+        balcony: params['balcony'] || false,
+        supplies: params['supplies'] || false,
+        office: params['office'] || false,
+        laundry: params['laundry'] || false,
+        folding: params['folding'] || false,
+        organizing: params['organizing'] || false,
+        vacuum2: params['vacuum2'] || false,
+        cleaners: params['cleaners'] || 1,
+        hours: params['hours'] || 3,
+        name: params['name'] || null,
+        lastName: params['lastName'] || null,
+        email: params['email'] || null,
+        cellNumber: params['cellNumber'] || null,
+        address: params['address'] || null,
+        apartment: params['apartment'] || null,
+        city: params['city'] || '',
+        state: params['state'] || '',
+        zipCode: params['zipCode'] || null,
+      });
+
       const type = params['type'];
       const deepCleaning = params['deepCleaning'];
 
@@ -264,10 +389,56 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
           this.calculatorForm.get('serviceType')!.setValue('Move Out');
           break;
       }
+
+      this.updateSquareFeetOptions(); // Ensure options are initialized
+    });
+
+    this.calculatorForm.valueChanges.subscribe(() => {
+      this.router.navigate([], {
+        queryParams: {
+          serviceType: this.calculatorForm.value.serviceType || null,
+          bedrooms: this.calculatorForm.value.bedrooms || null,
+          bathrooms: this.calculatorForm.value.bathrooms || null,
+          squareFeet: this.calculatorForm.value.squareFeet || null,
+          serviceDate: this.calculatorForm.value.serviceDate || null,
+          serviceTime: this.calculatorForm.value.serviceTime || null,
+          frequency: this.calculatorForm.value.frequency || null,
+          entryMethod: this.calculatorForm.value.entryMethod || null,
+          specialInstructions:
+            this.calculatorForm.value.specialInstructions || null,
+          sameDay: this.calculatorForm.value.sameDay || null,
+          deepCleaning: this.calculatorForm.value.deepCleaning || null,
+          insideOfClosets: this.calculatorForm.value.insideOfClosets || null,
+          insideTheOven: this.calculatorForm.value.insideTheOven || null,
+          insideTheFridge: this.calculatorForm.value.insideTheFridge || null,
+          washingDishes: this.calculatorForm.value.washingDishes || null,
+          wallCleaning: this.calculatorForm.value.wallCleaning || null,
+          insideWindows: this.calculatorForm.value.insideWindows || null,
+          petHairClean: this.calculatorForm.value.petHairClean || null,
+          insideCabinets: this.calculatorForm.value.insideCabinets || null,
+          balcony: this.calculatorForm.value.balcony || null,
+          supplies: this.calculatorForm.value.supplies || null,
+          office: this.calculatorForm.value.office || null,
+          laundry: this.calculatorForm.value.laundry || null,
+          folding: this.calculatorForm.value.folding || null,
+          organizing: this.calculatorForm.value.organizing || null,
+          vacuum2: this.calculatorForm.value.vacuum2 || null,
+          cleaners: this.calculatorForm.value.cleaners || null,
+          hours: this.calculatorForm.value.hours || null,
+          name: this.calculatorForm.value.name || null,
+          lastName: this.calculatorForm.value.lastName || null,
+          email: this.calculatorForm.value.email || null,
+          cellNumber: this.calculatorForm.value.cellNumber || null,
+          address: this.calculatorForm.value.address || null,
+          apartment: this.calculatorForm.value.apartment || null,
+          city: this.calculatorForm.value.city || null,
+          state: this.calculatorForm.value.state || null,
+          zipCode: this.calculatorForm.value.zipCode || null,
+        },
+      });
     });
 
     this.updateSquareFeetOptions(); // Ensure options are initialized
-
     // Scroll to top when the component initializes
     window.scrollTo(0, 0);
   }
@@ -361,87 +532,45 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
 
   updateSquareFeetOptions(): void {
     const bedrooms = this.calculatorForm.get('bedrooms')!.value;
-    let options: { value: string; label: string }[] = [];
 
     switch (bedrooms) {
       case 'studio':
-        options = [
-          { value: '<400', label: '< 400 sq.ft' },
-          { value: '401-650', label: '401-650 sq.ft' },
-          { value: '651-900', label: '651-900 sq.ft' },
-        ];
+        this.squareFeetOptions = this.optionsStudio;
         break;
       case 'one':
-        options = [
-          { value: '<650', label: '< 650 sq.ft' },
-          { value: '651-900', label: '651-900 sq.ft' },
-          { value: '901-1200', label: '901-1200 sq.ft' },
-          { value: '1201-1500', label: '1201-1500 sq.ft' },
-          { value: '1501-2000', label: '1501-2000 sq.ft' },
-        ];
+        this.squareFeetOptions = this.optionsOne;
         break;
       case 'two':
-        options = [
-          { value: '<850', label: '< 850 sq.ft' },
-          { value: '851-1000', label: '851-1000 sq.ft' },
-          { value: '1001-1300', label: '1001-1300 sq.ft' },
-          { value: '1301-1600', label: '1301-1600 sq.ft' },
-          { value: '1601-2000', label: '1601-2000 sq.ft' },
-        ];
+        this.squareFeetOptions = this.optionsTwo;
         break;
       case 'three':
-        options = [
-          { value: '<1000', label: '< 1000 sq.ft' },
-          { value: '1001-1300', label: '1001-1300 sq.ft' },
-          { value: '1301-1600', label: '1301-1600 sq.ft' },
-          { value: '1601-2000', label: '1601-2000 sq.ft' },
-          { value: '2001-2400', label: '2001-2400 sq.ft' },
-          { value: '2401-3000', label: '2401-3000 sq.ft' },
-          { value: '3001-3500', label: '3001-3500 sq.ft' },
-          { value: '3501-4000', label: '3501-4000 sq.ft' },
-          { value: '4001-5000', label: '4001-5000 sq.ft' },
-        ];
+        this.squareFeetOptions = this.optionsThree;
         break;
       case 'four':
-        options = [
-          { value: '<1500', label: '< 1500 sq.ft' },
-          { value: '1500-1800', label: '1500-1800 sq.ft' },
-          { value: '1801-2100', label: '1801-2100 sq.ft' },
-          { value: '2101-2500', label: '2101-2500 sq.ft' },
-          { value: '2501-3000', label: '2501-3000 sq.ft' },
-          { value: '3001-3500', label: '3001-3500 sq.ft' },
-          { value: '3501-4000', label: '3501-4000 sq.ft' },
-          { value: '4001+', label: '> 4001 sq.ft' },
-        ];
+        this.squareFeetOptions = this.optionsFour;
         break;
       case 'five':
-        options = [
-          { value: '<1800', label: '< 1800 sq.ft' },
-          { value: '1800-2100', label: '1800-2100 sq.ft' },
-          { value: '2101-2500', label: '2101-2500 sq.ft' },
-          { value: '2501-2900', label: '2501-2900 sq.ft' },
-          { value: '2901-3300', label: '2901-3300 sq.ft' },
-          { value: '3301-3800', label: '3301-3800 sq.ft' },
-          { value: '3801-4200', label: '3801-4200 sq.ft' },
-          { value: '4201-5000', label: '4201-5000 sq.ft' },
-        ];
+        this.squareFeetOptions = this.optionsFive;
         break;
       case 'six':
-        options = [
-          { value: '<2000', label: '< 2000 sq.ft' },
-          { value: '2001-2500', label: '2001-2500 sq.ft' },
-          { value: '2501-3000', label: '2501-3000 sq.ft' },
-          { value: '3001-3500', label: '3001-3500 sq.ft' },
-          { value: '3501-4000', label: '3501-4000 sq.ft' },
-          { value: '4001-5000', label: '4001-5000 sq.ft' },
-          { value: '5001+', label: '> 5001 sq.ft' },
-        ];
+        this.squareFeetOptions = this.optionsSix;
         break;
     }
+    // Preserve the current squareFeet value if it is a valid option
+    const currentSquareFeet = this.calculatorForm.get('squareFeet')!.value;
+    const isValidOption = this.squareFeetOptions.some(
+      (option) => option.value === currentSquareFeet
+    );
 
-    this.squareFeetOptions = options;
-    const initialValue = options.length > 0 ? options[0].value : '';
-    this.calculatorForm.get('squareFeet')!.setValue(initialValue);
+    if (!isValidOption) {
+      if (this.squareFeetOptions.length > 0) {
+        this.calculatorForm
+          .get('squareFeet')!
+          .setValue(this.squareFeetOptions[0].value);
+      } else {
+        this.calculatorForm.get('squareFeet')!.setValue('');
+      }
+    }
   }
 
   setFrequency(frequency: string): void {
@@ -488,15 +617,15 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
 
     this.isSameDayService = isSameDay;
     if (isSameDay) {
+      const today = formatDateToMDY(new Date());
       this.originalServiceDate = this.calculatorForm.get('serviceDate')!.value;
-      const today = formatDateToMDY(new Date()); // Use the updated helper function
       this.calculatorForm.get('serviceDate')!.setValue(today);
       this.calculatorForm.get('serviceDate')!.disable({ emitEvent: false });
     } else {
       this.calculatorForm.get('serviceDate')!.enable({ emitEvent: false });
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      const tomorrowDateString = formatDateToMDY(tomorrow); // Use the updated helper function
+      const tomorrowDateString = formatDateToMDY(tomorrow);
       this.calculatorForm.get('serviceDate')!.setValue(tomorrowDateString);
       this.originalServiceDate = null;
     }

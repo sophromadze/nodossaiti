@@ -88,7 +88,7 @@
                     *ngFor="let sqft of squareFeetOptions"
                     [value]="sqft.value"
                   >
-                    {{ sqft.label }}
+                    {{ sqft.value }}
                   </option>
                 </select>
                 <div
@@ -128,7 +128,7 @@
               </option>
             </select>
           </div>
-          <div class="col">
+          <div class="col cleanerHours">
             <select formControlName="hours" id="hours" class="form-control">
               <option value="" disabled>Select number of hours**</option>
               <option *ngFor="let hour of hoursOptions" [value]="hour">
@@ -318,14 +318,175 @@
       </div>
 
       <!-- Contact Information -->
-      <app-contact-information
-        [parentForm]="calculatorForm"
-      ></app-contact-information>
+      <div class="contact-info">
+        <h3>Contact Info</h3>
+        <div class="formsGap">
+          <div class="row">
+            <div class="col">
+              <input
+                type="text"
+                formControlName="name"
+                id="name"
+                class="form-control"
+                placeholder="First Name**"
+              />
+              <div
+                *ngIf="
+                  calculatorForm.get('name')!.invalid &&
+                  calculatorForm.get('name')!.touched
+                "
+                class="error"
+              >
+                Please enter your first name.
+              </div>
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                formControlName="lastName"
+                id="lastName"
+                class="form-control"
+                placeholder="Last Name**"
+              />
+              <div
+                *ngIf="
+                  calculatorForm.get('lastName')!.invalid &&
+                  calculatorForm.get('lastName')!.touched
+                "
+                class="error"
+              >
+                Please enter your last name.
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input
+                type="email"
+                formControlName="email"
+                id="email"
+                class="form-control"
+                placeholder="Email**"
+              />
+              <div
+                *ngIf="
+                  calculatorForm.get('email')!.invalid &&
+                  calculatorForm.get('email')!.touched
+                "
+                class="error"
+              >
+                Please enter a valid email.
+              </div>
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                formControlName="cellNumber"
+                id="cellNumber"
+                class="form-control"
+                placeholder="Cell Number"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <!-- end of Contact Information -->
       <!-- Address Information -->
-      <app-address-information
-        [parentForm]="calculatorForm"
-      ></app-address-information>
+
+      <div class="address-info">
+        <h3>Address</h3>
+        <div class="formsGap">
+          <div class="row">
+            <div class="col address-flex">
+              <input
+                type="text"
+                formControlName="address"
+                id="address"
+                class="form-control"
+                placeholder="Address**"
+              />
+              <div
+                *ngIf="
+                  calculatorForm.get('address')!.invalid &&
+                  calculatorForm.get('address')!.touched
+                "
+                class="error"
+              >
+                Please enter your address.
+              </div>
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                formControlName="apartment"
+                id="apartment"
+                class="form-control"
+                placeholder="Apt/Suite #"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="row address-flex">
+              <div class="col address-flex">
+                <select formControlName="city" id="city" class="form-control">
+                  <option value="" disabled>Select City**</option>
+                  <option value="bro">Brooklyn</option>
+                  <option value="man">Manhattan</option>
+                  <option value="que">Queens</option>
+                  <!-- ... other cities ... -->
+                </select>
+                <div
+                  *ngIf="
+                    calculatorForm.get('city')!.invalid &&
+                    calculatorForm.get('city')!.touched
+                  "
+                  class="error"
+                >
+                  Please enter your city.
+                </div>
+              </div>
+              <div class="col">
+                <select formControlName="state" id="state" class="form-control">
+                  <option value="" disabled>Select State**</option>
+                  <option value="NY">New York</option>
+                  <!-- ... other states ... -->
+                </select>
+                <div
+                  *ngIf="
+                    calculatorForm.get('state')!.invalid &&
+                    calculatorForm.get('state')!.touched
+                  "
+                  class="error"
+                >
+                  Please select your state.
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <input
+                type="text"
+                formControlName="zipCode"
+                id="zipCode"
+                class="form-control"
+                placeholder="Zip Code**"
+              />
+              <div
+                *ngIf="
+                  calculatorForm.get('zipCode')!.invalid &&
+                  calculatorForm.get('zipCode')!.touched
+                "
+                class="error"
+              >
+                Please enter your zip code.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- end of addres information -->
 
       <div class="bookNowButton">
         <button
