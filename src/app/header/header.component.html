@@ -9,7 +9,7 @@
     </div>
     <div>
       <i class="fa-regular fa-envelope"></i>
-      <a routerLink="/contact">
+      <a routerLink="/contact" (click)="closeMenuAndDropdown()">
         <span> DreamCleaningInfos@gmail.com</span>
       </a>
     </div>
@@ -22,14 +22,24 @@
           <b class="gradient-text">DREAM CLEANING</b>
         </a>
       </h1>
+      <div class="hamburger" (click)="toggleMenu()">
+        <i
+          [ngClass]="
+            isMenuOpen ? 'fa-solid fa-xmark animated' : 'fa fa-bars animated'
+          "
+        ></i>
+      </div>
 
       <div>
-        <ul class="mainMenu">
+        <ul class="mainMenu" [ngClass]="{ show: isMenuOpen }">
           <li class="cleaningService">
-            <a href="#"
+            <a (click)="toggleDropdown()"
               >Cleaning Services <i class="fa-solid fa-chevron-down"></i
             ></a>
-            <ul class="cleaningServiceDropdown">
+            <ul
+              class="cleaningServiceDropdown"
+              [ngClass]="{ show: isDropdownOpen }"
+            >
               <li>
                 <a (click)="navigateToCalculator('regular')"
                   >Regular Cleaning</a
@@ -39,43 +49,28 @@
                 <a (click)="navigateToCalculator('deep')">Deep Cleaning</a>
               </li>
               <li>
-                <a (click)="navigateToCalculator('movein-moveout')"
-                  >Move in/Move out cleaning</a
-                >
+                <a (click)="navigateToCalculator('Move In')">Move in Service</a>
               </li>
               <li>
-                <a (click)="navigateToCalculator('balcony')"
-                  >Balcony cleaning</a
+                <a (click)="navigateToCalculator('Move Out')"
+                  >Move out Service</a
                 >
-              </li>
-              <li>
-                <a (click)="navigateToCalculator('basement')"
-                  >Basement cleaning</a
-                >
-              </li>
-              <li>
-                <a (click)="navigateToCalculator('dishwashing')"
-                  >Dish washing service</a
-                >
-              </li>
-              <li>
-                <a (click)="navigateToCalculator('restroom')"
-                  >Restroom cleaning</a
-                >
-              </li>
-              <li>
-                <a (click)="navigateToCalculator('windows')"
-                  >Windows cleaning</a
-                >
-              </li>
-              <li>
-                <a (click)="navigateToCalculator('wall')">Wall cleaning</a>
               </li>
             </ul>
           </li>
-          <li><a routerLink="/calculator">Book Now</a></li>
-          <li><a routerLink="/about">About</a></li>
-          <li><a routerLink="/contact">Contact</a></li>
+          <li>
+            <a routerLink="/calculator" (click)="closeMenuAndDropdown()"
+              >Book Now</a
+            >
+          </li>
+          <li>
+            <a routerLink="/about" (click)="closeMenuAndDropdown()">About</a>
+          </li>
+          <li>
+            <a routerLink="/contact" (click)="closeMenuAndDropdown()"
+              >Contact</a
+            >
+          </li>
         </ul>
       </div>
     </div>

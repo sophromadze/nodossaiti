@@ -43,6 +43,35 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
+
+      .hamburger {
+        .fa-bars,
+        .fa-xmark {
+          color: #000;
+        }
+
+        .fa-bars:hover,
+        .fa-xmark:hover {
+          color: $secondary-color !important;
+        }
+      }
+
+      .mainMenu {
+        .cleaningServiceDropdown {
+          li {
+            &:not(:last-child) {
+              border-bottom: 1px dotted $secondary-color;
+            }
+            a:hover {
+              color: $secondary-color !important;
+            }
+          }
+        }
+      }
+    }
+
+    .mainMenu.show {
+      background: #fff !important;
     }
 
     .mainMenu a {
@@ -77,11 +106,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgb(0, 0, 0, 50%);
     width: 100%;
     padding: 10px 50px;
-    transition: background 0.3s;
     color: #fff;
+    max-width: 1920px;
+    margin: 0 auto;
     div:hover {
       color: #0fe0f5;
       cursor: pointer;
@@ -104,6 +133,37 @@
     justify-content: space-between;
     width: 100%;
     z-index: 10;
+    max-width: 1920px;
+    margin: 0 auto;
+
+    .animated {
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .hamburger i {
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .hamburger i.fa-bars {
+      transform: rotate(0);
+    }
+
+    .hamburger i.fa-xmark {
+      transform: rotate(180deg);
+    }
+
+    .hamburger {
+      margin-top: 3px;
+      .fa-bars,
+      .fa-xmark {
+        font-size: 24px;
+      }
+
+      .fa-bars:hover,
+      .fa-xmark:hover {
+        filter: drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.41));
+      }
+    }
 
     .gradient-text {
       background: linear-gradient(
@@ -152,9 +212,13 @@
         list-style: none;
         display: none;
         position: absolute;
-        background: #fff;
+        background: linear-gradient(
+          rgba(0, 0, 0, 0) 5%,
+          rgba(0, 0, 0, 0.322),
+          rgb(0, 0, 0, 47%)
+        );
+        color: #fff;
         padding: 10px;
-        margin-top: 5px;
         min-width: 300px;
         gap: 40px;
         border-bottom-left-radius: 10px;
@@ -168,16 +232,16 @@
           padding: 10px 0px;
 
           &:not(:last-child) {
-            border-bottom: 1px dotted $secondary-color;
+            border-bottom: 1px dotted #0fe0f5;
           }
 
           a {
-            color: #000;
+            color: #fff;
           }
 
           a:hover {
             border-top: none;
-            color: $secondary-color !important;
+            color: #0fe0f5 !important;
           }
         }
       }
@@ -219,9 +283,14 @@
       display: flex;
       gap: 15px;
       cursor: pointer;
+      align-items: center;
+
+      .fa-whatsapp {
+        margin-top: -3px;
+      }
 
       .fa-facebook-f {
-        scale: 0.8;
+        font-size: 25px;
       }
 
       a {
@@ -242,5 +311,129 @@
     span {
       font-size: 18px;
     }
+  }
+}
+
+/* Show the menu when the hamburger icon is clicked */
+
+.hamburger {
+  display: none; /* Hide the hamburger icon by default */
+}
+
+@media (max-width: 1150px) {
+  .fixedHeader {
+    .upperDiv {
+      padding: 10px;
+      font-size: 15px;
+    }
+    .mainDiv {
+      padding: 10px;
+      .mainMenu {
+        font-size: 1rem;
+        gap: 5px;
+      }
+
+      .headLeft {
+        gap: 20px;
+      }
+
+      .logo {
+        font-size: 25px;
+        img {
+          height: 25px;
+          width: 25px;
+        }
+      }
+
+      .socialMedia {
+        gap: 8px;
+        i {
+          font-size: 25px;
+        }
+        .fa-facebook-f {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .mainDiv .hamburger {
+    display: block;
+    cursor: pointer;
+  }
+
+  .mainDiv .headLeft .mainMenu {
+    display: none;
+  }
+
+  .mainMenu > li {
+    padding: 5px;
+  }
+
+  .mainDiv .headLeft .mainMenu.show {
+    display: block;
+    position: absolute;
+    background: rgb(0, 0, 0, 47%);
+    top: 94px;
+    left: 0;
+    width: 100%;
+    .cleaningService:hover .cleaningServiceDropdown {
+      display: none;
+    }
+
+    .cleaningService {
+      .cleaningServiceDropdown.show {
+        display: block;
+        position: relative;
+        background: transparent;
+        li {
+          padding: 3px;
+        }
+        a {
+          // color: #fff;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 430px) {
+  .fixedHeader {
+    .upperDiv {
+      flex-direction: column;
+      padding: 5px 10px;
+      gap: 5px;
+    }
+    .mainDiv {
+      padding: 3px;
+
+      .headLeft {
+        gap: 20px;
+      }
+
+      .logo {
+        font-size: 18px;
+        img {
+          height: 20px;
+          width: 20px;
+        }
+      }
+
+      .socialMedia {
+        gap: 5px;
+        i {
+          font-size: 20px;
+        }
+        .fa-facebook-f {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+  .mainDiv .headLeft .mainMenu.show {
+    top: 85px;
   }
 }

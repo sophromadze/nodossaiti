@@ -86,4 +86,10 @@ export class MainComponent implements OnInit, OnDestroy {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   }
+  scrollToCities(): void {
+    const element = document.getElementById('cities');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }

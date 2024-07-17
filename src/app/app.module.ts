@@ -8,8 +8,6 @@ import { MainComponent } from './main/main.component';
 import { CalculatorComponent } from './calculator/calculator.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ServiceDescriptionComponent } from './calculator/service-description/service-description.component';
-import { ContactInformationComponent } from './calculator/contact-information/contact-information.component';
-import { AddressInformationComponent } from './calculator/address-information/address-information.component';
 import { ExtraServicesComponent } from './calculator/extra-services/extra-services.component';
 import { TooltipComponent } from './calculator/extra-services/tooltip/tooltip.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -20,6 +18,7 @@ import { FooterComponent } from './footer/footer.component';
 import { SliderComponent } from './main/slider/slider.component';
 import { CitiesComponent } from './main/cities/cities.component';
 import { ContactComponent } from './contact/contact.component';
+import { ScrollToTopComponent } from './scroll-to-top/scroll-to-top.component';
 
 @NgModule({
   declarations: [
@@ -28,8 +27,6 @@ import { ContactComponent } from './contact/contact.component';
     MainComponent,
     CalculatorComponent,
     ServiceDescriptionComponent,
-    ContactInformationComponent,
-    AddressInformationComponent,
     ExtraServicesComponent,
     TooltipComponent,
     PaymentFormComponent,
@@ -38,6 +35,7 @@ import { ContactComponent } from './contact/contact.component';
     SliderComponent,
     CitiesComponent,
     ContactComponent,
+    ScrollToTopComponent,
   ],
   imports: [
     BrowserModule,

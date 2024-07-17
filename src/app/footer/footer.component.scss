@@ -1,11 +1,18 @@
 .footerContainer {
   width: 100%;
   background: #36454f;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 30px;
+
+  .container {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+
   a {
     text-decoration: none;
     color: #fff;
@@ -27,6 +34,10 @@
       justify-content: center;
       align-items: center;
       gap: 20px;
+
+      .fa-whatsapp {
+        margin-top: -3px;
+      }
     }
 
     .bN {
@@ -101,5 +112,46 @@
   a:hover,
   i:hover {
     transform: scale(1.2);
+  }
+}
+
+@media (max-width: 768px) {
+  .footerContainer .rights {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 550px) {
+  .container p {
+    font-size: 14px;
+    max-width: 330px;
+    text-align: center;
+  }
+  .footerContainer {
+    .container {
+      gap: 0;
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  .footerContainer {
+    .upper {
+      .bN {
+        font-size: 1rem;
+      }
+
+      .socialMedia {
+        gap: 8px;
+        i {
+          font-size: 20px;
+        }
+      }
+    }
+    .logo img {
+      height: 50px;
+      width: 50px;
+    }
   }
 }

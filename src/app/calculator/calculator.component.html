@@ -278,6 +278,47 @@
         </div>
       </div>
 
+      <!-- Tips Input -->
+      <div class="relative-container row">
+        <div class="form-group bordered-group tips">
+          <label for="tips"><h3>Tips For Cleaners</h3></label>
+          <p>Min $10</p>
+          <div class="input-container">
+            <span class="currency-symbol">$</span>
+            <input
+              type="number"
+              formControlName="tips"
+              id="tips"
+              class="form-control"
+              placeholder="Tips"
+              min="0"
+              step="1"
+              (input)="onTipsInput($event)"
+            />
+          </div>
+        </div>
+
+        <!--  Discounts -->
+        <div class="form-group bordered-group discount">
+          <label><h3>Discounts</h3></label>
+          <p>Choose Your Discounts</p>
+          <div class="discount-buttons">
+            <button
+              type="button"
+              class="btn"
+              *ngFor="let disc of discounts"
+              [class.selected]="
+                calculatorForm.get('discount')!.value === disc.value
+              "
+              (click)="toggleDiscount(disc.value)"
+            >
+              {{ disc.label }}
+            </button>
+          </div>
+        </div>
+        <!-- Discounts End -->
+      </div>
+
       <!-- Entry Method -->
       <div class="relative-container">
         <div class="form-group bordered-group">
@@ -605,6 +646,10 @@
         <div>
           <p>Sales Tax:</p>
           <p>{{ salesTax | currency }}</p>
+        </div>
+        <div *ngIf="tips > 0">
+          <p>Tips:</p>
+          <p>{{ tips | currency }}</p>
         </div>
         <div class="total">
           <p><b>Total:</b></p>

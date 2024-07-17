@@ -2,26 +2,31 @@
   class="main"
   [ngStyle]="{ 'background-image': 'url(' + currentImage + ')' }"
 >
-  <div>
-    <h2 [ngStyle]="{ color: h2Color }">
-      Save Time and Energy, <br />Enjoy <br />
-      Comfort and Cleanliness.
-    </h2>
-    <br />
-    <p [ngStyle]="{ color: pColor }">
-      Dream Cleaning is here to save you time and energy. Let us bring the
-      comfort and cleanliness you deserve, so you can relax and enjoy life's
-      precious moments. Our team is ready to revive your home.
-    </p>
-  </div>
-  <div class="cleanings">
-    <div id="bookNow" (click)="navigateToCalculator('regular')">
-      <h5>BOOK NOW <i class="fa-solid fa-chevron-right"></i></h5>
+  <div class="container">
+    <div>
+      <h2 [ngStyle]="{ color: h2Color }">
+        Save Time and Energy, <br />Enjoy <br />
+        Comfort and Cleanliness.
+      </h2>
+      <br />
+      <p [ngStyle]="{ color: pColor }">
+        Dream Cleaning is here to save you time and energy. Let us bring the
+        comfort and cleanliness you deserve, so you can relax and enjoy life's
+        precious moments. Our team is ready to revive your home.
+      </p>
     </div>
-    <div id="ourPopular" class="clickable-div" (click)="scrollToCards()">
-      <h5>OUR POPULAR <i class="fa-solid fa-chevron-down"></i></h5>
+    <div class="cleanings">
+      <div id="bookNow" (click)="navigateToCalculator('regular')">
+        <h5>BOOK NOW <i class="fa-solid fa-chevron-right"></i></h5>
+      </div>
+      <div id="ourPopular" class="clickable-div" (click)="scrollToCards()">
+        <h5>OUR POPULAR <i class="fa-solid fa-chevron-down"></i></h5>
+      </div>
+      <div id="ourPopular" class="clickable-div" (click)="scrollToCities()">
+        <h5>CITIES WE SERVE <i class="fa-solid fa-chevron-down"></i></h5>
+      </div>
     </div>
   </div>
 </div>
 <app-slider id="cards"></app-slider>
-<app-cities></app-cities>
+<app-cities id="cities"></app-cities>

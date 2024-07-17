@@ -23,7 +23,7 @@
 
 .fixed {
   position: sticky;
-  top: 45vh; /* Adjust this value based on your layout */
+  top: 43vh; /* Adjust this value based on your layout */
   max-width: 100%;
 }
 
@@ -194,7 +194,28 @@ button.btn-success.disabled:hover::after {
   padding: 0.75rem;
 }
 
-.frequency-buttons .btn.selected {
+.frequency-buttons .btn.selected,
+.frequency-buttons .btn:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.discount-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.discount-buttons .btn {
+  flex: 1;
+  text-align: center;
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+}
+
+.discount-buttons .btn.selected,
+.discount-buttons .btn:hover {
   background-color: #007bff;
   color: #fff;
 }
@@ -206,6 +227,7 @@ button.btn-success.disabled:hover::after {
 .bordered-group {
   border-bottom: 1px dotted #ccc;
   padding: 30px 10px;
+  flex: 1;
 }
 
 h3 {
@@ -215,6 +237,7 @@ h3 {
 .row {
   display: flex;
   gap: 1rem;
+  align-items: center;
 }
 
 .col {
@@ -350,8 +373,43 @@ textarea {
   resize: none;
 }
 
+.tips {
+  .input-container {
+    position: relative;
+    // width: fit-content;
+  }
+  p {
+    font-size: 14px;
+    // color: #0006cf;
+    text-align: center;
+    padding-bottom: 5px;
+  }
+  .currency-symbol {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #495057;
+  }
+
+  .form-control {
+    padding-left: 25px; /* Adjust this value as needed */
+  }
+}
+
+.discount {
+  align-self: flex-end;
+  p {
+    font-size: 14px;
+    // color: #0006cf;
+    text-align: center;
+    padding-bottom: 5px;
+  }
+}
+
 @media (max-height: 850px) {
   .calculator-card {
-    top: 40vh;
+    top: 38vh;
   }
 }

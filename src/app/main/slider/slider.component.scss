@@ -1,428 +1,354 @@
-@use "sass:math";
-
-.fnc {
-  // main variables, basically everything depends on $slidingAT
-  $slidingAT: 1s;
-  $slidingDelay: math.div($slidingAT, 3) * 2;
-  $maskAT: math.div($slidingAT * 0.7, 1);
-  $headingAT: math.div($slidingAT * 1.5, 1);
-  $controlAT: math.div($slidingAT, 2);
-  $easing: ease-in-out;
-  $blendMode: luminosity;
-
-  $contentLeft: 40%;
-  $contentTop: 40%;
-
-  $headingPadding: 30px;
-  $headingFontSize: 100px;
-
-  $maskTop: 15%;
-  $maskRight: 100% - $contentLeft;
-  $maskHeight: 67vh;
-  $maskWidth: math.div($maskHeight, 1.35);
-
-  $black: #1f2833;
-
-  /* you can add color names and their values here
-    and then simply add classes like .m--blend-$colorName to .fnc-slide 
-    to apply specific color for mask blend mode */
-  $bgColors: (
-    dark: lighten(#6a0a0d, 10%),
-    green: #287445,
-    red: lighten(#a8a825, 20%),
-    blue: rgb(20, 86, 110),
+.fnc-slider {
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+  height: 100vh;
+}
+.fnc-slider *,
+.fnc-slider *:before,
+.fnc-slider *:after {
+  box-sizing: border-box;
+}
+.fnc-slider__slides {
+  position: relative;
+  height: 100%;
+  transition: transform 1s 0.6666666667s;
+}
+.fnc-slider .m--blend-dark .fnc-slide__inner {
+  background-color: #ea2329;
+}
+.fnc-slider .m--blend-dark .fnc-slide__mask-inner {
+  background-color: #990e13;
+}
+.fnc-slider .m--navbg-dark {
+  background-color: #990e13;
+}
+.fnc-slider .m--blend-green .fnc-slide__inner {
+  background-color: #32cd32;
+}
+.fnc-slider .m--blend-green .fnc-slide__mask-inner {
+  background-color: #287445;
+}
+.fnc-slider .m--navbg-green {
+  background-color: #287445;
+}
+.fnc-slider .m--blend-red .fnc-slide__inner {
+  background-color: #ffff33;
+}
+.fnc-slider .m--blend-red .fnc-slide__mask-inner {
+  background-color: #c5c527;
+}
+.fnc-slider .m--navbg-red {
+  background-color: #c5c527;
+}
+.fnc-slider .m--blend-blue .fnc-slide__inner {
+  background-color: #59aecb;
+}
+.fnc-slider .m--blend-blue .fnc-slide__mask-inner {
+  background-color: #2d7791;
+}
+.fnc-slider .m--navbg-blue {
+  background-color: #2d7791;
+}
+.fnc-slide {
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform: translate3d(0, 0, 0);
+}
+.fnc-slide.m--before-sliding {
+  z-index: 2 !important;
+  transform: translate3d(100%, 0, 0);
+}
+.fnc-slide.m--active-slide {
+  z-index: 1;
+  transition: transform 1s 0.6666666667s ease-in-out;
+  transform: translate3d(0, 0, 0);
+}
+.fnc-slide__inner {
+  position: relative;
+  height: 100%;
+  background-size: cover;
+  background-position: center top;
+  transform: translate3d(0, 0, 0);
+}
+.m--global-blending-active .fnc-slide__inner,
+.m--blend-bg-active .fnc-slide__inner {
+  background-blend-mode: luminosity;
+}
+.m--before-sliding .fnc-slide__inner {
+  transform: translate3d(-100%, 0, 0);
+}
+.m--active-slide .fnc-slide__inner {
+  transition: transform 1s 0.6666666667s ease-in-out;
+  transform: translate3d(0, 0, 0);
+}
+.fnc-slide__mask {
+  overflow: hidden;
+  z-index: 1;
+  position: absolute;
+  right: 60%;
+  top: 15%;
+  width: 50.25vh;
+  height: 67vh;
+  margin-right: -90px;
+  -webkit-clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    0 100%,
+    0 0,
+    6vh 0,
+    6vh 61vh,
+    44vh 61vh,
+    44vh 6vh,
+    6vh 6vh
   );
-
-  &-slider {
-    overflow: hidden;
-    box-sizing: border-box;
-    position: relative;
-    height: 100vh;
-
-    *,
-    *:before,
-    *:after {
-      box-sizing: border-box;
-    }
-
-    &__slides {
-      position: relative;
-      height: 100%;
-      transition: transform $slidingAT $slidingDelay;
-    }
-
-    // iterate through color map and set colors for specific classes
-    @each $colorTheme, $bgColor in $bgColors {
-      .m--blend-#{"#{$colorTheme}"} {
-        .fnc-slide__inner {
-          background-color: lighten($bgColor, 20%);
-        }
-
-        .fnc-slide__mask-inner {
-          background-color: $bgColor;
-        }
-      }
-
-      .m--navbg-#{"#{$colorTheme}"} {
-        background-color: $bgColor;
-      }
-    }
-  }
-
-  &-slide {
-    overflow: hidden;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    transform: translate3d(0, 0, 0);
-
-    &.m--before-sliding {
-      z-index: 2 !important;
-      transform: translate3d(100%, 0, 0);
-    }
-
-    &.m--active-slide {
-      z-index: 1;
-      transition: transform $slidingAT $slidingDelay $easing;
-      transform: translate3d(0, 0, 0);
-    }
-
-    &__inner {
-      position: relative;
-      height: 100%;
-      background-size: cover;
-      background-position: center top;
-      background-repeat: no-repeat;
-      transform: translate3d(0, 0, 0);
-
-      .m--global-blending-active &,
-      .m--blend-bg-active & {
-        background-blend-mode: $blendMode;
-      }
-
-      .m--before-sliding & {
-        transform: translate3d(-100%, 0, 0);
-      }
-
-      .m--active-slide & {
-        transition: transform $slidingAT $slidingDelay $easing;
-        transform: translate3d(0, 0, 0);
-      }
-    }
-
-    &__mask {
-      $activeDelay: $slidingAT + math.div($slidingDelay, 3);
-      $xOffset: 200px;
-      $yOffset: 0;
-      $deg: 10deg;
-
-      overflow: hidden;
-      z-index: 1;
-      position: absolute;
-      right: $maskRight;
-      top: $maskTop;
-      width: $maskWidth;
-      height: $maskHeight;
-      margin-right: $headingPadding * -3;
-      // This line basically does all magic with masking effect. Very simple and elegant. Webkit only atm.
-      clip-path: polygon(
-        0 0,
-        100% 0,
-        100% 100%,
-        0 100%,
-        0 0,
-        6vh 0,
-        6vh 61vh,
-        44vh 61vh,
-        44vh 6vh,
-        6vh 6vh
-      );
-      transform-origin: 50% 0;
-      transition-timing-function: $easing;
-
-      .m--before-sliding & {
-        transform: rotate($deg * -1) translate3d($xOffset, 0, 0);
-        opacity: 0;
-      }
-
-      .m--active-slide & {
-        transition: transform $maskAT $activeDelay,
-          opacity math.div($maskAT, 2) $activeDelay;
-        transform: translate3d(0, 0, 0);
-        opacity: 1;
-      }
-
-      .m--previous-slide & {
-        transition: transform $maskAT math.div($slidingDelay, 2),
-          opacity math.div($maskAT, 2) math.div($maskAT, 2) +
-            math.div($slidingDelay, 2);
-        transform: rotate($deg) translate3d($xOffset * -1, 0, 0);
-        opacity: 0;
-      }
-
-      &-inner {
-        z-index: -1;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 100vw;
-        height: 100vh;
-        margin-left: -50vw;
-        margin-top: -50vh;
-        background-size: cover;
-        background-position: center center;
-        background-blend-mode: $blendMode;
-        transform-origin: calc((100vh - $maskHeight) / 2);
-        transition-timing-function: $easing;
-
-        .m--before-sliding & {
-          transform: translateY($yOffset) rotate($deg) translateX($xOffset * -1)
-            translateZ(0);
-        }
-
-        .m--active-slide & {
-          transition: transform $maskAT $activeDelay;
-          transform: translateX(0);
-        }
-
-        .m--previous-slide & {
-          transition: transform $maskAT math.div($slidingDelay, 2);
-          transform: translateY($yOffset) rotate($deg * -1) translateX($xOffset)
-            translateZ(0);
-        }
-      }
-    }
-
-    &__content {
-      z-index: 2;
-      position: absolute;
-      left: $contentLeft;
-      top: $contentTop;
-    }
-
-    &__heading {
-      margin-bottom: 10px;
-      text-transform: uppercase;
-
-      &-line {
-        overflow: hidden;
-        position: relative;
-        padding-right: 20px;
-        font-size: $headingFontSize;
-        color: #fff;
-        word-spacing: 10px;
-
-        &:nth-child(2) {
-          padding-left: $headingPadding;
-        }
-
-        .m--before-sliding & {
-          transform: translateY(100%);
-        }
-
-        .m--active-slide & {
-          transition: transform $headingAT math.div($slidingDelay, 1.5);
-          transform: translateY(0);
-        }
-
-        .m--previous-slide & {
-          transition: transform $headingAT;
-          transform: translateY(-100%);
-        }
-
-        span {
-          display: block;
-
-          .m--before-sliding & {
-            transform: translateY(-100%);
-          }
-
-          .m--active-slide & {
-            transition: transform $headingAT math.div($slidingDelay, 1.5);
-            transform: translateY(0);
-          }
-
-          .m--previous-slide & {
-            transition: transform $headingAT;
-            transform: translateY(100%);
-          }
-        }
-      }
-    }
-
-    &__action-btn {
-      $hoverAT: 0.3s;
-      $fontSize: 20px;
-      $vertPadding: 5px;
-      $lineHeight: $fontSize + $vertPadding * 2;
-
-      position: relative;
-      margin-left: 200px;
-      padding: $vertPadding 15px;
-      font-size: $fontSize;
-      line-height: 1;
-      color: transparent;
-      border: none;
-      text-transform: uppercase;
-      background: transparent;
-      cursor: pointer;
-      text-align: center;
-      outline: none;
-
-      span {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        perspective: 1000px;
-        transform-style: preserve-3d;
-        transition: transform $hoverAT;
-        transform-origin: 50% 0;
-        line-height: $lineHeight;
-        color: #fff;
-
-        &:before {
-          content: "";
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          border: 2px solid #fff;
-          border-top: none;
-          border-bottom: none;
-        }
-
-        &:after {
-          content: attr(data-text);
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          line-height: $lineHeight;
-          background: $black;
-          opacity: 0;
-          transform-origin: 50% 0;
-          transform: translateY(100%) rotateX(-90deg);
-          transition: opacity math.div($hoverAT, 2) math.div($hoverAT, 2);
-        }
-      }
-
-      &:hover span {
-        transform: rotateX(90deg);
-
-        &:after {
-          opacity: 1;
-          transition: opacity math.div($hoverAT, 2);
-        }
-      }
-    }
-  }
-
-  &-nav {
-    z-index: 5;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-
-    &__bgs {
-      z-index: -1;
-      overflow: hidden;
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    &__bg {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-
-      &.m--nav-bg-before {
-        z-index: 2 !important;
-        transform: translateX(100%);
-      }
-
-      &.m--active-nav-bg {
-        z-index: 1;
-        transition: transform $slidingAT $slidingDelay;
-        transform: translateX(0);
-      }
-    }
-
-    &__controls {
-      font-size: 0;
-    }
-
-    &__control {
-      $controlWidth: 100px;
-
-      overflow: hidden;
-      position: relative;
-      display: inline-block;
-      vertical-align: top;
-      width: $controlWidth;
-      height: 50px;
-      font-size: 14px;
-      color: #fff;
-      text-transform: uppercase;
-      background: transparent;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      transition: background-color $controlAT;
-
-      &.m--active-control {
-        background: $black;
-      }
-
-      &-progress {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 2px;
-        background: #fff;
-        transform-origin: 0 50%;
-        transform: scaleX(0);
-        transition-timing-function: linear !important;
-
-        .m--with-autosliding .m--active-control & {
-          transform: scaleX(1);
-        }
-
-        .m--prev-control & {
-          transform: translateX(100%);
-          transition: transform 0.5s !important;
-        }
-
-        .m--reset-progress & {
-          transform: scaleX(0);
-          transition: transform 0s 0s !important;
-        }
-
-        .m--autosliding-blocked & {
-          transition: all 0s 0s !important;
-          transform: scaleX(0) !important;
-        }
-      }
-    }
-  }
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    0 100%,
+    0 0,
+    6vh 0,
+    6vh 61vh,
+    44vh 61vh,
+    44vh 6vh,
+    6vh 6vh
+  );
+  transform-origin: 50% 0;
+  transition-timing-function: ease-in-out;
+}
+.m--before-sliding .fnc-slide__mask {
+  transform: rotate(-10deg) translate3d(200px, 0, 0);
+  opacity: 0;
+}
+.m--active-slide .fnc-slide__mask {
+  transition: transform 0.7s 1.2222222222s, opacity 0.35s 1.2222222222s;
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+.m--previous-slide .fnc-slide__mask {
+  transition: transform 0.7s 0.3333333333s, opacity 0.35s 0.6833333333s;
+  transform: rotate(10deg) translate3d(-200px, 0, 0);
+  opacity: 0;
+}
+.fnc-slide__mask-inner {
+  z-index: -1;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100vw;
+  height: 100vh;
+  margin-left: -50vw;
+  margin-top: -50vh;
+  background-size: cover;
+  background-position: center center;
+  background-blend-mode: luminosity;
+  transform-origin: 50% 16.5vh;
+  transition-timing-function: ease-in-out;
+}
+.m--before-sliding .fnc-slide__mask-inner {
+  transform: translateY(0) rotate(10deg) translateX(-200px) translateZ(0);
+}
+.m--active-slide .fnc-slide__mask-inner {
+  transition: transform 0.7s 1.2222222222s;
+  transform: translateX(0);
+}
+.m--previous-slide .fnc-slide__mask-inner {
+  transition: transform 0.7s 0.3333333333s;
+  transform: translateY(0) rotate(-10deg) translateX(200px) translateZ(0);
+}
+.fnc-slide__content {
+  z-index: 2;
+  position: absolute;
+  left: 40%;
+  top: 40%;
+}
+.fnc-slide__heading {
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.fnc-slide__heading-line {
+  overflow: hidden;
+  position: relative;
+  padding-right: 20px;
+  font-size: 100px;
+  color: #fff;
+  word-spacing: 10px;
+  cursor: pointer;
+}
+.fnc-slide__heading-line:nth-child(2) {
+  padding-left: 30px;
+}
+.m--before-sliding .fnc-slide__heading-line {
+  transform: translateY(100%);
+}
+.m--active-slide .fnc-slide__heading-line {
+  transition: transform 1.5s 1s;
+  transform: translateY(0);
+}
+.m--previous-slide .fnc-slide__heading-line {
+  transition: transform 1.5s;
+  transform: translateY(-100%);
+}
+.fnc-slide__heading-line span {
+  display: block;
+}
+.m--before-sliding .fnc-slide__heading-line span {
+  transform: translateY(-100%);
+}
+.m--active-slide .fnc-slide__heading-line span {
+  transition: transform 1.5s 1s;
+  transform: translateY(0);
+}
+.m--previous-slide .fnc-slide__heading-line span {
+  transition: transform 1.5s;
+  transform: translateY(100%);
+}
+.fnc-slide__action-btn {
+  position: relative;
+  margin-left: 200px;
+  padding: 5px 15px;
+  font-size: 20px;
+  line-height: 1;
+  color: transparent;
+  border: none;
+  text-transform: uppercase;
+  background: transparent;
+  cursor: pointer;
+  text-align: center;
+  outline: none;
+}
+.fnc-slide__action-btn span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transition: transform 0.3s;
+  transform-origin: 50% 0;
+  line-height: 30px;
+  color: #fff;
+}
+.fnc-slide__action-btn span:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #fff;
+  border-top: none;
+  border-bottom: none;
+}
+.fnc-slide__action-btn span:after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  line-height: 30px;
+  background: #1f2833;
+  opacity: 0;
+  transform-origin: 50% 0;
+  transform: translateY(100%) rotateX(-90deg);
+  transition: opacity 0.15s 0.15s;
+}
+.fnc-slide__action-btn:hover span {
+  transform: rotateX(90deg);
+}
+.fnc-slide__action-btn:hover span:after {
+  opacity: 1;
+  transition: opacity 0.15s;
+}
+.fnc-nav {
+  z-index: 5;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.fnc-nav__bgs {
+  z-index: -1;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.fnc-nav__bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.fnc-nav__bg.m--nav-bg-before {
+  z-index: 2 !important;
+  transform: translateX(100%);
+}
+.fnc-nav__bg.m--active-nav-bg {
+  z-index: 1;
+  transition: transform 1s 0.6666666667s;
+  transform: translateX(0);
+}
+.fnc-nav__controls {
+  font-size: 0;
+}
+.fnc-nav__control {
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 100px;
+  height: 50px;
+  font-size: 14px;
+  color: #fff;
+  text-transform: uppercase;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.5s;
+}
+.fnc-nav__control.m--active-control {
+  background: #1f2833;
+}
+.fnc-nav__control-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition-timing-function: linear !important;
+}
+.m--with-autosliding .m--active-control .fnc-nav__control-progress {
+  transform: scaleX(1);
+}
+.m--prev-control .fnc-nav__control-progress {
+  transform: translateX(100%);
+  transition: transform 0.5s !important;
+}
+.m--reset-progress .fnc-nav__control-progress {
+  transform: scaleX(0);
+  transition: transform 0s 0s !important;
+}
+.m--autosliding-blocked .fnc-nav__control-progress {
+  transition: all 0s 0s !important;
+  transform: scaleX(0) !important;
 }
 
 /* NOT PART OF COMMON SLIDER STYLES */
-$font: "Open Sans", Helvetica, Arial, sans-serif;
-$creditsAT: 0.7s;
-$creditsWidth: 400px;
-
 body {
   margin: 0;
 }
@@ -433,370 +359,132 @@ body {
   height: 100vh;
   perspective: 1500px;
   background: #000;
-
-  &__credits {
-    box-sizing: border-box;
-    overflow-y: auto;
-    z-index: 1;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 100%;
-    max-width: 520px;
-    height: 100%;
-    padding: 20px;
-    background: #36454f;
-    font-family: $font;
-    color: #fff;
-    text-align: center;
-    transition: transform $creditsAT;
-    transform: translate3d(100%, 0, 0) rotateY(-45deg);
-    will-change: transform;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: left;
-    gap: 20px;
-    overflow: hidden;
-    .credits-active & {
-      transition: transform $creditsAT math.div($creditsAT, 3);
-      transform: translate3d(0, 0, 0);
-    }
-
-    *,
-    *:before,
-    *:after {
-      box-sizing: border-box;
-    }
-
-    &-close {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      width: 28px;
-      height: 28px;
-      cursor: pointer;
-
-      &:before,
-      &:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 50%;
-        width: 100%;
-        height: 2px;
-        margin-top: -1px;
-        background: #fff;
-      }
-      &:before {
-        transform: rotate(45deg);
-      }
-      &:after {
-        transform: rotate(-45deg);
-      }
-    }
-
-    &-heading {
-      text-transform: uppercase;
-      font-size: 40px;
-      margin-bottom: 20px;
-    }
-
-    &-img {
-      display: block;
-      width: 60%;
-      margin: 0 auto 30px;
-      border-radius: 10px;
-    }
-
-    &-name {
-      margin-bottom: 20px;
-      font-size: 30px;
-    }
-
-    &-link {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 24px;
-      color: #fff;
-    }
-
-    &-blend {
-      font-size: 30px;
-      margin-bottom: 10px;
-    }
-  }
+}
+.demo-cont__credits {
+  box-sizing: border-box;
+  overflow-y: auto;
+  z-index: 1;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 400px;
+  height: 100%;
+  padding: 20px 10px 30px;
+  background: #36454f;
+  color: #fff;
+  text-align: center;
+  transition: transform 0.7s;
+  transform: translate3d(100%, 0, 0) rotateY(-45deg);
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  gap: 20px;
+  overflow: hidden;
+}
+.credits-active .demo-cont__credits {
+  transition: transform 0.7s 0.2333333333s;
+  transform: translate3d(0, 0, 0);
+}
+.demo-cont__credits *,
+.demo-cont__credits *:before,
+.demo-cont__credits *:after {
+  box-sizing: border-box;
+}
+.demo-cont__credits-close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+.demo-cont__credits-close:before,
+.demo-cont__credits-close:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  margin-top: -1px;
+  background: #fff;
+}
+.demo-cont__credits-close:before {
+  transform: rotate(45deg);
+}
+.demo-cont__credits-close:after {
+  transform: rotate(-45deg);
+}
+.demo-cont__credits-heading {
+  text-transform: uppercase;
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+.demo-cont__credits-img {
+  display: block;
+  width: 60%;
+  margin: 0 auto 30px;
+  border-radius: 10px;
+}
+.demo-cont__credits-name {
+  margin-bottom: 20px;
+  font-size: 30px;
+}
+.demo-cont__credits-link {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #fff;
+}
+.demo-cont__credits-blend {
+  font-size: 30px;
+  margin-bottom: 10px;
 }
 
 .example-slider {
   z-index: 2;
   transform: translate3d(0, 0, 0);
-  transition: transform $creditsAT;
-
-  .credits-active & {
-    transform: translate3d($creditsWidth * -1, 0, 0) rotateY(10deg) scale(0.9);
-  }
-
-  .fnc-slide {
-    &-1 {
-      .fnc-slide__inner,
-      .fnc-slide__mask-inner {
-        background-image: url("/assets/images/regular2.jpg");
-      }
-    }
-    &-2 {
-      .fnc-slide__inner,
-      .fnc-slide__mask-inner {
-        background-image: url("/assets/images/deep2.jpg");
-      }
-    }
-    &-3 {
-      .fnc-slide__inner,
-      .fnc-slide__mask-inner {
-        background-image: url("/assets/images/moveIn2.jpg");
-      }
-
-      .fnc-slide__inner:before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.1);
-      }
-    }
-    &-4 {
-      .fnc-slide__inner,
-      .fnc-slide__mask-inner {
-        background-image: url("/assets/images/moveOut.jpg");
-      }
-
-      .fnc-slide__inner:before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.2);
-      }
-    }
-  }
-
-  .fnc-slide__heading {
-    cursor: pointer;
-  }
+  transition: transform 0.7s;
 }
-
-/* COLORFUL SWITCH STYLES 
-     ORIGINAL DEMO - https://codepen.io/suez/pen/WQjwOb */
-$w: 180px;
-$_baseW: 280;
-$h: math.div($w * 120, $_baseW);
-$br: math.div($w * 50, $_baseW);
-$outerOffset: 5px;
-$animTime: 0.5s;
-$dotS: math.div($w * 8, $_baseW);
-$dotLeft: math.div($w * 204, $_baseW);
-$dotLeftOffset: math.div($w * -125, $_baseW);
-$offS: math.div($w * 64, $_baseW);
-$onLeft: math.div($w * 162, $_baseW);
-$onTop: math.div($w * 35, $_baseW);
-$onWidth: math.div($w * 30, $_baseW);
-$onHeight: math.div($w * 56, $_baseW);
-$cubIn: cubic-bezier(0.52, -0.96, 0.51, 1.28);
-$cubOut: cubic-bezier(0.67, -0.16, 0.47, 1.61);
-
-@mixin switchOn() {
-  .colorful-switch__checkbox:checked ~ .colorful-switch__label & {
-    @content;
-  }
+.credits-active .example-slider {
+  transform: translate3d(-400px, 0, 0) rotateY(10deg) scale(0.9);
 }
-
-.colorful-switch {
-  position: relative;
-  width: $w;
-  height: $h;
-  margin: 0 auto;
-  border-radius: $br;
-  background: #cfcfcf;
-
-  &:before {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    left: -$outerOffset;
-    top: -$outerOffset;
-    width: $w + $outerOffset * 2;
-    height: $h + $outerOffset * 2;
-    border-radius: $br + $outerOffset;
-    background: #314239;
-    transition: background-color 0.3s;
-  }
-
-  &:hover:before {
-    background: #4c735f;
-  }
-
-  &__checkbox {
-    z-index: -10;
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-  }
-
-  &__label {
-    z-index: 1;
-    overflow: hidden;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: $br;
-    cursor: pointer;
-  }
-
-  &__bg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: math.div($w * 3, 1);
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      #14dcd6 0,
-      #10e7bd $w,
-      #ef9c29 math.div($w * 2, 1),
-      #e76339 100%
-    );
-    transition: transform $animTime;
-    transform: translate3d(math.div($w * -2, 1), 0, 0);
-
-    @include switchOn {
-      transform: translate3d(0, 0, 0);
-    }
-  }
-
-  &__dot {
-    position: absolute;
-    left: $dotLeft;
-    top: 50%;
-    width: $dotS;
-    height: $dotS;
-    margin-left: math.div($dotS, -2);
-    margin-top: math.div($dotS, -2);
-    border-radius: 50%;
-    background: #fff;
-    transition: transform $animTime;
-    transform: translate3d(0, 0, 0);
-
-    @include switchOn {
-      transform: translate3d($dotLeftOffset, 0, 0);
-    }
-  }
-
-  &__on {
-    position: absolute;
-    left: $onLeft;
-    top: $onTop;
-    width: $onWidth;
-    height: $onHeight;
-    transition: transform $animTime;
-    transform: translate3d(0, 0, 0);
-
-    @include switchOn {
-      transform: translate3d($dotLeftOffset, 0, 0);
-    }
-
-    &__inner {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      transition: transform math.div($animTime, 2) 0s $cubIn;
-      transform-origin: 100% 50%;
-      transform: rotate(45deg) scale(0) translateZ(0);
-
-      @include switchOn {
-        transition: transform math.div($animTime, 2) math.div($animTime, 2)
-          $cubOut;
-        transform: rotate(45deg) scale(1) translateZ(0);
-      }
-
-      &:before,
-      &:after {
-        content: "";
-        position: absolute;
-        border-radius: math.div($dotS, 2);
-        background: #fff;
-      }
-      &:before {
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: math.div($dotS + 1, 1);
-      }
-      &:after {
-        right: 0;
-        top: 0;
-        width: math.div($dotS + 1, 1);
-        height: 100%;
-      }
-    }
-  }
-
-  &__off {
-    position: absolute;
-    left: $dotLeft;
-    top: 50%;
-    width: $offS;
-    height: $offS;
-    margin-left: math.div($offS, -2);
-    margin-top: math.div($offS, -2);
-    transition: transform $animTime;
-    transform: translate3d(0, 0, 0);
-
-    @include switchOn {
-      transform: translate3d($dotLeftOffset, 0, 0);
-    }
-
-    &:before,
-    &:after {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 50%;
-      width: 100%;
-      height: $dotS;
-      margin-top: math.div($dotS, -2);
-      border-radius: math.div($dotS, 2);
-      background: #fff;
-      transition: transform math.div($animTime, 2) math.div($animTime, 2);
-
-      @include switchOn {
-        transition-delay: 0s;
-      }
-    }
-    &:before {
-      transform: rotate(45deg) scaleX(1) translateZ(0);
-
-      @include switchOn {
-        transform: rotate(45deg) scaleX(0) translateZ(0);
-      }
-    }
-    &:after {
-      transition-timing-function: $cubOut;
-      transform: rotate(-45deg) scaleX(1) translateZ(0);
-
-      @include switchOn {
-        transition-timing-function: ease;
-        transform: rotate(-45deg) scaleX(0) translateZ(0);
-      }
-    }
-  }
+.example-slider .fnc-slide-1 .fnc-slide__inner,
+.example-slider .fnc-slide-1 .fnc-slide__mask-inner {
+  background-image: url("/assets/images/regular2.jpg");
+}
+.example-slider .fnc-slide-2 .fnc-slide__inner,
+.example-slider .fnc-slide-2 .fnc-slide__mask-inner {
+  background-image: url("/assets/images/deep2.jpg");
+}
+.example-slider .fnc-slide-3 .fnc-slide__inner,
+.example-slider .fnc-slide-3 .fnc-slide__mask-inner {
+  background-image: url("/assets/images/moveIn2.jpg");
+}
+.example-slider .fnc-slide-3 .fnc-slide__inner:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+}
+.example-slider .fnc-slide-4 .fnc-slide__inner,
+.example-slider .fnc-slide-4 .fnc-slide__mask-inner {
+  background-image: url("/assets/images/moveOut.jpg");
+}
+.example-slider .fnc-slide-4 .fnc-slide__inner:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .demo-cont__credits {
@@ -1050,6 +738,98 @@ $borderW: 5px;
     }
     &__blob {
       background: #0fe0f5;
+    }
+  }
+}
+
+@media (max-width: 950px) {
+  .fnc-slide__content {
+    left: 20%;
+  }
+
+  .fnc-slide__heading-line {
+    font-size: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fnc-slide__content {
+    left: 10%;
+  }
+  .fnc-slide__heading-line {
+    font-size: 70px;
+  }
+}
+
+@media (max-width: 465px) {
+  .fnc-slide__content {
+    left: 5%;
+  }
+  .fnc-slide__heading-line {
+    font-size: 60px;
+  }
+  .fnc-nav__control {
+    font-size: 11px;
+    width: 70px;
+    height: 40px;
+  }
+
+  .fnc-slide__mask {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% 100%,
+      0 100%,
+      0 0,
+      6vh 0,
+      6vh 61vh,
+      41vh 61vh,
+      41vh 6vh,
+      6vh 6vh
+    );
+  }
+}
+
+@media (max-width: 415px) {
+  .demo-cont {
+    background: #36454f;
+  }
+  .demo-cont__credits {
+    width: 350px;
+    left: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .fnc-slide__heading-line {
+    font-size: 40px;
+  }
+  .fnc-slide__action-btn {
+    margin-left: 100px;
+  }
+}
+
+@media (max-width: 360px) {
+  .demo-cont__credits {
+    padding: 20px 0;
+    left: -12px;
+    .cardHeads {
+      justify-content: space-evenly;
+    }
+    p {
+      max-width: 270px;
+      text-align: justify;
+      padding: 0 10px;
+      font-size: 14px;
+    }
+    ul {
+      p,
+      li {
+        font-size: 12px;
+        padding: 0 10px;
+        max-width: 270px;
+        text-align: justify;
+      }
     }
   }
 }

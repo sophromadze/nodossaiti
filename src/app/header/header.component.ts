@@ -11,6 +11,8 @@ export class HeaderComponent {
   isScrolled = false;
   isTransparentPage = false;
   logoSrc = '/assets/images/smallLogoLight.png'; // Default logo
+  isMenuOpen = false;
+  isDropdownOpen = false;
 
   constructor(
     private router: Router,
@@ -20,8 +22,22 @@ export class HeaderComponent {
       if (event instanceof NavigationEnd) {
         this.checkRoute(event.url);
         this.scrollToTop();
+        this.closeMenuAndDropdown(); // Close menu and dropdown on navigation
       }
     });
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  closeMenuAndDropdown() {
+    this.isMenuOpen = false;
+    this.isDropdownOpen = false;
   }
 
   @HostListener('window:scroll', [])
@@ -32,6 +48,7 @@ export class HeaderComponent {
 
   navigateToCalculator(type: string) {
     this.router.navigate(['/calculator'], { queryParams: { type } });
+    this.closeMenuAndDropdown(); // Close the dropdown after navigation
   }
 
   private checkRoute(url: string) {

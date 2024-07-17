@@ -1,0 +1,57 @@
+#top-btn {
+  width: 50px;
+  height: 50px;
+  bottom: -50px; /* Start hidden below the viewport */
+  right: 20px;
+  position: fixed;
+  text-align: center;
+  border-radius: 100px;
+  background-color: #0fe0f5;
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.12), 3px 4px 8px 0px rgba(0, 0, 0, 0.11);
+  transition: all 0.8s;
+  z-index: 105;
+  opacity: 0; /* Start invisible */
+}
+
+#top-btn.visible {
+  bottom: 40px; /* Final position */
+  opacity: 1; /* Make it visible */
+}
+
+#top-btn:hover {
+  background-color: #59aecb;
+}
+
+#top-btn i:hover {
+  margin-top: -5px;
+}
+
+#top-btn i {
+  padding-top: -15px;
+  font-size: 20px;
+  line-height: 50px;
+  color: #ffffff;
+  transition: all 0.1s;
+}
+
+@media (max-width: 760px) {
+  #top-btn {
+    width: 30px;
+    height: 30px;
+    transition: none;
+  }
+  #top-btn i {
+    margin-top: -10px;
+    font-size: 10px;
+    transition: none;
+  }
+
+  #top-btn:hover {
+    background-color: #0fe0f5;
+  }
+
+  #top-btn i:hover {
+    margin-top: -15px;
+  }
+}

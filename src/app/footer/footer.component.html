@@ -1,37 +1,38 @@
 <div class="footerContainer">
-  <div class="upper">
-    <div class="logo">
-      <a href="https://thedreamcleaning.com/">
-        <img src="/assets/images/logoLight.png" alt=""
-      /></a>
+  <div class="container">
+    <div class="upper">
+      <div class="logo">
+        <a href="https://thedreamcleaning.com/">
+          <img src="/assets/images/logoLight.png" alt=""
+        /></a>
+      </div>
+      <button class="bN" (click)="navigateToCalculator()">Book Now</button>
+      <div class="socialMedia">
+        <a
+          href="https://www.facebook.com/profile.php?id=61562078646597&mibextid=LQQJ4d"
+          target="_blank"
+          ><i class="fa-brands fa-2x fa-facebook-f"></i
+        ></a>
+        <a
+          href="https://www.instagram.com/thedream_cleaning?utm_source=qr"
+          target="_blank"
+          ><i class="fa-brands fa-2x fa-instagram"></i
+        ></a>
+        <i class="fa-brands fa-2x fa-whatsapp"></i>
+      </div>
     </div>
-    <button class="bN" (click)="navigateToCalculator()">Book Now</button>
-    <div class="socialMedia">
-      <a
-        href="https://www.facebook.com/profile.php?id=61562078646597&mibextid=LQQJ4d"
-        target="_blank"
-        ><i class="fa-brands fa-2x fa-facebook-f"></i
-      ></a>
-      <a
-        href="https://www.instagram.com/thedream_cleaning?utm_source=qr"
-        target="_blank"
-        ><i class="fa-brands fa-2x fa-instagram"></i
-      ></a>
-      <i class="fa-brands fa-2x fa-whatsapp"></i>
+    <div class="mid">
+      <ul>
+        <li><a (click)="navigateToHome()">Home</a></li>
+        <li><a routerLink="/about">About</a></li>
+        <li><a routerLink="/contact">Contact</a></li>
+      </ul>
     </div>
-  </div>
-  <div class="mid">
-    <ul>
-      <li><a (click)="navigateToHome()">Home</a></li>
-      <li><a routerLink="/about">About</a></li>
-      <li><a routerLink="/contact">Contact</a></li>
-    </ul>
-  </div>
-  <div class="rights">
-    <p>Copyright © 2024 - Dream Cleaning Service NYC. All rights reserved.</p>
-    <div>
-      <a href="">Privacy Policy</a>
-      <a href="">Terms of Service</a>
+    <div class="rights">
+      <p>Copyright © 2024 - Dream Cleaning Service NYC. All rights reserved.</p>
+      <div>
+        <a href="">Privacy Policy</a>
+      </div>
     </div>
   </div>
 </div>

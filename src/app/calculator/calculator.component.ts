@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import flatpickr from 'flatpickr';
 import { environment } from 'src/environments/environment.development';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-calculator',
@@ -18,6 +19,7 @@ import { environment } from 'src/environments/environment.development';
 })
 export class CalculatorComponent implements OnInit, AfterViewInit {
   calculatorForm: FormGroup;
+  private inputTimeout: any;
   minDate!: string;
   isSameDayService: boolean = false;
   showTooltip: boolean = false;
@@ -27,6 +29,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   totalTime: number | null = null;
   salesTax: number | null = null;
   total: number | null = null;
+  tips: number = 0;
   isCustomCleaning: boolean = false;
   deepCleaningChecked: boolean = false;
   requiredCleaners: number | null = null;
@@ -45,6 +48,13 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     { value: 'Every 2 Weeks', label: 'Every 2 Weeks 8% Discount', discount: 8 },
     { value: 'Every 3 Weeks', label: '3 Weekly 5.5%', discount: 5.5 },
     { value: 'Monthly', label: 'Monthly Discount 3%', discount: 99.5 },
+  ];
+  discounts = [
+    {
+      value: 'First Time',
+      label: 'First Time Service',
+      discount: 10,
+    },
   ];
   cleanersOptions = [1, 2, 3, 4, 5];
   hoursOptions = [
@@ -212,7 +222,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef,
+    private location: Location
   ) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -247,6 +258,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       serviceDate: [tomorrowDateString, Validators.required],
       serviceTime: ['09:00', Validators.required],
       frequency: ['One Time', Validators.required],
+      discount: [''],
       entryMethod: ['', Validators.required],
       // discountCode: [''],
       specialInstructions: [''],
@@ -279,6 +291,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       city: ['', Validators.required],
       state: ['NY', Validators.required],
       zipCode: ['', Validators.required],
+      tips: [0],
     });
 
     this.calculatorForm.get('serviceType')!.valueChanges.subscribe(() => {
@@ -297,6 +310,35 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     this.calculatorForm.valueChanges.subscribe(() => {
       this.calculatePriceAndTime();
     });
+  }
+
+  onTipsInput(event: any): void {
+    const input = event.target;
+    const tipsControl = this.calculatorForm.get('tips');
+    let tipsValue = input.value;
+
+    // Remove non-integer characters
+    tipsValue = tipsValue.replace(/[^0-9]/g, '');
+
+    // Update the form control value with the filtered input
+    tipsControl?.setValue(tipsValue, { emitEvent: false });
+
+    // Clear previous timeout to prevent multiple timeouts
+    clearTimeout(this.inputTimeout);
+
+    // Set a new timeout to check the value after 2 seconds
+    this.inputTimeout = setTimeout(() => {
+      if (
+        tipsValue !== null &&
+        tipsValue !== '' &&
+        +tipsValue > 0 &&
+        +tipsValue < 10
+      ) {
+        tipsValue = 10;
+        tipsControl?.setValue(tipsValue, { emitEvent: true });
+        input.value = tipsValue; // Ensure the input field is updated
+      }
+    }, 2000);
   }
 
   ngOnInit(): void {
@@ -358,6 +400,17 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
             : this.calculatorForm.get('sameDay')!.setValue(false);
         });
 
+      this.calculatorForm.get('tips')!.valueChanges.subscribe((value) => {
+        if (value < 10 && value > 0) {
+          // Clear previous timeout to prevent multiple timeouts
+          clearTimeout(this.inputTimeout);
+
+          this.inputTimeout = setTimeout(() => {
+            this.calculatorForm.get('tips')!.setValue(10);
+          }, 50);
+        }
+      });
+
       this.calculatorForm.setValue({
         serviceType: params['serviceType'] || 'Residential',
         bedrooms: params['bedrooms'] || 'studio',
@@ -366,6 +419,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         serviceDate: params['serviceDate'] || tomorrowDateString,
         serviceTime: params['serviceTime'] || '9:00' + ' ' + 'AM',
         frequency: params['frequency'] || 'One Time',
+        discount: params['discount'] || null,
         entryMethod: params['entryMethod'] || '',
         specialInstructions: params['specialInstructions'] || null,
         sameDay: params['sameDay'] || false,
@@ -396,6 +450,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         city: params['city'] || '',
         state: params['state'] || 'NY',
         zipCode: params['zipCode'] || null,
+        tips: params['tips'] ? parseFloat(params['tips']) : '0',
       });
 
       const type = params['type'];
@@ -421,47 +476,47 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     });
 
     this.calculatorForm.valueChanges.subscribe(() => {
-      this.router.navigate([], {
-        queryParams: {
-          serviceType: this.calculatorForm.value.serviceType || null,
-          bedrooms: this.calculatorForm.value.bedrooms || null,
-          bathrooms: this.calculatorForm.value.bathrooms || null,
-          squareFeet: this.calculatorForm.value.squareFeet || null,
-          serviceDate: this.calculatorForm.value.serviceDate || null,
-          serviceTime: this.calculatorForm.value.serviceTime || null,
-          frequency: this.calculatorForm.value.frequency || null,
-          entryMethod: this.calculatorForm.value.entryMethod || null,
-          specialInstructions:
-            this.calculatorForm.value.specialInstructions || null,
-          sameDay: this.calculatorForm.value.sameDay || null,
-          deepCleaning: this.calculatorForm.value.deepCleaning || null,
-          insideOfClosets: this.calculatorForm.value.insideOfClosets || null,
-          insideTheOven: this.calculatorForm.value.insideTheOven || null,
-          insideTheFridge: this.calculatorForm.value.insideTheFridge || null,
-          washingDishes: this.calculatorForm.value.washingDishes || null,
-          wallCleaning: this.calculatorForm.value.wallCleaning || null,
-          insideWindows: this.calculatorForm.value.insideWindows || null,
-          petHairClean: this.calculatorForm.value.petHairClean || null,
-          insideCabinets: this.calculatorForm.value.insideCabinets || null,
-          balcony: this.calculatorForm.value.balcony || null,
-          supplies: this.calculatorForm.value.supplies || null,
-          office: this.calculatorForm.value.office || null,
-          laundry: this.calculatorForm.value.laundry || null,
-          folding: this.calculatorForm.value.folding || null,
-          organizing: this.calculatorForm.value.organizing || null,
-          vacuum2: this.calculatorForm.value.vacuum2 || null,
-          cleaners: this.calculatorForm.value.cleaners || null,
-          hours: this.calculatorForm.value.hours || null,
-          name: this.calculatorForm.value.name || null,
-          lastName: this.calculatorForm.value.lastName || null,
-          email: this.calculatorForm.value.email || null,
-          cellNumber: this.calculatorForm.value.cellNumber || null,
-          address: this.calculatorForm.value.address || null,
-          apartment: this.calculatorForm.value.apartment || null,
-          city: this.calculatorForm.value.city || null,
-          state: this.calculatorForm.value.state || null,
-          zipCode: this.calculatorForm.value.zipCode || null,
-        },
+      this.updateUrlWithoutHistory({
+        serviceType: this.calculatorForm.value.serviceType || null,
+        bedrooms: this.calculatorForm.value.bedrooms || null,
+        bathrooms: this.calculatorForm.value.bathrooms || null,
+        squareFeet: this.calculatorForm.value.squareFeet || null,
+        serviceDate: this.calculatorForm.value.serviceDate || null,
+        serviceTime: this.calculatorForm.value.serviceTime || null,
+        frequency: this.calculatorForm.value.frequency || null,
+        discount: this.calculatorForm.value.discount || null,
+        entryMethod: this.calculatorForm.value.entryMethod || null,
+        specialInstructions:
+          this.calculatorForm.value.specialInstructions || null,
+        sameDay: this.calculatorForm.value.sameDay || null,
+        deepCleaning: this.calculatorForm.value.deepCleaning || null,
+        insideOfClosets: this.calculatorForm.value.insideOfClosets || null,
+        insideTheOven: this.calculatorForm.value.insideTheOven || null,
+        insideTheFridge: this.calculatorForm.value.insideTheFridge || null,
+        washingDishes: this.calculatorForm.value.washingDishes || null,
+        wallCleaning: this.calculatorForm.value.wallCleaning || null,
+        insideWindows: this.calculatorForm.value.insideWindows || null,
+        petHairClean: this.calculatorForm.value.petHairClean || null,
+        insideCabinets: this.calculatorForm.value.insideCabinets || null,
+        balcony: this.calculatorForm.value.balcony || null,
+        supplies: this.calculatorForm.value.supplies || null,
+        office: this.calculatorForm.value.office || null,
+        laundry: this.calculatorForm.value.laundry || null,
+        folding: this.calculatorForm.value.folding || null,
+        organizing: this.calculatorForm.value.organizing || null,
+        vacuum2: this.calculatorForm.value.vacuum2 || null,
+        cleaners: this.calculatorForm.value.cleaners || null,
+        hours: this.calculatorForm.value.hours || null,
+        name: this.calculatorForm.value.name || null,
+        lastName: this.calculatorForm.value.lastName || null,
+        email: this.calculatorForm.value.email || null,
+        cellNumber: this.calculatorForm.value.cellNumber || null,
+        address: this.calculatorForm.value.address || null,
+        apartment: this.calculatorForm.value.apartment || null,
+        city: this.calculatorForm.value.city || null,
+        state: this.calculatorForm.value.state || null,
+        zipCode: this.calculatorForm.value.zipCode || null,
+        tips: this.calculatorForm.value.tips || null,
       });
     });
 
@@ -472,6 +527,11 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initializeFlatpickr();
+  }
+
+  updateUrlWithoutHistory(queryParams: any): void {
+    const url = this.router.createUrlTree([], { queryParams }).toString();
+    this.location.replaceState(url);
   }
 
   // Method to get the label for bedrooms
@@ -603,6 +663,20 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   setFrequency(frequency: string): void {
     this.calculatorForm.get('frequency')!.setValue(frequency);
     this.calculatePriceAndTime();
+  }
+
+  setDiscount(discount: string | null): void {
+    this.calculatorForm.get('discount')!.setValue(discount);
+    this.calculatePriceAndTime();
+  }
+
+  toggleDiscount(discount: string): void {
+    const currentDiscount = this.calculatorForm.get('discount')!.value;
+    if (currentDiscount === discount) {
+      this.setDiscount(null); // Unselect if already selected
+    } else {
+      this.setDiscount(discount); // Select the new discount
+    }
   }
 
   onExtraServiceChanged(extraServiceData: {
@@ -753,11 +827,22 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     const frequencyDiscount =
       this.frequencies.find((freq) => freq.value === formValues.frequency)
         ?.discount || 0;
-    const discountAmount = (basePrice * frequencyDiscount) / 100;
+    const freqDiscountAmount = (basePrice * frequencyDiscount) / 100;
+    basePrice -= freqDiscountAmount;
+
+    const discount =
+      this.discounts.find((disc) => disc.value === formValues.discount)
+        ?.discount || 0;
+    const discountAmount = (basePrice * discount) / 100;
     basePrice -= discountAmount;
 
     const salesTax = basePrice * 0.0888;
-    const total = basePrice + salesTax;
+
+    // Sanitize the tips value
+    this.tips = formValues.tips ? parseFloat(formValues.tips) : 0;
+
+    // Calculate total without including tips in the sales tax calculation
+    const total = basePrice + salesTax + this.tips;
 
     this.totalPrice = basePrice;
     this.subTotalTime = subTotalTime;
@@ -831,6 +916,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       serviceDate: '',
       serviceTime: '',
       frequency: 'One Time',
+      discount: '',
       entryMethod: '',
       specialInstructions: '',
       sameDay: false,
@@ -870,7 +956,6 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       : formValues.serviceDate;
 
     const formattedServiceTime = this.formatTimeToAmPm(formValues.serviceTime);
-    // შესამოწმებელია ლაივზე.
 
     const subTotalTimeText = this.isCustomCleaning
       ? '0 hours and 0 minutes'
@@ -946,6 +1031,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         Service Date: ${serviceDate}
         Service Time: ${formattedServiceTime}
         Frequency: ${formValues.frequency}
+        Discount: ${formValues.discount ?? 'None'}
         Entry Method: ${entryMethodText}
         Special Instructions: ${formValues.specialInstructions || 'None'}
         ${extraServicesText}
@@ -989,6 +1075,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         Service Date: ${serviceDate}
         Service Time: ${formattedServiceTime}
         Frequency: ${formValues.frequency}
+        Discount: ${formValues.discount ?? 'None'}
         Entry Method: ${entryMethodText}
         Special Instructions For Cleaners: ${
           formValues.specialInstructions || 'None'

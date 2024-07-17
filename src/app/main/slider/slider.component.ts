@@ -252,28 +252,28 @@ export class SliderComponent implements OnInit, AfterViewInit {
     });
   }
 
-  navigateToCalculator(type: string): void {
-    let mappedType: string;
+  navigateToCalculator(type: string) {
+    // let mappedType: string;
 
-    switch (type) {
-      case '1':
-        mappedType = 'regular';
-        break;
-      case '2':
-        mappedType = 'deep';
-        break;
-      case '3':
-        mappedType = 'moveIn';
-        break;
-      case '4':
-        mappedType = 'moveOut';
-        break;
-      default:
-        mappedType = 'regular';
-    }
+    // switch (type) {
+    //   case '1':
+    //     mappedType = 'regular';
+    //     break;
+    //   case '2':
+    //     mappedType = 'deep';
+    //     break;
+    //   case '3':
+    //     mappedType = 'moveIn';
+    //     break;
+    //   case '4':
+    //     mappedType = 'moveOut';
+    //     break;
+    //   default:
+    //     mappedType = 'regular';
+    // }
 
     this.router.navigate(['/calculator'], {
-      queryParams: { type: mappedType },
+      queryParams: { type },
     });
   }
 
