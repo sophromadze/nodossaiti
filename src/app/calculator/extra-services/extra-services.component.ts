@@ -5,6 +5,7 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
+  HostListener,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -31,6 +32,7 @@ export class ExtraServicesComponent implements OnChanges {
   @Input() isCustomCleaning = false;
   @Output() extraServiceChanged = new EventEmitter<ExtraServiceData>();
   @Output() sameDayServiceChanged = new EventEmitter<boolean>();
+  buttonText: string = 'Confirm';
 
   extraServices = [
     {
@@ -198,6 +200,8 @@ export class ExtraServicesComponent implements OnChanges {
       ])
     );
 
+    this.updateButtonText(window.innerWidth);
+
     // if (this.parentForm.get('vacuum')!.value) {
     //   this.showVacuumOptions = true;
     //   this.extraServicePrices['vacuum'] = 90;
@@ -212,6 +216,15 @@ export class ExtraServicesComponent implements OnChanges {
         this.clearDateAndUncheckSameDayService();
       });
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.updateButtonText(event.target.innerWidth);
+  }
+
+  updateButtonText(width: number): void {
+    this.buttonText = width <= 1150 ? 'OK' : 'Confirm';
   }
 
   clearDateAndUncheckSameDayService(): void {

@@ -51,6 +51,15 @@ html {
 /* Custom styling for time picker */
 .flatpickr-time {
   background-color: #ebf5ff !important; /* Custom background color for time picker */
+  max-height: none !important;
+  height: 80px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flatpickr-time .numInputWrapper {
+  height: 100% !important;
 }
 
 .flatpickr-time input:hover,
@@ -62,5 +71,72 @@ html {
 .flatpickr-time input:focus,
 .flatpickr-am-pm:focus {
   background-color: #42a5f5 !important; /* Custom focus effect color for time picker and AM/PM selector */
-  color: #fff;
+  color: #fff !important;
+}
+
+.noCalendar .numInputWrapper span {
+  opacity: 1 !important;
+  width: 50px !important;
+}
+
+.numInputWrapper span.arrowUp,
+.numInputWrapper span.arrowDown {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.noCalendar .flatpickr-time input.flatpickr-hour,
+.noCalendar .flatpickr-time input.flatpickr-minute {
+  text-align: left !important;
+  padding-left: 29px !important;
+  font-weight: bold;
+}
+
+.flatpickr-calendar.open {
+  z-index: 5 !important;
+}
+
+.numInputWrapper span.arrowUp:after {
+  top: 40% !important;
+}
+
+.flatpickr-am-pm,
+.flatpickr-time .flatpickr-time-separator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold !important;
+}
+
+.numInputWrapper span:hover {
+  background: #42a5f5 !important;
+}
+.numInputWrapper span:active {
+  background: #42a5f5 !important;
+}
+
+.numInputWrapper:hover {
+  background: #7bc1fa !important;
+}
+
+@media (max-width: 400px) {
+  .flatpickr-calendar {
+    width: 280px !important;
+    .flatpickr-rContainer {
+      max-width: 280px;
+      min-width: 280px;
+    }
+    .dayContainer {
+      min-width: 275px;
+      max-width: 275px;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .flatpickr-time input.flatpickr-hour,
+  .flatpickr-time input.flatpickr-minute {
+    padding-left: 19px !important;
+  }
 }

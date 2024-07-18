@@ -10,11 +10,10 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   &.transparentPage {
-    background: #fff !important;
+    background: #fffc !important;
     color: #000 !important;
 
     .upperDiv {
-      background: #ebf5ff !important;
       color: #000;
       a {
         text-decoration: none;
@@ -25,10 +24,6 @@
       }
       div:hover {
         color: $secondary-color !important;
-      }
-
-      .logo:hover {
-        filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.41));
       }
     }
 
@@ -58,6 +53,14 @@
 
       .mainMenu {
         .cleaningServiceDropdown {
+          background: #fffc;
+          background: linear-gradient(
+            180deg,
+            rgba(168, 168, 168, 0) 5%,
+            rgba(255, 255, 255, 0.705) 7%,
+            rgba(255, 255, 255, 0.904) 50%,
+            #fffc 90%
+          );
           li {
             &:not(:last-child) {
               border-bottom: 1px dotted $secondary-color;
@@ -71,7 +74,7 @@
     }
 
     .mainMenu.show {
-      background: #fff !important;
+      background: #ffffffe7 !important;
     }
 
     .mainMenu a {
@@ -97,7 +100,7 @@
         color: inherit;
       }
       &:hover {
-        color: $secondary-color !important;
+        filter: drop-shadow(2px 2px 3px rgba(2, 5, 136, 0.41)) !important;
       }
     }
   }
@@ -168,8 +171,8 @@
     .gradient-text {
       background: linear-gradient(
         175deg,
-        #a8a8a8 30%,
-        #cacaca 50%,
+        #a8a8a8 20%,
+        #cacaca 40%,
         #ffffff 90%
       );
       -webkit-background-clip: text;
@@ -282,7 +285,7 @@
     .socialMedia {
       display: flex;
       gap: 15px;
-      cursor: pointer;
+
       align-items: center;
 
       .fa-whatsapp {
@@ -300,6 +303,7 @@
 
       i {
         transition: transform 0.3s ease;
+        cursor: pointer;
       }
 
       i:hover {
@@ -434,6 +438,6 @@
     }
   }
   .mainDiv .headLeft .mainMenu.show {
-    top: 85px;
+    top: 90px;
   }
 }

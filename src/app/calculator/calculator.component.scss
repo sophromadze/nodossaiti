@@ -1,11 +1,17 @@
+.background {
+  background-image: url("/assets/images/try2.jpg");
+}
+
 .container {
   display: flex;
   gap: 2rem;
   padding: 20px 50px;
-  margin-top: 100px;
-  background-image: url("/assets/images/try2.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
 }
 
 .left-side {
@@ -15,10 +21,12 @@
   padding: 10px;
   background: #ffffffc2;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-top: 100px;
 }
 
 .right-side {
   flex: 1;
+  margin-top: 100px;
 }
 
 .fixed {
@@ -47,7 +55,7 @@
   h1 {
     color: #0006cf;
     text-align: center;
-    padding: 10px;
+    padding: 10px 0;
   }
 
   .summaryContent,
@@ -110,12 +118,20 @@ textarea {
   font-size: 1rem;
   border-color: #42a5f5;
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
+  background-color: #ffffff;
+  color: #000;
   outline: none;
   resize: none;
 }
 
 select {
   cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("/assets/images/chevronDown.png");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center; /* Position the arrow */
+  background-size: 1rem; /* Size the arrow */
 }
 
 .bookNowButton {
@@ -150,7 +166,7 @@ button.btn-success.disabled {
 button.btn-success.disabled:hover::after {
   content: "Please fill out all required fields which have '**' symbols";
   position: absolute;
-  background: #000;
+  background: #0000008f;
   color: #fff;
   padding: 5px;
   border-radius: 3px;
@@ -167,13 +183,14 @@ button.btn-success.disabled:hover::after {
   color: red;
   font-size: 0.875rem;
   margin-top: 3.3rem;
+  max-width: 250px;
 }
 
 .errorEntry {
   position: absolute;
   color: red;
   font-size: 0.875rem;
-  margin-top: 0.3rem;
+  max-width: 250px;
 }
 
 .discountBtn {
@@ -189,14 +206,23 @@ button.btn-success.disabled:hover::after {
 .frequency-buttons .btn {
   flex: 1;
   text-align: center;
-  background-color: #f8f9fa;
+  background-color: #ebf5ff;
   border: 1px solid #ccc;
   padding: 0.75rem;
+  min-width: 120px;
+  flex-shrink: 0;
+  flex-basis: 120px;
+  height: 60px;
+  color: #000;
+  font-weight: 900;
 }
 
-.frequency-buttons .btn.selected,
 .frequency-buttons .btn:hover {
-  background-color: #007bff;
+  border: 1px solid #676cff;
+}
+
+.frequency-buttons .btn.selected {
+  background: #676cff;
   color: #fff;
 }
 
@@ -209,14 +235,19 @@ button.btn-success.disabled:hover::after {
 .discount-buttons .btn {
   flex: 1;
   text-align: center;
-  background-color: #f8f9fa;
+  background-color: #ebf5ff;
   border: 1px solid #ccc;
   padding: 0.5rem;
+  color: #000;
+  font-weight: 900;
 }
 
-.discount-buttons .btn.selected,
 .discount-buttons .btn:hover {
-  background-color: #007bff;
+  border: 1px solid #676cff;
+}
+
+.discount-buttons .btn.selected {
+  background: #676cff;
   color: #fff;
 }
 
@@ -225,8 +256,7 @@ button.btn-success.disabled:hover::after {
 }
 
 .bordered-group {
-  border-bottom: 1px dotted #ccc;
-  padding: 30px 10px;
+  padding: 10px;
   flex: 1;
 }
 
@@ -246,6 +276,15 @@ h3 {
   justify-content: center;
   flex: 1;
   gap: 10px;
+  width: 100%;
+}
+
+.cleanHours {
+  padding: 10px;
+}
+
+.customHours {
+  padding: 10px 0;
 }
 
 .apartment {
@@ -264,6 +303,14 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+}
+
+.dateTime {
+  width: 100%;
+  .col {
+    width: 100%;
+  }
 }
 
 .input-button {
@@ -310,13 +357,6 @@ input.disabled {
   flex: 3;
 }
 
-.error {
-  position: absolute;
-  color: red;
-  font-size: 0.875rem;
-  margin-top: 3.3rem;
-}
-
 .formsGap {
   display: flex;
   flex-direction: column;
@@ -327,50 +367,12 @@ input.disabled {
   align-self: flex-end;
 }
 
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 0.4rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  border-color: #42a5f5;
-  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
-  outline: none;
-  resize: none;
-}
-
-select {
-  cursor: pointer;
-}
-
 .contact-info,
 .address-info {
-  padding: 1rem;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 5px;
-}
-
-.formsGap {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 0.4rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  border-color: #42a5f5;
-  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
-  outline: none;
-  resize: none;
 }
 
 .tips {
@@ -408,8 +410,232 @@ textarea {
   }
 }
 
+.total-price {
+  .second {
+    display: none;
+  }
+}
+
 @media (max-height: 850px) {
   .calculator-card {
     top: 38vh;
+  }
+}
+
+@media (max-width: 1150px) {
+  .container {
+    padding: 10px;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 1020px) {
+  .summary {
+    h1 {
+      font-size: 25px;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+  }
+
+  .left-side,
+  .right-side {
+    margin-top: 94px;
+  }
+
+  .summary {
+    h1 {
+      font-size: 2em;
+    }
+  }
+
+  .left-side {
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+  }
+
+  .right-side {
+    margin-top: 0;
+  }
+
+  .calculator-card {
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    background: #ffffffc2;
+  }
+
+  app-service-description,
+  .first {
+    display: none;
+  }
+
+  .total-price {
+    .second {
+      display: block;
+      padding: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .bordered-group,
+  .contact-info,
+  .address-info {
+    padding: 10px 0;
+  }
+
+  .serviceType {
+    padding: 10px;
+  }
+
+  .dateTime {
+    flex-wrap: wrap;
+    // flex-direction: column;
+    .col {
+      min-width: 310px;
+    }
+  }
+
+  .address-flex {
+    flex: 1;
+  }
+}
+
+@media (max-width: 580px) {
+  .container {
+    h3 {
+      font-size: 16px;
+    }
+
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+      padding: 5px;
+    }
+  }
+  .typeRow {
+    flex-wrap: wrap;
+    div {
+      min-width: 160px;
+    }
+  }
+
+  #squareFeet {
+    text-align: center;
+  }
+
+  .dateTime {
+    flex-direction: column;
+    .col {
+      min-width: auto;
+      width: 100%;
+    }
+  }
+
+  .addressInfoDown {
+    flex-direction: column;
+    div {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .customHours {
+    flex-direction: column;
+  }
+
+  .contactInfo {
+    flex-direction: column;
+    div {
+      width: 100%;
+    }
+  }
+
+  .addressInfoDown {
+    .address-flex {
+      flex-direction: column;
+    }
+  }
+
+  .addressInfoUp {
+    flex-direction: column;
+    div {
+      width: 100%;
+    }
+  }
+
+  .error {
+    margin-top: 3rem;
+  }
+
+  .calculator-card {
+    padding: 10px;
+    .total-price {
+      padding: 10px;
+      p {
+        font-size: 15px;
+      }
+      .total {
+        p {
+          font-size: 18px;
+        }
+      }
+    }
+    .summary {
+      margin: 0 auto;
+      h1 {
+        font-size: 25px;
+      }
+
+      .summaryContent,
+      .summaryTime {
+        p {
+          font-size: 15px;
+        }
+        img {
+          height: 30px;
+          width: 30px;
+        }
+      }
+    }
+  }
+
+  .frequency-buttons .btn {
+    padding: 5px;
+    height: 40px;
+    font-size: 12px;
+    line-height: 14px;
+  }
+}
+
+@media (max-width: 430px) {
+  .left-side {
+    margin-top: 90px;
+  }
+}
+
+@media (max-width: 400px) {
+  .tipsDiscount {
+    flex-direction: column;
+    .tips,
+    .discount {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 350px) {
+  button.btn-success.disabled:hover::after {
+    font-size: 11px;
   }
 }

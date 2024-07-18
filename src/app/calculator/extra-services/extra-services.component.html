@@ -67,7 +67,7 @@
                   class="btn confirm-btn"
                   (click)="confirminsideWindowsNumbers($event)"
                 >
-                  Confirm
+                  {{ buttonText }}
                 </button>
               </div>
             </div>
@@ -79,7 +79,7 @@
               "
               class="insideWindows-selection"
             >
-              Selected: {{ insideWindowsNumbers }} {{ getWindowsText() }}
+              {{ insideWindowsNumbers }} {{ getWindowsText() }}
             </div>
             <div
               *ngIf="extra.controlName === 'organizing' && showOrganizingInput"
@@ -117,7 +117,7 @@
                   class="btn confirm-btn"
                   (click)="confirmOrganizingHours($event)"
                 >
-                  Confirm
+                  {{ buttonText }}
                 </button>
               </div>
             </div>
@@ -130,7 +130,7 @@
               "
               class="organizing-selection"
             >
-              Selected: extra {{ organizingHours }} hours
+              Extra {{ organizingHours }} hours
             </div>
           </button>
           <app-tooltip

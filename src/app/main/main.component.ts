@@ -25,8 +25,6 @@ export class MainComponent implements OnInit, OnDestroy {
     // Add more image paths as needed
   ];
   currentImage: string = this.images[0];
-  h2Color: string = '#fff';
-  pColor: string = '#fff';
 
   private imageInterval: any;
   private currentIndex: number = 0;
@@ -56,17 +54,6 @@ export class MainComponent implements OnInit, OnDestroy {
   private changeBackgroundImage(): void {
     this.currentIndex = (this.currentIndex + 1) % this.images.length;
     this.currentImage = this.images[this.currentIndex];
-    this.toggleTextColor();
-  }
-
-  private toggleTextColor(): void {
-    if (this.currentImage === '/assets/images/clean2.jpg') {
-      this.h2Color = '#000';
-      this.pColor = '#000';
-    } else {
-      this.h2Color = '#fff';
-      this.pColor = '#fff';
-    }
   }
 
   navigateToCalculator(type: string): void {

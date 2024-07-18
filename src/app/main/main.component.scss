@@ -4,7 +4,6 @@
   justify-content: space-around;
   align-items: center;
   height: 100vh;
-  padding: 10px 50px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -18,19 +17,22 @@
     width: 100%;
     max-width: 1920px;
     margin: 0 auto;
+    background: rgba(0, 0, 0, 0.404);
+    height: 100%;
+    padding: 10px 50px;
   }
   h2 {
     font-size: 3.2rem;
     line-height: 3.5rem;
     text-align: center;
-    transition: color 1s ease-in-out; // Add transition for color
+    color: #fff;
   }
 
   p {
     width: 100%;
     max-width: 700px;
     font-size: 1.2rem;
-    transition: color 1s ease-in-out; // Add transition for color
+    color: #fff;
   }
 
   .cleanings {
@@ -96,7 +98,10 @@
 
 @media (max-width: 1150px) {
   .main {
-    padding: 10px;
+    .container {
+      padding: 10px;
+      justify-content: center;
+    }
     .cleanings {
       div {
         height: 60px;

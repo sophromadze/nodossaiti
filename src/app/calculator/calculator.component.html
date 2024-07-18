@@ -1,590 +1,602 @@
-<!-- src/app/calculator/calculator.component.html -->
-<link rel="preload" as="image" href="/assets/images/try2.jpg" />
-<div class="container">
-  <div class="left-side">
-    <form [formGroup]="calculatorForm" (ngSubmit)="onSubmit()">
-      <!-- Service Type -->
-      <div class="relative-container">
-        <div class="form-group col bordered-group">
-          <div class="col">
-            <h3>Service Type **</h3>
-            <div class="col">
-              <select
-                formControlName="serviceType"
-                id="serviceType"
-                class="form-control"
-                (change)="onServiceTypeChange()"
-              >
-                <option value="Residential">
-                  Residential Cleaning Service
-                </option>
-                <option value="Move In">Move In Cleaning Package</option>
-                <option value="Move Out">Move Out Cleaning Package</option>
-                <option value="Custom Cleaning">Custom Cleaning</option>
-              </select>
-              <div
-                *ngIf="
-                  calculatorForm.get('serviceType')!.invalid &&
-                  calculatorForm.get('serviceType')!.touched
-                "
-                class="error"
-              >
-                Please select a service type.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bedrooms and Bathrooms -->
-      <div *ngIf="!isCustomCleaning" class="relative-container">
-        <div class="apartment">
-          <h3>Tell us about your apartment **</h3>
-          <div class="form-group row typeRow">
-            <div class="col">
-              <select
-                formControlName="bedrooms"
-                id="bedrooms"
-                class="form-control"
-              >
-                <option value="studio">Studio Clean</option>
-                <option value="one">One Bedroom Clean</option>
-                <option value="two">Two Bedrooms Clean</option>
-                <option value="three">Three Bedrooms Clean</option>
-                <option value="four">Four Bedrooms Clean</option>
-                <option value="five">Five Bedrooms Clean</option>
-                <option value="six">Six Bedrooms Clean</option>
-              </select>
-              <div
-                *ngIf="
-                  calculatorForm.get('bedrooms')!.invalid &&
-                  calculatorForm.get('bedrooms')!.touched
-                "
-                class="error"
-              >
-                Please select the number of bedrooms.
-              </div>
-            </div>
-            <div class="col">
-              <select
-                formControlName="bathrooms"
-                id="bathrooms"
-                class="form-control"
-              >
-                <option value="" disabled>Select number of bathrooms**</option>
-                <option *ngFor="let i of bathroomOptions" [value]="i">
-                  {{ i }} {{ i === 1 ? "Bathroom" : "Bathrooms" }}
-                </option>
-              </select>
-            </div>
-            <div class="col">
+<div class="background">
+  <form [formGroup]="calculatorForm" (ngSubmit)="onSubmit()">
+    <div class="container">
+      <div class="left-side">
+        <!-- Service Type -->
+        <div class="relative-container">
+          <div class="form-group col bordered-group">
+            <div class="col serviceType">
+              <h3>Service Type **</h3>
               <div class="col">
                 <select
-                  formControlName="squareFeet"
-                  id="squareFeet"
+                  formControlName="serviceType"
+                  id="serviceType"
+                  class="form-control"
+                  (change)="onServiceTypeChange()"
+                >
+                  <option value="Residential">
+                    Residential Cleaning Service
+                  </option>
+                  <option value="Move In">Move In Cleaning Package</option>
+                  <option value="Move Out">Move Out Cleaning Package</option>
+                  <option value="Custom Cleaning">Custom Cleaning</option>
+                </select>
+                <div
+                  *ngIf="
+                    calculatorForm.get('serviceType')!.invalid &&
+                    calculatorForm.get('serviceType')!.touched
+                  "
+                  class="error"
+                >
+                  Please select a service type.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bedrooms and Bathrooms -->
+        <div *ngIf="!isCustomCleaning" class="relative-container">
+          <div class="apartment">
+            <h3>Tell us about your apartment **</h3>
+            <div class="form-group row typeRow">
+              <div class="col">
+                <select
+                  formControlName="bedrooms"
+                  id="bedrooms"
                   class="form-control"
                 >
-                  <option
-                    *ngFor="let sqft of squareFeetOptions"
-                    [value]="sqft.value"
-                  >
-                    {{ sqft.value }}
-                  </option>
+                  <option value="studio">Studio Clean</option>
+                  <option value="one">One Bedroom Clean</option>
+                  <option value="two">Two Bedrooms Clean</option>
+                  <option value="three">Three Bedrooms Clean</option>
+                  <option value="four">Four Bedrooms Clean</option>
+                  <option value="five">Five Bedrooms Clean</option>
+                  <option value="six">Six Bedrooms Clean</option>
                 </select>
                 <div
                   *ngIf="
-                    calculatorForm.get('squareFeet')!.invalid &&
-                    calculatorForm.get('squareFeet')!.touched
+                    calculatorForm.get('bedrooms')!.invalid &&
+                    calculatorForm.get('bedrooms')!.touched
                   "
                   class="error"
                 >
-                  Please select a square feet option.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cleaners and Hours (Custom Cleaning) -->
-      <div *ngIf="isCustomCleaning" class="relative-container">
-        <div class="form-group row bordered-group typeRow">
-          <div class="col">
-            <h3>
-              Hourly Service: {{ deepCleaningChecked ? "$75" : "$55" }} per
-              hour/per cleaner
-              <span *ngIf="deepCleaningChecked" class="deep-cleaning-text"
-                >(Deep Cleaning)</span
-              >
-            </h3>
-            <select
-              formControlName="cleaners"
-              id="cleaners"
-              class="form-control"
-            >
-              <option value="" disabled>Select number of cleaners**</option>
-              <option *ngFor="let i of cleanersOptions" [value]="i">
-                {{ i }} {{ i === 1 ? "Cleaner" : "Cleaners" }}
-              </option>
-            </select>
-          </div>
-          <div class="col cleanerHours">
-            <select formControlName="hours" id="hours" class="form-control">
-              <option value="" disabled>Select number of hours**</option>
-              <option *ngFor="let hour of hoursOptions" [value]="hour">
-                {{ formatTimeToHoursAndMinutes(hour) }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- Extra Services -->
-      <app-extra-services
-        [parentForm]="calculatorForm"
-        [isCustomCleaning]="isCustomCleaning"
-        (extraServiceChanged)="onExtraServiceChanged($event)"
-        (sameDayServiceChanged)="onSameDayServiceChanged($event)"
-      ></app-extra-services>
-
-      <!-- Service Date and Time -->
-      <div class="relative-container">
-        <div class="form-group col bordered-group">
-          <h3>Service Date & Time **</h3>
-          <div class="row">
-            <div class="col">
-              <div class="flatpickr" id="datePickerWrapper">
-                <input
-                  type="text"
-                  formControlName="serviceDate"
-                  id="serviceDate"
-                  class="form-control date-input"
-                  placeholder="Service Date**"
-                  data-input
-                  [class.disabled]="calculatorForm.get('serviceDate')!.disabled"
-                  [attr.disabled]="
-                    calculatorForm.get('serviceDate')!.disabled ? true : null
-                  "
-                  [attr.readonly]="
-                    calculatorForm.get('serviceDate')!.disabled ? true : null
-                  "
-                  (mouseenter)="
-                    showTooltip = calculatorForm.get('serviceDate')!.disabled
-                  "
-                  (mouseleave)="showTooltip = false"
-                />
-                <a class="input-button" title="toggle" data-toggle>
-                  <img
-                    style="height: 35px; width: 35px"
-                    class="icon-calendar"
-                    src="/assets/images/calendar.png"
-                    alt=""
-                  />
-                </a>
-                <a
-                  class="input-button"
-                  title="clear"
-                  data-clear
-                  id="clearDateButton"
-                >
-                  <img
-                    style="height: 35px; width: 35px"
-                    class="icon-close"
-                    src="/assets/images/close.png"
-                    alt=""
-                  />
-                </a>
-                <div *ngIf="showTooltip" class="tooltip">
-                  Same Day Service is Checked!
-                </div>
-              </div>
-              <div
-                *ngIf="
-                  calculatorForm.get('serviceDate')!.invalid &&
-                  calculatorForm.get('serviceDate')!.touched
-                "
-                class="error"
-              >
-                Please select a service date.
-              </div>
-            </div>
-            <div class="col">
-              <div class="flatpickr" id="timePickerWrapper">
-                <input
-                  type="text"
-                  formControlName="serviceTime"
-                  id="serviceTime"
-                  class="form-control time-input"
-                  placeholder="Service Time**"
-                  data-input
-                />
-                <a class="input-button" title="toggle" data-toggle>
-                  <img
-                    style="height: 35px; width: 35px"
-                    class="icon-clock"
-                    src="/assets/images/clock.png"
-                    alt=""
-                  />
-                </a>
-                <a class="input-button" title="clear" data-clear>
-                  <img
-                    style="height: 35px; width: 35px"
-                    class="icon-close"
-                    src="/assets/images/close.png"
-                    alt=""
-                  />
-                </a>
-              </div>
-              <div
-                *ngIf="
-                  calculatorForm.get('serviceTime')!.invalid &&
-                  calculatorForm.get('serviceTime')!.touched
-                "
-                class="error"
-              >
-                Please select a service time.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Frequency -->
-      <div class="relative-container">
-        <div class="form-group bordered-group">
-          <label><h3>Frequency **</h3></label>
-          <div class="frequency-buttons">
-            <button
-              type="button"
-              class="btn"
-              *ngFor="let freq of frequencies"
-              [class.selected]="
-                calculatorForm.get('frequency')!.value === freq.value
-              "
-              (click)="setFrequency(freq.value)"
-            >
-              {{ freq.label }}
-            </button>
-          </div>
-          <div
-            *ngIf="
-              calculatorForm.get('frequency')!.invalid &&
-              calculatorForm.get('frequency')!.touched
-            "
-            class="error"
-          >
-            Please select a frequency.
-          </div>
-        </div>
-      </div>
-
-      <!-- Tips Input -->
-      <div class="relative-container row">
-        <div class="form-group bordered-group tips">
-          <label for="tips"><h3>Tips For Cleaners</h3></label>
-          <p>Min $10</p>
-          <div class="input-container">
-            <span class="currency-symbol">$</span>
-            <input
-              type="number"
-              formControlName="tips"
-              id="tips"
-              class="form-control"
-              placeholder="Tips"
-              min="0"
-              step="1"
-              (input)="onTipsInput($event)"
-            />
-          </div>
-        </div>
-
-        <!--  Discounts -->
-        <div class="form-group bordered-group discount">
-          <label><h3>Discounts</h3></label>
-          <p>Choose Your Discounts</p>
-          <div class="discount-buttons">
-            <button
-              type="button"
-              class="btn"
-              *ngFor="let disc of discounts"
-              [class.selected]="
-                calculatorForm.get('discount')!.value === disc.value
-              "
-              (click)="toggleDiscount(disc.value)"
-            >
-              {{ disc.label }}
-            </button>
-          </div>
-        </div>
-        <!-- Discounts End -->
-      </div>
-
-      <!-- Entry Method -->
-      <div class="relative-container">
-        <div class="form-group bordered-group">
-          <label for="entryMethod"><h3>Entry Method **</h3></label>
-          <select
-            formControlName="entryMethod"
-            id="entryMethod"
-            class="form-control"
-          >
-            <option value="" disabled>Select entry method</option>
-            <option value="keyUnderMat">Key Under Mat</option>
-            <option value="leaveOpen">Leave Open</option>
-            <option value="meetInPerson">Meet in Person</option>
-          </select>
-          <div
-            *ngIf="
-              calculatorForm.get('entryMethod')!.invalid &&
-              calculatorForm.get('entryMethod')!.touched
-            "
-            class="errorEntry"
-          >
-            Please select a entry method.
-          </div>
-        </div>
-      </div>
-
-      <!-- Special Instructions -->
-      <div class="relative-container">
-        <div class="form-group bordered-group">
-          <label for="specialInstructions"><h3>Special Instructions</h3></label>
-          <textarea
-            formControlName="specialInstructions"
-            id="specialInstructions"
-            class="form-control"
-            placeholder="Special Instructions"
-          ></textarea>
-        </div>
-      </div>
-
-      <!-- Contact Information -->
-      <div class="contact-info">
-        <h3>Contact Info</h3>
-        <div class="formsGap">
-          <div class="row">
-            <div class="col">
-              <input
-                type="text"
-                formControlName="name"
-                id="name"
-                class="form-control"
-                placeholder="First Name**"
-              />
-              <div
-                *ngIf="
-                  calculatorForm.get('name')!.invalid &&
-                  calculatorForm.get('name')!.touched
-                "
-                class="error"
-              >
-                Please enter your first name.
-              </div>
-            </div>
-            <div class="col">
-              <input
-                type="text"
-                formControlName="lastName"
-                id="lastName"
-                class="form-control"
-                placeholder="Last Name**"
-              />
-              <div
-                *ngIf="
-                  calculatorForm.get('lastName')!.invalid &&
-                  calculatorForm.get('lastName')!.touched
-                "
-                class="error"
-              >
-                Please enter your last name.
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <input
-                type="email"
-                formControlName="email"
-                id="email"
-                class="form-control"
-                placeholder="Email**"
-              />
-              <div
-                *ngIf="
-                  calculatorForm.get('email')!.invalid &&
-                  calculatorForm.get('email')!.touched
-                "
-                class="error"
-              >
-                Please enter a valid email.
-              </div>
-            </div>
-            <div class="col">
-              <input
-                type="text"
-                formControlName="cellNumber"
-                id="cellNumber"
-                class="form-control"
-                placeholder="Cell Number"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- end of Contact Information -->
-      <!-- Address Information -->
-
-      <div class="address-info">
-        <h3>Address</h3>
-        <div class="formsGap">
-          <div class="row">
-            <div class="col address-flex">
-              <input
-                type="text"
-                formControlName="address"
-                id="address"
-                class="form-control"
-                placeholder="Address**"
-              />
-              <div
-                *ngIf="
-                  calculatorForm.get('address')!.invalid &&
-                  calculatorForm.get('address')!.touched
-                "
-                class="error"
-              >
-                Please enter your address.
-              </div>
-            </div>
-            <div class="col">
-              <input
-                type="text"
-                formControlName="apartment"
-                id="apartment"
-                class="form-control"
-                placeholder="Apt/Suite #"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="row address-flex">
-              <div class="col address-flex">
-                <select formControlName="city" id="city" class="form-control">
-                  <option value="" disabled>Select City**</option>
-                  <option value="bro">Brooklyn</option>
-                  <option value="man">Manhattan</option>
-                  <option value="que">Queens</option>
-                  <!-- ... other cities ... -->
-                </select>
-                <div
-                  *ngIf="
-                    calculatorForm.get('city')!.invalid &&
-                    calculatorForm.get('city')!.touched
-                  "
-                  class="error"
-                >
-                  Please enter your city.
+                  Please select the number of bedrooms.
                 </div>
               </div>
               <div class="col">
-                <select formControlName="state" id="state" class="form-control">
-                  <option value="" disabled>Select State**</option>
-                  <option value="NY">New York</option>
-                  <!-- ... other states ... -->
-                </select>
-                <div
-                  *ngIf="
-                    calculatorForm.get('state')!.invalid &&
-                    calculatorForm.get('state')!.touched
-                  "
-                  class="error"
+                <select
+                  formControlName="bathrooms"
+                  id="bathrooms"
+                  class="form-control"
                 >
-                  Please select your state.
+                  <option *ngFor="let i of bathroomOptions" [value]="i">
+                    {{ i }} {{ i === 1 ? "Bathroom" : "Bathrooms" }}
+                  </option>
+                </select>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <select
+                    formControlName="squareFeet"
+                    id="squareFeet"
+                    class="form-control"
+                  >
+                    <option
+                      *ngFor="let sqft of squareFeetOptions"
+                      [value]="sqft.value"
+                    >
+                      {{ sqft.value }}
+                    </option>
+                  </select>
+                  <div
+                    *ngIf="
+                      calculatorForm.get('squareFeet')!.invalid &&
+                      calculatorForm.get('squareFeet')!.touched
+                    "
+                    class="error"
+                  >
+                    Please select a square feet option.
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
+        <!-- Cleaners and Hours (Custom Cleaning) -->
+        <div *ngIf="isCustomCleaning" class="relative-container cleanHours">
+          <h3 class="hourlyService">
+            Hourly Service: {{ deepCleaningChecked ? "$75" : "$55" }} per
+            hour/per cleaner
+            <span *ngIf="deepCleaningChecked" class="deep-cleaning-text"
+              >(Deep Cleaning)</span
+            >
+          </h3>
+          <div class="form-group row customHours">
             <div class="col">
-              <input
-                type="text"
-                formControlName="zipCode"
-                id="zipCode"
+              <select
+                formControlName="cleaners"
+                id="cleaners"
                 class="form-control"
-                placeholder="Zip Code**"
-              />
-              <div
-                *ngIf="
-                  calculatorForm.get('zipCode')!.invalid &&
-                  calculatorForm.get('zipCode')!.touched
-                "
-                class="error"
               >
-                Please enter your zip code.
+                <option value="" disabled>Select number of cleaners**</option>
+                <option *ngFor="let i of cleanersOptions" [value]="i">
+                  {{ i }} {{ i === 1 ? "Cleaner" : "Cleaners" }}
+                </option>
+              </select>
+            </div>
+            <div class="col cleanerHours">
+              <select formControlName="hours" id="hours" class="form-control">
+                <option value="" disabled>Select number of hours**</option>
+                <option *ngFor="let hour of hoursOptions" [value]="hour">
+                  {{ formatTimeToHoursAndMinutes(hour) }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Extra Services -->
+        <app-extra-services
+          [parentForm]="calculatorForm"
+          [isCustomCleaning]="isCustomCleaning"
+          (extraServiceChanged)="onExtraServiceChanged($event)"
+          (sameDayServiceChanged)="onSameDayServiceChanged($event)"
+        ></app-extra-services>
+
+        <!-- Service Date and Time -->
+        <div class="relative-container">
+          <div class="form-group col bordered-group">
+            <h3>Service Date & Time **</h3>
+            <div class="row dateTime">
+              <div class="col">
+                <div class="flatpickr" id="datePickerWrapper">
+                  <input
+                    type="text"
+                    formControlName="serviceDate"
+                    id="serviceDate"
+                    class="form-control date-input"
+                    placeholder="Service Date**"
+                    data-input
+                    [class.disabled]="
+                      calculatorForm.get('serviceDate')!.disabled
+                    "
+                    [attr.disabled]="
+                      calculatorForm.get('serviceDate')!.disabled ? true : null
+                    "
+                    [attr.readonly]="
+                      calculatorForm.get('serviceDate')!.disabled ? true : null
+                    "
+                    (mouseenter)="
+                      showTooltip = calculatorForm.get('serviceDate')!.disabled
+                    "
+                    (mouseleave)="showTooltip = false"
+                  />
+                  <a class="input-button" title="toggle" data-toggle>
+                    <img
+                      style="height: 35px; width: 35px"
+                      class="icon-calendar"
+                      src="/assets/images/calendar.png"
+                      alt=""
+                    />
+                  </a>
+                  <a
+                    class="input-button"
+                    title="clear"
+                    data-clear
+                    id="clearDateButton"
+                  >
+                    <img
+                      style="height: 35px; width: 35px"
+                      class="icon-close"
+                      src="/assets/images/close.png"
+                      alt=""
+                    />
+                  </a>
+                  <div *ngIf="showTooltip" class="tooltip">
+                    Same Day Service is Checked!
+                  </div>
+                </div>
+                <div
+                  *ngIf="
+                    calculatorForm.get('serviceDate')!.invalid &&
+                    calculatorForm.get('serviceDate')!.touched
+                  "
+                  class="error"
+                >
+                  Please select a service date.
+                </div>
+              </div>
+              <div class="col">
+                <div class="flatpickr" id="timePickerWrapper">
+                  <input
+                    type="text"
+                    formControlName="serviceTime"
+                    id="serviceTime"
+                    class="form-control time-input"
+                    placeholder="Service Time**"
+                    data-input
+                  />
+                  <a class="input-button" title="toggle" data-toggle>
+                    <img
+                      style="height: 35px; width: 35px"
+                      class="icon-clock"
+                      src="/assets/images/clock.png"
+                      alt=""
+                    />
+                  </a>
+                  <a class="input-button" title="clear" data-clear>
+                    <img
+                      style="height: 35px; width: 35px"
+                      class="icon-close"
+                      src="/assets/images/close.png"
+                      alt=""
+                    />
+                  </a>
+                </div>
+                <div
+                  *ngIf="
+                    calculatorForm.get('serviceTime')!.invalid &&
+                    calculatorForm.get('serviceTime')!.touched
+                  "
+                  class="error"
+                >
+                  Please select a service time.
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- end of addres information -->
-
-      <div class="bookNowButton">
-        <button
-          type="button"
-          class="btn btn-success"
-          [ngClass]="{ disabled: !calculatorForm.valid }"
-          (click)="onBookNowClick()"
-        >
-          Book Now
-        </button>
-      </div>
-
-      <div *ngIf="showPaymentForm && total !== null">
-        <app-payment-form
-          [amount]="total!"
-          [formValues]="calculatorForm.value"
-          (close)="closePaymentForm()"
-          (paymentSuccess)="onPaymentSuccess($event)"
-        ></app-payment-form>
-      </div>
-    </form>
-  </div>
-
-  <div class="right-side">
-    <div class="right-side-description">
-      <app-service-description
-        [serviceType]="calculatorForm.get('serviceType')!.value"
-        [isDeepCleaningSelected]="calculatorForm.get('deepCleaning')!.value"
-      ></app-service-description>
-    </div>
-
-    <div class="calculator-card fixed">
-      <div class="summary">
-        <h1>Booking Summary</h1>
-        <hr />
-        <div class="summaryContent">
-          <div *ngIf="calculatorForm.get('serviceType')!.value">
-            <img src="/assets/images/home.png" alt="" title="Service" />
-            <p>
-              {{ getServiceTypeDisplay() }}
-            </p>
-          </div>
-
-          <div>
-            <img src="/assets/images/frequency.png" alt="" title="Frequency" />
-            <p>{{ calculatorForm.get("frequency")!.value }}</p>
-          </div>
-          <div *ngIf="calculatorForm.get('serviceDate')!.value">
-            <img src="/assets/images/calendar.png" alt="" title="Date" />
-            <p>
-              {{ calculatorForm.get("serviceDate")!.value }} at
-              {{ formatTimeToAmPm(calculatorForm.get("serviceTime")!.value) }}
-            </p>
+        <!-- Frequency -->
+        <div class="relative-container">
+          <div class="form-group bordered-group">
+            <label><h3>Frequency **</h3></label>
+            <div class="frequency-buttons">
+              <button
+                type="button"
+                class="btn"
+                *ngFor="let freq of frequencies"
+                [class.selected]="
+                  calculatorForm.get('frequency')!.value === freq.value
+                "
+                (click)="setFrequency(freq.value)"
+              >
+                {{ freq.label }}
+              </button>
+            </div>
+            <div
+              *ngIf="
+                calculatorForm.get('frequency')!.invalid &&
+                calculatorForm.get('frequency')!.touched
+              "
+              class="error"
+            >
+              Please select a frequency.
+            </div>
           </div>
         </div>
-        <div class="summaryTime">
-          <!-- <div *ngIf="!isCustomCleaning">
+
+        <!-- Tips Input -->
+        <div class="relative-container row tipsDiscount">
+          <div class="form-group bordered-group tips">
+            <label for="tips"><h3>Tips For Cleaners</h3></label>
+            <p>Min $10</p>
+            <div class="input-container">
+              <span class="currency-symbol">$</span>
+              <input
+                type="number"
+                formControlName="tips"
+                id="tips"
+                class="form-control"
+                placeholder="Tips"
+                min="0"
+                step="1"
+                (input)="onTipsInput($event)"
+              />
+            </div>
+          </div>
+
+          <!--  Discounts -->
+          <div class="form-group bordered-group discount">
+            <label><h3>Discounts</h3></label>
+            <p>Choose Your Discounts</p>
+            <div class="discount-buttons">
+              <button
+                type="button"
+                class="btn"
+                *ngFor="let disc of discounts"
+                [class.selected]="
+                  calculatorForm.get('discount')!.value === disc.value
+                "
+                (click)="toggleDiscount(disc.value)"
+              >
+                {{ disc.label }}
+              </button>
+            </div>
+          </div>
+          <!-- Discounts End -->
+        </div>
+
+        <!-- Entry Method -->
+        <div class="relative-container">
+          <div class="form-group bordered-group">
+            <label for="entryMethod"><h3>Entry Method **</h3></label>
+            <select
+              formControlName="entryMethod"
+              id="entryMethod"
+              class="form-control"
+            >
+              <i class="fa-solid fa-chevron-down"></i>
+              <option value="" disabled>Select entry method</option>
+              <option value="keyUnderMat">Key Under Mat</option>
+              <option value="leaveOpen">Leave Open</option>
+              <option value="meetInPerson">Meet in Person</option>
+            </select>
+            <div
+              *ngIf="
+                calculatorForm.get('entryMethod')!.invalid &&
+                calculatorForm.get('entryMethod')!.touched
+              "
+              class="errorEntry"
+            >
+              Please select a entry method.
+            </div>
+          </div>
+        </div>
+
+        <!-- Special Instructions -->
+        <div class="relative-container">
+          <div class="form-group bordered-group">
+            <label for="specialInstructions"
+              ><h3>Special Instructions</h3></label
+            >
+            <textarea
+              formControlName="specialInstructions"
+              id="specialInstructions"
+              class="form-control"
+              placeholder="Special Instructions"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="contact-info">
+          <h3>Contact Info</h3>
+          <div class="formsGap">
+            <div class="row contactInfo">
+              <div class="col">
+                <input
+                  type="text"
+                  formControlName="name"
+                  id="name"
+                  class="form-control"
+                  placeholder="First Name**"
+                />
+                <div
+                  *ngIf="
+                    calculatorForm.get('name')!.invalid &&
+                    calculatorForm.get('name')!.touched
+                  "
+                  class="error"
+                >
+                  Please enter your first name.
+                </div>
+              </div>
+              <div class="col">
+                <input
+                  type="text"
+                  formControlName="lastName"
+                  id="lastName"
+                  class="form-control"
+                  placeholder="Last Name**"
+                />
+                <div
+                  *ngIf="
+                    calculatorForm.get('lastName')!.invalid &&
+                    calculatorForm.get('lastName')!.touched
+                  "
+                  class="error"
+                >
+                  Please enter your last name.
+                </div>
+              </div>
+            </div>
+            <div class="row contactInfo">
+              <div class="col">
+                <input
+                  type="email"
+                  formControlName="email"
+                  id="email"
+                  class="form-control"
+                  placeholder="Email**"
+                />
+                <div
+                  *ngIf="
+                    calculatorForm.get('email')!.invalid &&
+                    calculatorForm.get('email')!.touched
+                  "
+                  class="error"
+                >
+                  Please enter a valid email.
+                </div>
+              </div>
+              <div class="col">
+                <input
+                  type="text"
+                  formControlName="cellNumber"
+                  id="cellNumber"
+                  class="form-control"
+                  placeholder="Cell Number"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- end of Contact Information -->
+        <!-- Address Information -->
+
+        <div class="address-info">
+          <h3>Address</h3>
+          <div class="formsGap">
+            <div class="row addressInfoUp">
+              <div class="col address-flex">
+                <input
+                  type="text"
+                  formControlName="address"
+                  id="address"
+                  class="form-control"
+                  placeholder="Address**"
+                />
+                <div
+                  *ngIf="
+                    calculatorForm.get('address')!.invalid &&
+                    calculatorForm.get('address')!.touched
+                  "
+                  class="error"
+                >
+                  Please enter your address.
+                </div>
+              </div>
+              <div class="col">
+                <input
+                  type="text"
+                  formControlName="apartment"
+                  id="apartment"
+                  class="form-control"
+                  placeholder="Apt/Suite #"
+                />
+              </div>
+            </div>
+            <div class="row addressInfoDown">
+              <div class="row address-flex">
+                <div class="col address-flex">
+                  <select formControlName="city" id="city" class="form-control">
+                    <option value="" disabled>Select City**</option>
+                    <option value="bro">Brooklyn</option>
+                    <option value="man">Manhattan</option>
+                    <option value="que">Queens</option>
+                    <!-- ... other cities ... -->
+                  </select>
+                  <div
+                    *ngIf="
+                      calculatorForm.get('city')!.invalid &&
+                      calculatorForm.get('city')!.touched
+                    "
+                    class="error"
+                  >
+                    Please enter your city.
+                  </div>
+                </div>
+                <div class="col">
+                  <select
+                    formControlName="state"
+                    id="state"
+                    class="form-control"
+                  >
+                    <option value="" disabled>Select State**</option>
+                    <option value="NY">New York</option>
+                    <!-- ... other states ... -->
+                  </select>
+                  <div
+                    *ngIf="
+                      calculatorForm.get('state')!.invalid &&
+                      calculatorForm.get('state')!.touched
+                    "
+                    class="error"
+                  >
+                    Please select your state.
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <input
+                  type="text"
+                  formControlName="zipCode"
+                  id="zipCode"
+                  class="form-control"
+                  placeholder="Zip Code**"
+                />
+                <div
+                  *ngIf="
+                    calculatorForm.get('zipCode')!.invalid &&
+                    calculatorForm.get('zipCode')!.touched
+                  "
+                  class="error"
+                >
+                  Please enter zip code.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- end of addres information -->
+
+        <div class="bookNowButton first">
+          <button
+            type="button"
+            class="btn btn-success"
+            [ngClass]="{ disabled: !calculatorForm.valid }"
+            (click)="onBookNowClick()"
+          >
+            Book Now
+          </button>
+        </div>
+
+        <div *ngIf="showPaymentForm && total !== null">
+          <app-payment-form
+            [amount]="total!"
+            [formValues]="calculatorForm.value"
+            (close)="closePaymentForm()"
+            (paymentSuccess)="onPaymentSuccess($event)"
+          ></app-payment-form>
+        </div>
+      </div>
+
+      <div class="right-side">
+        <div class="right-side-description">
+          <app-service-description
+            [serviceType]="calculatorForm.get('serviceType')!.value"
+            [isDeepCleaningSelected]="calculatorForm.get('deepCleaning')!.value"
+          ></app-service-description>
+        </div>
+
+        <div class="calculator-card fixed">
+          <div class="summary">
+            <h1>Booking Summary</h1>
+            <hr />
+            <div class="summaryContent">
+              <div *ngIf="calculatorForm.get('serviceType')!.value">
+                <img src="/assets/images/home.png" alt="" title="Service" />
+                <p>
+                  {{ getServiceTypeDisplay() }}
+                </p>
+              </div>
+
+              <div>
+                <img
+                  src="/assets/images/frequency.png"
+                  alt=""
+                  title="Frequency"
+                />
+                <p>{{ calculatorForm.get("frequency")!.value }}</p>
+              </div>
+              <div *ngIf="calculatorForm.get('serviceDate')!.value">
+                <img src="/assets/images/calendar.png" alt="" title="Date" />
+                <p>
+                  {{ calculatorForm.get("serviceDate")!.value }} at
+                  {{
+                    formatTimeToAmPm(calculatorForm.get("serviceTime")!.value)
+                  }}
+                </p>
+              </div>
+            </div>
+            <div class="summaryTime">
+              <!-- <div *ngIf="!isCustomCleaning">
             <div class="timeForOneCleaner" title="Time For One Cleaner">
               <img src="/assets/images/maid.png" alt="" />
               <img src="/assets/images/clock.png" alt="" />
@@ -598,66 +610,84 @@
             </p>
           </div> -->
 
-          <div>
-            <div class="numberOfCleaners" title="Number of Cleaners">
-              <!-- <img src="/assets/images/maid2.png" alt="" /> -->
-              <!-- <img src="/assets/images/maid3.png" alt="" /> -->
-              <img src="/assets/images/maid.png" alt="" />
-            </div>
+              <div>
+                <div class="numberOfCleaners" title="Number of Cleaners">
+                  <!-- <img src="/assets/images/maid2.png" alt="" /> -->
+                  <!-- <img src="/assets/images/maid3.png" alt="" /> -->
+                  <img src="/assets/images/maid.png" alt="" />
+                </div>
 
-            <p>
-              {{
-                !isCustomCleaning
-                  ? requiredCleaners
-                  : calculatorForm.get("cleaners")!.value
-              }}
-            </p>
+                <p>
+                  {{
+                    !isCustomCleaning
+                      ? requiredCleaners
+                      : calculatorForm.get("cleaners")!.value
+                  }}
+                </p>
+              </div>
+              <div *ngIf="isCustomCleaning">
+                <img
+                  src="/assets/images/clock.png"
+                  alt=""
+                  title="Number of Hours"
+                />
+                <p>
+                  {{
+                    formatTimeToHoursAndMinutes(
+                      calculatorForm.get("hours")!.value
+                    )
+                  }}
+                </p>
+              </div>
+              <div *ngIf="!isCustomCleaning">
+                <img
+                  src="/assets/images/clock.png"
+                  alt=""
+                  title="Total Hours"
+                />
+                <p>
+                  {{
+                    totalTime !== null
+                      ? formatTimeToHoursAndMinutes(totalTime)
+                      : "N/A"
+                  }}
+                </p>
+              </div>
+            </div>
           </div>
-          <div *ngIf="isCustomCleaning">
-            <img
-              src="/assets/images/clock.png"
-              alt=""
-              title="Number of Hours"
-            />
-            <p>
-              {{
-                formatTimeToHoursAndMinutes(calculatorForm.get("hours")!.value)
-              }}
-            </p>
+          <hr />
+          <div class="total-price">
+            <div>
+              <p>Sub-total:</p>
+              <p>{{ totalPrice | currency }}</p>
+            </div>
+            <div>
+              <p>Sales Tax:</p>
+              <p>{{ salesTax | currency }}</p>
+            </div>
+            <div *ngIf="tips > 0">
+              <p>Tips:</p>
+              <p>{{ tips | currency }}</p>
+            </div>
+            <div class="total">
+              <p><b>Total:</b></p>
+              <p>
+                <b class="totalAmount">{{ total | currency }}</b>
+              </p>
+            </div>
+            <div class="bookNowButton second">
+              <button
+                type="button"
+                class="btn btn-success"
+                [ngClass]="{ disabled: !calculatorForm.valid }"
+                (click)="onBookNowClick()"
+              >
+                Book Now
+              </button>
+            </div>
           </div>
-          <div *ngIf="!isCustomCleaning">
-            <img src="/assets/images/clock.png" alt="" title="Total Hours" />
-            <p>
-              {{
-                totalTime !== null
-                  ? formatTimeToHoursAndMinutes(totalTime)
-                  : "N/A"
-              }}
-            </p>
-          </div>
-        </div>
-      </div>
-      <hr />
-      <div class="total-price">
-        <div>
-          <p>Sub-total:</p>
-          <p>{{ totalPrice | currency }}</p>
-        </div>
-        <div>
-          <p>Sales Tax:</p>
-          <p>{{ salesTax | currency }}</p>
-        </div>
-        <div *ngIf="tips > 0">
-          <p>Tips:</p>
-          <p>{{ tips | currency }}</p>
-        </div>
-        <div class="total">
-          <p><b>Total:</b></p>
-          <p>
-            <b class="totalAmount">{{ total | currency }}</b>
-          </p>
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </div>

@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0.5rem;
+  padding: 10px 0;
 }
 
 .btn-container {
@@ -24,6 +25,7 @@
   height: 100%;
   span {
     font-size: 20px;
+    color: #000;
   }
 }
 
@@ -34,6 +36,9 @@
 .extra-services-buttons .btn.selected {
   background: #676cff;
   color: #fff;
+  span {
+    color: #fff;
+  }
 }
 
 .number-input-container {
@@ -94,8 +99,7 @@
 }
 
 .bordered-group {
-  border-bottom: 1px dotted #ccc;
-  padding: 30px 10px;
+  padding: 10px;
 }
 
 h3 {
@@ -157,24 +161,6 @@ h3 {
   background-color: #44d62c;
 }
 
-.organizing-selection,
-.insideWindows-selection {
-  margin-top: 0.5rem;
-}
-
-.hidden {
-  display: none;
-}
-
-.bordered-group {
-  border-bottom: 1px dotted #ccc;
-  padding: 30px 10px;
-}
-
-h3 {
-  margin-top: 0;
-}
-
 input[type="number"] {
   position: relative;
   width: 100%;
@@ -191,4 +177,68 @@ input[type="number"] {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  i {
+    color: #000;
+  }
+}
+
+@media (max-width: 1150px) {
+  .organizing-input,
+  .insideWindows-input {
+    .btn.confirm-btn {
+      max-width: 30%;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  app-tooltip {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .extra-services-buttons {
+    gap: 5px;
+    .btn-container {
+      .btn {
+        padding: 5px;
+      }
+    }
+  }
+}
+
+@media (max-width: 580px) {
+  .extra-services-buttons {
+    grid-template-columns: repeat(3, 1fr);
+
+    .btn-container {
+      .number-input-container input {
+        font-size: 14px;
+        padding: 0.3rem;
+      }
+      .organizing-selection,
+      .insideWindows-selection {
+        margin-top: 0;
+      }
+
+      .arrowsContainer {
+        gap: 2px;
+      }
+    }
+  }
+}
+
+@media (max-width: 580px) {
+  .extra-services-buttons {
+    .btn-container {
+      img {
+        height: 45px;
+        width: 45px;
+      }
+      span {
+        font-size: 14px;
+      }
+    }
+  }
 }

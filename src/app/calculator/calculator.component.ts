@@ -317,8 +317,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     const tipsControl = this.calculatorForm.get('tips');
     let tipsValue = input.value;
 
-    // Remove non-integer characters
-    tipsValue = tipsValue.replace(/[^0-9]/g, '');
+    // Remove non-integer characters and leading zeros
+    tipsValue = tipsValue.replace(/[^0-9]/g, '').replace(/^0+/, '');
 
     // Update the form control value with the filtered input
     tipsControl?.setValue(tipsValue, { emitEvent: false });
@@ -334,7 +334,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         +tipsValue > 0 &&
         +tipsValue < 10
       ) {
-        tipsValue = 10;
+        tipsValue = '10';
         tipsControl?.setValue(tipsValue, { emitEvent: true });
         input.value = tipsValue; // Ensure the input field is updated
       }
@@ -345,52 +345,37 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     this.calculatePriceAndTime();
     this.setMinDate();
 
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const month = monthNames[tomorrow.getMonth()];
+    const day = tomorrow.getDate();
+    const year = tomorrow.getFullYear();
+    const tomorrowDateString = `${month}-${day}-${year}`;
+
     this.route.queryParams.subscribe((params) => {
       function formatDateToMDY(date: Date): string {
-        const monthNames = [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
-        ];
-        const month = monthNames[date.getMonth()];
         const day = date.getDate();
         const year = date.getFullYear();
         return `${month}-${day}-${year}`;
       }
 
       const today = formatDateToMDY(new Date());
-
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-
-      // Format the date to 'M-d-Y'
-      const monthNames = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ];
-      const month = monthNames[tomorrow.getMonth()];
-      const day = tomorrow.getDate();
-      const year = tomorrow.getFullYear();
-      const tomorrowDateString = `${month}-${day}-${year}`;
 
       this.calculatorForm
         .get('serviceDate')!
@@ -469,6 +454,9 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
           break;
         case 'moveOut':
           this.calculatorForm.get('serviceType')!.setValue('Move Out');
+          break;
+        case 'custom':
+          this.calculatorForm.get('serviceType')!.setValue('Custom Cleaning');
           break;
       }
 
@@ -572,6 +560,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         dateFormat: 'M-d-Y',
         minDate: tomorrow,
         wrap: true,
+        disableMobile: true,
         onDayCreate: function (dObj, dStr, fp, dayElem) {
           if (dayElem.dateObj < today) {
             dayElem.classList.add('past');
@@ -587,6 +576,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         dateFormat: 'h:i K',
         time_24hr: false,
         wrap: true,
+        disableMobile: true,
       });
     }
   }

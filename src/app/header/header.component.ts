@@ -52,7 +52,7 @@ export class HeaderComponent {
   }
 
   private checkRoute(url: string) {
-    const transparentPages = ['/calculator', '/about', '/contact'];
+    const transparentPages = ['/calculator', '/contact'];
     this.isTransparentPage = transparentPages.some((page) =>
       url.includes(page)
     );
@@ -61,7 +61,7 @@ export class HeaderComponent {
 
   private updateLogo(url: string) {
     // Change logo based on the current route
-    if (url === '/') {
+    if (url === '/' || url === '/about') {
       this.logoSrc = '/assets/images/smallLogoLight.png';
     } else {
       this.logoSrc = '/assets/images/smallLogoDark.png';
