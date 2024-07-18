@@ -7,7 +7,24 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  transition: background-image 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+
+  &.bg-0 {
+    background-image: url("/assets/images/clean1.jpg");
+  }
+
+  &.bg-1 {
+    background-image: url("/assets/images/clean2.jpg");
+  }
+
+  &.bg-2 {
+    background-image: url("/assets/images/clean3.jpg");
+  }
+
+  &.bg-3 {
+    background-image: url("/assets/images/clean4.jpg");
+  }
+
   .container {
     display: flex;
     justify-content: space-around;
@@ -19,6 +36,7 @@
     height: 100%;
     padding: 10px 50px;
   }
+
   h2 {
     font-size: 3.2rem;
     line-height: 3.5rem;
@@ -26,6 +44,7 @@
     color: #fff;
     width: 100%;
     max-width: 550px;
+
     span {
       text-decoration: underline;
       text-decoration-color: #00f2f7;
@@ -38,6 +57,7 @@
     font-size: 1rem;
     color: #fff;
     text-align: justify;
+
     b {
       color: #00f2f7;
       font-weight: bold;
@@ -52,6 +72,7 @@
     align-items: center;
     gap: 10px;
     font-size: 20px;
+
     div {
       display: flex;
       justify-content: center;
