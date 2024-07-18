@@ -35,6 +35,7 @@
           #1370b9 50%,
           #3660ac 90%
         );
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
@@ -175,6 +176,7 @@
         #cacaca 40%,
         #ffffff 90%
       );
+      background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }

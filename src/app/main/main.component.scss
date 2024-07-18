@@ -8,8 +8,6 @@
   background-position: center;
   background-size: cover;
   transition: background-image 1s ease-in-out;
-  // max-width: 1920px;
-  // margin: 0 auto;
   .container {
     display: flex;
     justify-content: space-around;
@@ -24,15 +22,27 @@
   h2 {
     font-size: 3.2rem;
     line-height: 3.5rem;
-    text-align: center;
+    text-align: justify;
     color: #fff;
+    width: 100%;
+    max-width: 550px;
+    span {
+      text-decoration: underline;
+      text-decoration-color: #00f2f7;
+    }
   }
 
   p {
     width: 100%;
-    max-width: 700px;
-    font-size: 1.2rem;
+    max-width: 550px;
+    font-size: 1rem;
     color: #fff;
+    text-align: justify;
+    b {
+      color: #00f2f7;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
   }
 
   .cleanings {
@@ -115,19 +125,23 @@
       font-size: 2.5rem;
       line-height: 3rem;
     }
-    p {
+    p,
+    h2 {
       max-width: 600px;
-      padding: 20px;
+      padding: 0 20px;
       text-align: justify;
     }
   }
 }
 
 @media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    justify-content: center;
-    gap: 30px;
+  .main {
+    .container {
+      flex-direction: column;
+      justify-content: center;
+      gap: 30px;
+      padding: 100px 10px;
+    }
   }
 }
 
@@ -136,6 +150,7 @@
     h2 {
       font-size: 2rem;
       line-height: 2.5rem;
+      padding: 10px;
     }
     p {
       padding: 10px;

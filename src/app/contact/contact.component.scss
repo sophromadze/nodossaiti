@@ -216,13 +216,9 @@ textarea.input {
   align-items: center;
   font-size: 0.95rem;
   gap: 10px;
+  text-decoration: none;
 
-  .mobile {
-    text-decoration: none;
-    color: #555;
-  }
-
-  .mobile:hover {
+  &:hover {
     color: #0fe0f5;
   }
 }

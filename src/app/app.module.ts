@@ -19,6 +19,7 @@ import { SliderComponent } from './main/slider/slider.component';
 import { CitiesComponent } from './main/cities/cities.component';
 import { ContactComponent } from './contact/contact.component';
 import { ScrollToTopComponent } from './scroll-to-top/scroll-to-top.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ScrollToTopComponent } from './scroll-to-top/scroll-to-top.component';
     CitiesComponent,
     ContactComponent,
     ScrollToTopComponent,
+    PrivacyPolicyComponent,
   ],
   imports: [
     BrowserModule,

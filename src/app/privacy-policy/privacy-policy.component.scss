@@ -1,0 +1,50 @@
+.container {
+  width: 100%;
+  max-width: 1920px;
+  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 120px 10px;
+}
+
+.content {
+  max-width: 900px;
+}
+
+h1,
+h2,
+h3 {
+  text-align: center;
+  padding: 15px 0;
+}
+
+p {
+  font-size: 14px;
+  text-align: justify;
+}
+
+ul {
+  margin: 20px 0;
+  padding-left: 20px;
+  text-align: left;
+}
+
+li {
+  padding: 5px 0;
+}
+
+a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+strong {
+  font-weight: bold;
+}
