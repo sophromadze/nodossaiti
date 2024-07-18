@@ -1,31 +1,137 @@
-<div class="main" [ngClass]="currentImageClass">
-  <div class="container">
-    <div>
-      <h2>
-        Save Time, Conserve Energy, and Revel in a Spotless, Comfortable Home in
-        <span> NYC.</span>
-      </h2>
-      <br />
-      <p>
-        <b>Dream Cleaning</b> transforms your living spaces into spotless havens
-        of comfort. We save you time and energy, giving you the relaxation you
-        deserve. Our professional team ensures a pristine home environment,
-        revitalizing every corner of your house or apartment. Let us handle the
-        chores while you enjoy a clean, organized home and well-earned rest.
-      </p>
-    </div>
-    <div class="cleanings">
-      <div id="bookNow" (click)="navigateToCalculator('regular')">
-        <h5>BOOK NOW <i class="fa-solid fa-chevron-right"></i></h5>
+<!-- src/app/main/main.component.html -->
+<div class="main">
+  <swiper-container
+    class="mySwiper"
+    autoplay="true"
+    loop="true"
+    speed="2000"
+    effect="fade"
+  >
+    <swiper-slide class="bg-0">
+      <div class="container">
+        <div>
+          <h2>
+            Save Time, Maintain Energy, and Revel in a Spotless, Comfortable
+            Home in
+            <span> NYC.</span>
+          </h2>
+          <br />
+          <p>
+            <b>Dream Cleaning</b> transforms your living spaces into spotless
+            havens of comfort. We save you time and energy, giving you the
+            relaxation you deserve. Our professional team ensures a pristine
+            home environment, revitalizing every corner of your house or
+            apartment. Let us handle the chores while you enjoy a clean,
+            organized home and well-earned rest.
+          </p>
+        </div>
+        <div class="cleanings">
+          <div id="bookNow" (click)="navigateToCalculator('regular')">
+            <h5>BOOK NOW <i class="fa-solid fa-chevron-right"></i></h5>
+          </div>
+          <div id="ourPopular" class="clickable-div" (click)="scrollToCards()">
+            <h5>OUR POPULAR <i class="fa-solid fa-chevron-down"></i></h5>
+          </div>
+          <div id="ourPopular" class="clickable-div" (click)="scrollToCities()">
+            <h5>CITIES WE SERVE <i class="fa-solid fa-chevron-down"></i></h5>
+          </div>
+        </div>
       </div>
-      <div id="ourPopular" class="clickable-div" (click)="scrollToCards()">
-        <h5>OUR POPULAR <i class="fa-solid fa-chevron-down"></i></h5>
+    </swiper-slide>
+    <swiper-slide class="bg-1">
+      <div class="container">
+        <div>
+          <h2>
+            Save Time, Maintain Energy, and Revel in a Spotless, Comfortable
+            Home in
+            <span> NYC.</span>
+          </h2>
+          <br />
+          <p>
+            <b>Dream Cleaning</b> transforms your living spaces into spotless
+            havens of comfort. We save you time and energy, giving you the
+            relaxation you deserve. Our professional team ensures a pristine
+            home environment, revitalizing every corner of your house or
+            apartment. Let us handle the chores while you enjoy a clean,
+            organized home and well-earned rest.
+          </p>
+        </div>
+        <div class="cleanings">
+          <div id="bookNow" (click)="navigateToCalculator('regular')">
+            <h5>BOOK NOW <i class="fa-solid fa-chevron-right"></i></h5>
+          </div>
+          <div id="ourPopular" class="clickable-div" (click)="scrollToCards()">
+            <h5>OUR POPULAR <i class="fa-solid fa-chevron-down"></i></h5>
+          </div>
+          <div id="ourPopular" class="clickable-div" (click)="scrollToCities()">
+            <h5>CITIES WE SERVE <i class="fa-solid fa-chevron-down"></i></h5>
+          </div>
+        </div>
       </div>
-      <div id="ourPopular" class="clickable-div" (click)="scrollToCities()">
-        <h5>CITIES WE SERVE <i class="fa-solid fa-chevron-down"></i></h5>
+    </swiper-slide>
+    <swiper-slide class="bg-2">
+      <div class="container">
+        <div>
+          <h2>
+            Save Time, Maintain Energy, and Revel in a Spotless, Comfortable
+            Home in
+            <span> NYC.</span>
+          </h2>
+          <br />
+          <p>
+            <b>Dream Cleaning</b> transforms your living spaces into spotless
+            havens of comfort. We save you time and energy, giving you the
+            relaxation you deserve. Our professional team ensures a pristine
+            home environment, revitalizing every corner of your house or
+            apartment. Let us handle the chores while you enjoy a clean,
+            organized home and well-earned rest.
+          </p>
+        </div>
+        <div class="cleanings">
+          <div id="bookNow" (click)="navigateToCalculator('regular')">
+            <h5>BOOK NOW <i class="fa-solid fa-chevron-right"></i></h5>
+          </div>
+          <div id="ourPopular" class="clickable-div" (click)="scrollToCards()">
+            <h5>OUR POPULAR <i class="fa-solid fa-chevron-down"></i></h5>
+          </div>
+          <div id="ourPopular" class="clickable-div" (click)="scrollToCities()">
+            <h5>CITIES WE SERVE <i class="fa-solid fa-chevron-down"></i></h5>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </swiper-slide>
+    <swiper-slide class="bg-3">
+      <div class="container">
+        <div>
+          <h2>
+            Save Time, Maintain Energy, and Revel in a Spotless, Comfortable
+            Home in
+            <span> NYC.</span>
+          </h2>
+          <br />
+          <p>
+            <b>Dream Cleaning</b> transforms your living spaces into spotless
+            havens of comfort. We save you time and energy, giving you the
+            relaxation you deserve. Our professional team ensures a pristine
+            home environment, revitalizing every corner of your house or
+            apartment. Let us handle the chores while you enjoy a clean,
+            organized home and well-earned rest.
+          </p>
+        </div>
+        <div class="cleanings">
+          <div id="bookNow" (click)="navigateToCalculator('regular')">
+            <h5>BOOK NOW <i class="fa-solid fa-chevron-right"></i></h5>
+          </div>
+          <div id="ourPopular" class="clickable-div" (click)="scrollToCards()">
+            <h5>OUR POPULAR <i class="fa-solid fa-chevron-down"></i></h5>
+          </div>
+          <div id="ourPopular" class="clickable-div" (click)="scrollToCities()">
+            <h5>CITIES WE SERVE <i class="fa-solid fa-chevron-down"></i></h5>
+          </div>
+        </div>
+      </div>
+    </swiper-slide>
+  </swiper-container>
 </div>
 <app-slider id="cards"></app-slider>
 <app-cities id="cities"></app-cities>

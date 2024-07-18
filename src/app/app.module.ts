@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -20,6 +20,10 @@ import { CitiesComponent } from './main/cities/cities.component';
 import { ContactComponent } from './contact/contact.component';
 import { ScrollToTopComponent } from './scroll-to-top/scroll-to-top.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { register } from 'swiper/element/bundle';
+
+// Register Swiper custom elements
+register();
 
 @NgModule({
   declarations: [
@@ -47,6 +51,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
     HttpClientModule,
     BrowserAnimationsModule,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Add this line
   providers: [],
   bootstrap: [AppComponent],
 })
