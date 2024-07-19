@@ -82,7 +82,8 @@
 }
 
 .organizing-input,
-.insideWindows-input {
+.insideWindows-input,
+.walls-input {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
@@ -90,7 +91,8 @@
 }
 
 .organizing-selection,
-.insideWindows-selection {
+.insideWindows-selection,
+.walls-selection {
   margin-top: 0.5rem;
 }
 
@@ -133,7 +135,8 @@ h3 {
 }
 
 .organizing-input,
-.insideWindows-input {
+.insideWindows-input,
+.walls-input {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
@@ -141,13 +144,15 @@ h3 {
 }
 
 .organizing-input input,
-.insideWindows-input input {
+.insideWindows-input input,
+.walls-input input {
   width: 50%; /* Adjust the width as needed */
   text-align: center;
 }
 
 .organizing-input .btn.confirm-btn,
-.insideWindows-input .btn.confirm-btn {
+.insideWindows-input .btn.confirm-btn,
+.walls-input .btn.confirm-btn {
   background-color: #28a745;
   color: #fff;
   border: none;
@@ -157,7 +162,8 @@ h3 {
 }
 
 .organizing-input .btn.confirm-btn:hover,
-.insideWindows-input .btn.confirm-btn:hover {
+.insideWindows-input .btn.confirm-btn:hover,
+.walls-input .btn.confirm-btn:hover {
   background-color: #44d62c;
 }
 
@@ -184,7 +190,8 @@ input[type="number"] {
 
 @media (max-width: 1150px) {
   .organizing-input,
-  .insideWindows-input {
+  .insideWindows-input,
+  .walls-input {
     .btn.confirm-btn {
       max-width: 30%;
     }
@@ -218,7 +225,8 @@ input[type="number"] {
         padding: 0.3rem;
       }
       .organizing-selection,
-      .insideWindows-selection {
+      .insideWindows-selection,
+      .walls-selection {
         margin-top: 0;
       }
 

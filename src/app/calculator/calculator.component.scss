@@ -447,11 +447,6 @@ input.disabled {
     padding: 0;
   }
 
-  .left-side,
-  .right-side {
-    margin-top: 94px;
-  }
-
   .summary {
     h1 {
       font-size: 2em;
@@ -462,6 +457,7 @@ input.disabled {
     box-shadow: none;
     border: none;
     border-radius: 0;
+    margin-top: 94px;
   }
 
   .right-side {
@@ -493,6 +489,10 @@ input.disabled {
   .contact-info,
   .address-info {
     padding: 10px 0;
+  }
+
+  .left-side {
+    margin-top: 54px;
   }
 
   .serviceType {
@@ -618,12 +618,6 @@ input.disabled {
     height: 40px;
     font-size: 12px;
     line-height: 14px;
-  }
-}
-
-@media (max-width: 430px) {
-  .left-side {
-    margin-top: 90px;
   }
 }
 

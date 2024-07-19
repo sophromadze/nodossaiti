@@ -19,6 +19,7 @@ interface ExtraServiceData {
   times: { [key: string]: number };
   organizingHours: number;
   insideWindowsNumbers: number;
+  wallsNumbers: number;
   // selectedVacuumOption: string;
 }
 
@@ -156,7 +157,7 @@ export class ExtraServicesComponent implements OnChanges {
     insideTheFridge: 1.0,
     insideWindows: 0.5,
     washingDishes: 1.0,
-    wallCleaning: 1.0,
+    wallCleaning: 0.5,
     petHairClean: 0.5,
     insideCabinets: 0.5,
     balcony: 1.0,
@@ -173,8 +174,10 @@ export class ExtraServicesComponent implements OnChanges {
   // showVacuumOptions = false;
   organizingHours = 0.5;
   insideWindowsNumbers = 1;
+  wallsNumbers = 1;
   showOrganizingInput = false;
   showWindowsInput = false;
+  showWallsInput = false;
   tooltipVisible = false;
   currentTooltip: string | null = null;
 
@@ -183,6 +186,15 @@ export class ExtraServicesComponent implements OnChanges {
   ngOnInit(): void {
     this.parentForm.addControl(
       'insideWindows',
+      new FormControl(1, [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(20),
+        Validators.pattern(/^\d+$/),
+      ])
+    );
+    this.parentForm.addControl(
+      'wallCleaning',
       new FormControl(1, [
         Validators.required,
         Validators.min(1),
@@ -297,6 +309,17 @@ export class ExtraServicesComponent implements OnChanges {
         this.extraServiceTimes['insideWindows'] = 0;
         this.insideWindowsNumbers = 1;
       }
+    } else if (service === 'wallCleaning') {
+      if (!currentValue) {
+        this.showWallsInput = true;
+        this.extraServicePrices['wallCleaning'] = 25;
+        this.extraServiceTimes['wallCleaning'] = 0.5;
+      } else {
+        this.showWallsInput = false;
+        this.extraServicePrices['wallCleaning'] = 0;
+        this.extraServiceTimes['wallCleaning'] = 0;
+        this.wallsNumbers = 1;
+      }
     }
 
     if (service === 'sameDay') {
@@ -329,7 +352,7 @@ export class ExtraServicesComponent implements OnChanges {
     input.value = value.toString();
     this.organizingHours = value;
     this.extraServicePrices['organizing'] = value * 55;
-    this.extraServiceTimes['organizing'] = value;
+    this.extraServiceTimes['organizing'] = value * 0.5;
     this.parentForm.get('organizing')!.setValue(value, { emitEvent: false });
     this.emitChanges();
   }
@@ -357,7 +380,7 @@ export class ExtraServicesComponent implements OnChanges {
     input.value = value.toString();
     this.insideWindowsNumbers = value;
     this.extraServicePrices['insideWindows'] = value * 30;
-    this.extraServiceTimes['insideWindows'] = value;
+    this.extraServiceTimes['insideWindows'] = value * 0.5;
     this.parentForm.get('insideWindows')!.setValue(value, { emitEvent: false });
     this.emitChanges();
   }
@@ -369,6 +392,34 @@ export class ExtraServicesComponent implements OnChanges {
     }
     this.showWindowsInput = false;
     this.parentForm.get('insideWindows')!.setValue(this.insideWindowsNumbers);
+    this.emitChanges();
+  }
+
+  onWallsChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = parseInt(input.value, 10);
+
+    if (isNaN(value) || value < 1) {
+      value = 1;
+    } else if (value > 20) {
+      value = 20;
+    }
+
+    input.value = value.toString();
+    this.wallsNumbers = value;
+    this.extraServicePrices['wallCleaning'] = value * 25;
+    this.extraServiceTimes['wallCleaning'] = value * 0.5;
+    this.parentForm.get('wallCleaning')!.setValue(value, { emitEvent: false });
+    this.emitChanges();
+  }
+
+  confirmWallsNumbers(event: Event): void {
+    event.stopPropagation();
+    if (!this.wallsNumbers || this.wallsNumbers < 1) {
+      this.wallsNumbers = 1;
+    }
+    this.showWallsInput = false;
+    this.parentForm.get('wallCleaning')!.setValue(this.wallsNumbers);
     this.emitChanges();
   }
 
@@ -388,6 +439,26 @@ export class ExtraServicesComponent implements OnChanges {
       this.insideWindowsNumbers++;
       this.onInsideWindowsChange({
         target: { value: this.insideWindowsNumbers },
+      } as any);
+    }
+  }
+
+  decreaseWalls(event: Event): void {
+    event.stopPropagation();
+    if (this.wallsNumbers > 1) {
+      this.wallsNumbers--;
+      this.onWallsChange({
+        target: { value: this.wallsNumbers },
+      } as any);
+    }
+  }
+
+  increaseWalls(event: Event): void {
+    event.stopPropagation();
+    if (this.wallsNumbers < 20) {
+      this.wallsNumbers++;
+      this.onWallsChange({
+        target: { value: this.wallsNumbers },
       } as any);
     }
   }
@@ -428,11 +499,15 @@ export class ExtraServicesComponent implements OnChanges {
       times: this.extraServiceTimes,
       organizingHours: this.organizingHours,
       insideWindowsNumbers: this.insideWindowsNumbers,
+      wallsNumbers: this.wallsNumbers,
       // selectedVacuumOption: this.selectedVacuumOption,
     });
   }
 
   getWindowsText(): string {
     return this.insideWindowsNumbers === 1 ? 'Window' : 'Windows';
+  }
+  getWallsText(): string {
+    return this.wallsNumbers === 1 ? 'Wall' : 'Walls';
   }
 }

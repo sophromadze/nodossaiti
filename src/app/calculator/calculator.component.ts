@@ -39,6 +39,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   originalServiceDate: string | null = null;
   organizingHours: number | null = 0;
   insideWindowsNumbers: number | null = 0;
+  wallsNumbers: number | null = 0;
   // selectedVacuumOption: string = 'None';
   squareFeetOptions: Array<{ value: string; label: string }> = [];
   bathroomOptions = [1, 2, 3, 4, 5, 6];
@@ -674,12 +675,14 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     times: { [key: string]: number };
     organizingHours: number;
     insideWindowsNumbers: number;
+    wallsNumbers: number;
     // selectedVacuumOption: string;
   }): void {
     this.extraServicePrices = extraServiceData.prices;
     this.extraServiceTimes = extraServiceData.times;
     this.organizingHours = extraServiceData.organizingHours; // Capture organizing hours
     this.insideWindowsNumbers = extraServiceData.insideWindowsNumbers; // Capture windows numbers
+    this.wallsNumbers = extraServiceData.wallsNumbers; // Capture wall numbers
     // this.selectedVacuumOption = extraServiceData.selectedVacuumOption; // Capture vacuum option
     this.calculatePriceAndTime();
   }
@@ -838,7 +841,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     this.subTotalTime = subTotalTime;
 
     if (formValues.serviceType !== 'Custom Cleaning') {
-      this.requiredCleaners = Math.ceil(subTotalTime / 5);
+      this.requiredCleaners = Math.ceil(subTotalTime / 7);
       this.totalTime = subTotalTime / this.requiredCleaners;
     } else {
       this.requiredCleaners = formValues.cleaners;
@@ -929,15 +932,13 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       vacuum2: false,
       cleaners: 1,
       hours: 3,
+      tips: 0,
     });
     // this.closePaymentForm();
   }
 
   sendEmail(): void {
     const formValues = this.calculatorForm.value;
-
-    const contactInfo = this.calculatorForm.get('contactInfo')?.value;
-    const addressInfo = this.calculatorForm.get('addressInfo')?.value;
 
     const booleanToYesNo = (value: boolean) => (value ? 'YES' : 'NO');
 
@@ -965,6 +966,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     const insideWindowsText = formValues.insideWindows
       ? this.insideWindowsNumbers
       : 0;
+    const wallsText = formValues.wallCleaning ? this.wallsNumbers : 0;
     // const vacuumOptionText = formValues.vacuum
     //   ? this.selectedVacuumOption
     //   : 'NO';
@@ -981,7 +983,6 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       conditionalInclude('Inside the Oven', formValues.insideTheOven),
       conditionalInclude('Inside the Fridge', formValues.insideTheFridge),
       conditionalInclude('Washing Dishes', formValues.washingDishes),
-      conditionalInclude('Wall Cleaning', formValues.wallCleaning),
       conditionalInclude('Pet Hair Clean', formValues.petHairClean),
       conditionalInclude('Inside Kitchen Cabinets', formValues.insideCabinets),
       conditionalInclude('Balcony Cleaning', formValues.balcony),
@@ -1026,6 +1027,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         Special Instructions: ${formValues.specialInstructions || 'None'}
         ${extraServicesText}
         Inside Windows: ${insideWindowsText}
+        Walls Quantity: ${wallsText}
         Hours of Organizing: ${organizingHoursText}
         Number of Cleaners: ${this.requiredCleaners}
         Number of Hours: ${
@@ -1035,26 +1037,27 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         ${!this.isCustomCleaning ? `Total Time: ${totalTimeText}\n` : ''}
         Sub-total Price: $${this.totalPrice?.toFixed(2)}
         Sales Tax: $${this.salesTax?.toFixed(2)}
+        Tips: $${this.tips?.toFixed(2)}
         Total Price: $${this.total?.toFixed(2)}
   
         Contact Info:
-        
-        Name: ${contactInfo.name}
-        Last Name: ${contactInfo.lastName}
-        Email: ${contactInfo.email}
-        Cell Number: ${contactInfo.cellNumber || 'None'}
-  
+    
+        Name: ${formValues.name}
+        Last Name: ${formValues.lastName}
+        Email: ${formValues.email}
+        Cell Number: ${formValues.cellNumber || 'None'}
+    
         Address Info:
-  
-        Address: ${addressInfo.address}
-        Apartment: ${addressInfo.apartment || 'N/A'}
+    
+        Address: ${formValues.address}
+        Apartment: ${formValues.apartment || 'N/A'}
         City: ${cityText}
         State: ${stateText}
-        Zip Code: ${addressInfo.zipCode}
+        Zip Code: ${formValues.zipCode}
     `;
 
     const clientEmailText = `
-        Thank you for booking with us!
+        Thank you for booking our service!
   
         Here are your booking details:
   
@@ -1072,6 +1075,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         }
         ${extraServicesText}
         Inside Windows: ${insideWindowsText}
+        Walls Quantity: ${wallsText}
         Hours of Organizing: ${organizingHoursText}
         Number of Cleaners: ${this.requiredCleaners}
         Number of Hours: ${
@@ -1081,22 +1085,16 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         ${!this.isCustomCleaning ? `Total Time: ${totalTimeText}\n` : ''}
         Sub-total Price: $${this.totalPrice?.toFixed(2)}
         Sales Tax: $${this.salesTax?.toFixed(2)}
+        Tips: $${this.tips?.toFixed(2)}
         Total Price: $${this.total?.toFixed(2)}
-  
-        Contact Info:
-        
-        Your Name: ${contactInfo.name}
-        Your Last Name: ${contactInfo.lastName}
-        Your Email: ${contactInfo.email}
-        Your Cell Number: ${contactInfo.cellNumber || 'None'}
-  
+
         Address Info:
-  
-        Your Address: ${addressInfo.address}
-        Your Apartment: ${addressInfo.apartment || 'N/A'}
+    
+        Your Address: ${formValues.address}
+        Your Apartment: ${formValues.apartment || 'N/A'}
         Your City: ${cityText}
         Your State: ${stateText}
-        Your Zip Code: ${addressInfo.zipCode}
+        Your Zip Code: ${formValues.zipCode}
     `;
 
     const yourEmailPayload = {
@@ -1106,7 +1104,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     };
 
     const clientEmailPayload = {
-      email: contactInfo.email, // Client's email address
+      email: formValues.email, // Client's email address
       subject: 'Booking Confirmation',
       text: clientEmailText,
       from: 'DreamCleaningInfos@gmail.com', // Ensure this field is added

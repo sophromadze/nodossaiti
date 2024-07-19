@@ -181,14 +181,18 @@
       gap: 30px;
       padding: 50px 10px 20px;
     }
+
+    .cleanings {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
   }
 }
 
 @media (max-width: 525px) {
   .main {
     .container {
-      gap: 0;
-      justify-content: space-evenly;
+      gap: 20px;
       & > div:first-child {
         gap: 0;
       }

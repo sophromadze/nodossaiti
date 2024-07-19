@@ -24,7 +24,8 @@
               *ngIf="
                 !(
                   (extra.controlName === 'organizing' && showOrganizingInput) ||
-                  (extra.controlName === 'insideWindows' && showWindowsInput)
+                  (extra.controlName === 'insideWindows' && showWindowsInput) ||
+                  (extra.controlName === 'wallCleaning' && showWallsInput)
                 )
               "
             >
@@ -82,6 +83,56 @@
               {{ insideWindowsNumbers }} {{ getWindowsText() }}
             </div>
             <div
+              *ngIf="extra.controlName === 'wallCleaning' && showWallsInput"
+              class="walls-input"
+            >
+              <div class="number-input-container">
+                <input
+                  type="number"
+                  [min]="1"
+                  [max]="20"
+                  [step]="1"
+                  [(ngModel)]="wallsNumbers"
+                  (click)="$event.stopPropagation()"
+                  (input)="onWallsChange($event)"
+                />
+                <div class="arrowsContainer">
+                  <button
+                    type="button"
+                    class="arrow-btn"
+                    (click)="increaseWalls($event)"
+                  >
+                    <i class="fa-solid fa-chevron-up"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="arrow-btn"
+                    (click)="decreaseWalls($event)"
+                  >
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn confirm-btn"
+                  (click)="confirmWallsNumbers($event)"
+                >
+                  {{ buttonText }}
+                </button>
+              </div>
+            </div>
+            <div
+              *ngIf="
+                extra.controlName === 'wallCleaning' &&
+                parentForm.get('wallCleaning')!.value &&
+                !showWallsInput
+              "
+              class="walls-selection"
+            >
+              {{ wallsNumbers }} {{ getWallsText() }}
+            </div>
+            <div
               *ngIf="extra.controlName === 'organizing' && showOrganizingInput"
               class="organizing-input"
             >
@@ -121,7 +172,6 @@
                 </button>
               </div>
             </div>
-
             <div
               *ngIf="
                 extra.controlName === 'organizing' &&
