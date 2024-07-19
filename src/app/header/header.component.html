@@ -2,7 +2,7 @@
   class="fixedHeader"
   [ngClass]="{ scrolled: isScrolled, transparentPage: isTransparentPage }"
 >
-  <div class="upperDiv">
+  <div class="upperDiv" *ngIf="!isMobile">
     <div>
       <i class="fa-solid fa-phone"></i
       ><a href="tel:929-930-1525"><span> 929-930-1525</span></a>
@@ -33,54 +33,46 @@
         ></i>
       </div>
 
-      <div>
-        <ul class="mainMenu" [ngClass]="{ show: isMenuOpen }">
-          <li class="cleaningService">
-            <a (click)="toggleDropdown()"
-              >Cleaning Services <i class="fa-solid fa-chevron-down"></i
-            ></a>
-            <ul
-              class="cleaningServiceDropdown"
-              [ngClass]="{ show: isDropdownOpen }"
-            >
-              <li>
-                <a (click)="navigateToCalculator('regular')"
-                  >Regular Cleaning</a
-                >
-              </li>
-              <li>
-                <a (click)="navigateToCalculator('deep')">Deep Cleaning</a>
-              </li>
-              <li>
-                <a (click)="navigateToCalculator('moveIn')">Move in Service</a>
-              </li>
-              <li>
-                <a (click)="navigateToCalculator('moveOut')"
-                  >Move out Service</a
-                >
-              </li>
-              <li>
-                <a (click)="navigateToCalculator('custom')">Custom Cleaning</a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a routerLink="/calculator" (click)="closeMenuAndDropdown()"
-              >Book Now</a
-            >
-          </li>
-          <li>
-            <a routerLink="/about" (click)="closeMenuAndDropdown()">About</a>
-          </li>
-          <li>
-            <a routerLink="/contact" (click)="closeMenuAndDropdown()"
-              >Contact</a
-            >
-          </li>
-        </ul>
-      </div>
+      <ul class="mainMenu" [ngClass]="{ show: isMenuOpen }">
+        <li class="cleaningService">
+          <a (click)="toggleDropdown()"
+            >Cleaning Services <i class="fa-solid fa-chevron-down"></i
+          ></a>
+          <ul
+            class="cleaningServiceDropdown"
+            [ngClass]="{ show: isDropdownOpen }"
+          >
+            <li>
+              <a (click)="navigateToCalculator('regular')">Regular Cleaning</a>
+            </li>
+            <li>
+              <a (click)="navigateToCalculator('deep')">Deep Cleaning</a>
+            </li>
+            <li>
+              <a (click)="navigateToCalculator('moveIn')">Move in Service</a>
+            </li>
+            <li>
+              <a (click)="navigateToCalculator('moveOut')">Move out Service</a>
+            </li>
+            <li>
+              <a (click)="navigateToCalculator('custom')">Custom Cleaning</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a routerLink="/calculator" (click)="closeMenuAndDropdown()"
+            >Book Now</a
+          >
+        </li>
+        <li>
+          <a routerLink="/about" (click)="closeMenuAndDropdown()">About</a>
+        </li>
+        <li>
+          <a routerLink="/contact" (click)="closeMenuAndDropdown()">Contact</a>
+        </li>
+      </ul>
     </div>
-    <div>
+    <div *ngIf="!isMobile">
       <div class="socialMedia">
         <a
           href="https://www.facebook.com/profile.php?id=61562078646597&mibextid=LQQJ4d"

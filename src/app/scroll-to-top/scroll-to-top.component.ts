@@ -7,6 +7,11 @@ import { Component, HostListener } from '@angular/core';
 })
 export class ScrollToTopComponent {
   isVisible: boolean = false;
+  isMobile: boolean = false;
+
+  constructor() {
+    this.isMobile = this.checkIfMobile();
+  }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -15,5 +20,9 @@ export class ScrollToTopComponent {
 
   scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  private checkIfMobile(): boolean {
+    return /iPhone|iPad|iPod|Android|Windows Phone/i.test(navigator.userAgent);
   }
 }

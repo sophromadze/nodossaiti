@@ -1,3 +1,13 @@
-<div [class.visible]="isVisible" id="top-btn" (click)="scrollToTop()">
+<div id="top-btn" [class.visible]="isVisible" (click)="scrollToTop()">
   <i class="fa fa-angle-up"></i>
+</div>
+<div *ngIf="isMobile" id="call-btn">
+  <a href="tel:929-930-1525">
+    <i class="fa fa-phone"></i>
+  </a>
+</div>
+<div *ngIf="isMobile" id="mail-btn">
+  <a href="mailto:dreamcleaninginfos@gmail.com"
+    ><i class="fa fa-envelope"></i
+  ></a>
 </div>

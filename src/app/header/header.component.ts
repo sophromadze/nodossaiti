@@ -13,6 +13,7 @@ export class HeaderComponent {
   logoSrc = '/assets/images/smallLogoLight.png'; // Default logo
   isMenuOpen = false;
   isDropdownOpen = false;
+  isMobile = false;
 
   constructor(
     private router: Router,
@@ -25,6 +26,7 @@ export class HeaderComponent {
         this.closeMenuAndDropdown(); // Close menu and dropdown on navigation
       }
     });
+    this.isMobile = this.checkIfMobile();
   }
 
   toggleMenu() {
@@ -71,5 +73,9 @@ export class HeaderComponent {
   private scrollToTop() {
     // Scroll to the top of the page
     this.viewportScroller.scrollToPosition([0, 0]);
+  }
+
+  private checkIfMobile(): boolean {
+    return /iPhone|iPad|iPod|Android|Windows Phone/i.test(navigator.userAgent);
   }
 }
