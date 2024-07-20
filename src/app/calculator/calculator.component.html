@@ -423,13 +423,43 @@
                 </div>
               </div>
               <div class="col">
-                <input
-                  type="text"
-                  formControlName="cellNumber"
-                  id="cellNumber"
-                  class="form-control"
-                  placeholder="Cell Number"
-                />
+                <div
+                  class="cell-number-container"
+                  [class.focused]="isFocused"
+                  [class.has-value]="cellNumberInput.value!.length > 0"
+                >
+                  <span class="prefix">+1</span>
+                  <input
+                    type="text"
+                    formControlName="cellNumber"
+                    id="cellNumber"
+                    class="form-control"
+                    placeholder="Cell Number**"
+                    #cellNumberInput
+                    (input)="onCellNumberInput($event)"
+                    (focus)="onFocus()"
+                    (blur)="onBlur()"
+                  />
+                </div>
+
+                <div
+                  *ngIf="
+                    calculatorForm.get('cellNumber')!.invalid &&
+                    calculatorForm.get('cellNumber')!.touched
+                  "
+                  class="error"
+                >
+                  <div
+                    *ngIf="calculatorForm.get('cellNumber')!.errors?.['required']"
+                  >
+                    Please enter your cell number.
+                  </div>
+                  <div
+                    *ngIf="calculatorForm.get('cellNumber')!.errors?.['cellNumberInvalid']"
+                  >
+                    Cell number must be 10 digits.
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -23,6 +23,7 @@ export class PaymentFormComponent implements OnInit {
   showConfirmModal = false;
   showResultModal = false;
   paymentSuccessFlag = false;
+  isLoading = false;
 
   constructor(
     private stripeService: StripePaymentService,
@@ -57,6 +58,7 @@ export class PaymentFormComponent implements OnInit {
 
   async confirmPayment() {
     this.showConfirmModal = false;
+    this.isLoading = true; // Show loading spinner
 
     const name = this.paymentForm.get('name')?.value;
     if (this.stripe && this.card) {
@@ -88,6 +90,7 @@ export class PaymentFormComponent implements OnInit {
             this.showResultModal = true;
             this.paymentSuccess.emit(this.formValues);
           }
+          this.isLoading = false; // Hide loading spinner
         });
     }
   }

@@ -212,6 +212,12 @@ export class ExtraServicesComponent implements OnChanges {
       ])
     );
 
+    // Set initial values from parent form
+    this.insideWindowsNumbers =
+      this.parentForm.get('insideWindows')!.value || 1;
+    this.wallsNumbers = this.parentForm.get('wallCleaning')!.value || 1;
+    this.organizingHours = this.parentForm.get('organizing')!.value || 0.5;
+
     this.updateButtonText(window.innerWidth);
 
     // if (this.parentForm.get('vacuum')!.value) {
@@ -228,6 +234,8 @@ export class ExtraServicesComponent implements OnChanges {
         this.clearDateAndUncheckSameDayService();
       });
     }
+
+    this.emitChanges();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -353,7 +361,7 @@ export class ExtraServicesComponent implements OnChanges {
     this.organizingHours = value;
     this.extraServicePrices['organizing'] = value * 55;
     this.extraServiceTimes['organizing'] = value * 0.5;
-    this.parentForm.get('organizing')!.setValue(value, { emitEvent: false });
+    this.parentForm.get('organizing')!.setValue(value); // Ensure the value is set in the form control
     this.emitChanges();
   }
 
@@ -363,7 +371,7 @@ export class ExtraServicesComponent implements OnChanges {
       this.organizingHours = 0.5;
     }
     this.showOrganizingInput = false;
-    this.parentForm.get('organizing')!.setValue(this.organizingHours);
+    this.parentForm.get('organizing')!.setValue(this.organizingHours); // Ensure the value is set in the form control
     this.emitChanges();
   }
 
@@ -381,7 +389,7 @@ export class ExtraServicesComponent implements OnChanges {
     this.insideWindowsNumbers = value;
     this.extraServicePrices['insideWindows'] = value * 30;
     this.extraServiceTimes['insideWindows'] = value * 0.5;
-    this.parentForm.get('insideWindows')!.setValue(value, { emitEvent: false });
+    this.parentForm.get('insideWindows')!.setValue(value); // Ensure the value is set in the form control
     this.emitChanges();
   }
 
@@ -391,7 +399,7 @@ export class ExtraServicesComponent implements OnChanges {
       this.insideWindowsNumbers = 1;
     }
     this.showWindowsInput = false;
-    this.parentForm.get('insideWindows')!.setValue(this.insideWindowsNumbers);
+    this.parentForm.get('insideWindows')!.setValue(this.insideWindowsNumbers); // Ensure the value is set in the form control
     this.emitChanges();
   }
 
@@ -409,7 +417,7 @@ export class ExtraServicesComponent implements OnChanges {
     this.wallsNumbers = value;
     this.extraServicePrices['wallCleaning'] = value * 25;
     this.extraServiceTimes['wallCleaning'] = value * 0.5;
-    this.parentForm.get('wallCleaning')!.setValue(value, { emitEvent: false });
+    this.parentForm.get('wallCleaning')!.setValue(value); // Ensure the value is set in the form control
     this.emitChanges();
   }
 
@@ -419,7 +427,7 @@ export class ExtraServicesComponent implements OnChanges {
       this.wallsNumbers = 1;
     }
     this.showWallsInput = false;
-    this.parentForm.get('wallCleaning')!.setValue(this.wallsNumbers);
+    this.parentForm.get('wallCleaning')!.setValue(this.wallsNumbers); // Ensure the value is set in the form control
     this.emitChanges();
   }
 

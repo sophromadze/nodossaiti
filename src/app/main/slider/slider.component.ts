@@ -4,6 +4,7 @@ import {
   AfterViewInit,
   Renderer2,
   ElementRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -19,11 +20,14 @@ export class SliderComponent implements OnInit, AfterViewInit {
   slidingAT: number = 0;
   slidingDelay: number = 0;
   setAutoslidingTO!: () => void;
+  isCreditsActive: boolean = true;
+  isCreditsContainerActive: boolean = false;
 
   constructor(
     private router: Router,
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {}
@@ -237,41 +241,48 @@ export class SliderComponent implements OnInit, AfterViewInit {
 
   updateCreditsContent(): void {
     const activeSlide = document.querySelector('.m--active-slide');
-    this.activeSlideId = activeSlide?.getAttribute('data-slide-id') || '1';
+    const newSlideId = activeSlide?.getAttribute('data-slide-id') || '1';
 
-    const creditsContainer = this.el.nativeElement.querySelector(
-      '.demo-cont__credits'
-    ) as HTMLElement;
+    if (this.activeSlideId !== newSlideId) {
+      this.isCreditsActive = false;
+      this.cdr.detectChanges(); // Manually trigger change detection
+      setTimeout(() => {
+        this.activeSlideId = newSlideId;
+        this.isCreditsActive = true;
+        this.cdr.detectChanges(); // Manually trigger change detection
+      }, 1500); // Match the duration of your CSS transition
+    }
+  }
 
-    const bookBtns = creditsContainer.querySelectorAll('.bookBtns');
-    bookBtns.forEach((btn) => {
-      this.renderer.listen(btn, 'click', () => {
-        const type = activeSlide?.getAttribute('data-slide-id') || '1';
-        this.navigateToCalculator(type);
-      });
-    });
+  controlClickHandler(slideID: number): void {
+    if (this.activeSlideId !== slideID.toString()) {
+      const currentCredits = this.el.nativeElement.querySelector(
+        `.demo-cont__credits-${this.activeSlideId}`
+      );
+      const newCredits = this.el.nativeElement.querySelector(
+        `.demo-cont__credits-${slideID}`
+      );
+
+      if (currentCredits) {
+        this.renderer.removeClass(currentCredits, 'credits-spin-in');
+        this.renderer.addClass(currentCredits, 'credits-spin-out');
+      }
+
+      this.isCreditsActive = false;
+      this.cdr.detectChanges(); // Manually trigger change detection
+      setTimeout(() => {
+        if (newCredits) {
+          this.renderer.removeClass(newCredits, 'credits-spin-out');
+          this.renderer.addClass(newCredits, 'credits-spin-in');
+        }
+        this.activeSlideId = slideID.toString();
+        this.isCreditsActive = true;
+        this.cdr.detectChanges(); // Manually trigger change detection
+      }, 500); // Match the duration of your CSS transition
+    }
   }
 
   navigateToCalculator(type: string) {
-    // let mappedType: string;
-
-    // switch (type) {
-    //   case '1':
-    //     mappedType = 'regular';
-    //     break;
-    //   case '2':
-    //     mappedType = 'deep';
-    //     break;
-    //   case '3':
-    //     mappedType = 'moveIn';
-    //     break;
-    //   case '4':
-    //     mappedType = 'moveOut';
-    //     break;
-    //   default:
-    //     mappedType = 'regular';
-    // }
-
     this.router.navigate(['/calculator'], {
       queryParams: { type },
     });
@@ -281,8 +292,13 @@ export class SliderComponent implements OnInit, AfterViewInit {
   $fncSlider = document.querySelector('.fnc-slider');
 
   onReadMoreButtonClick() {
-    if (this.$demoCont && this.$fncSlider) {
+    const creditsContainer = this.$demoCont!.querySelector(
+      '.demo-cont__credits-container'
+    );
+
+    if (this.$demoCont && this.$fncSlider && creditsContainer) {
       this.$demoCont.classList.toggle('credits-active');
+      creditsContainer.classList.toggle('credits-container-active');
       this.autoSlidingActive = !this.autoSlidingActive;
 
       if (this.autoSlidingActive) {

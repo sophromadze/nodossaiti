@@ -4,8 +4,15 @@ import {
   AfterViewInit,
   Renderer2,
   ElementRef,
+  ChangeDetectorRef,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import flatpickr from 'flatpickr';
@@ -43,6 +50,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   // selectedVacuumOption: string = 'None';
   squareFeetOptions: Array<{ value: string; label: string }> = [];
   bathroomOptions = [1, 2, 3, 4, 5, 6];
+  isFocused: boolean = false;
   frequencies = [
     { value: 'One Time', label: 'One Time', discount: 0 },
     { value: 'Weekly', label: 'Weekly 10% Discount', discount: 10 },
@@ -224,7 +232,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     private router: Router,
     private renderer: Renderer2,
     private el: ElementRef,
-    private location: Location
+    private location: Location,
+    private cdr: ChangeDetectorRef
   ) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -269,8 +278,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       insideTheOven: [false],
       insideTheFridge: [false],
       washingDishes: [false],
-      wallCleaning: [false],
-      insideWindows: [false],
+      wallCleaning: [null],
+      insideWindows: [null],
       petHairClean: [false],
       insideCabinets: [false],
       balcony: [false],
@@ -278,7 +287,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       office: [false],
       laundry: [false],
       folding: [false],
-      organizing: [false],
+      organizing: [null],
       // vacuum: [false],
       vacuum2: [false],
       cleaners: [1],
@@ -286,7 +295,14 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       name: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      cellNumber: [''],
+      cellNumber: [
+        '',
+        [
+          Validators.required,
+          this.cellNumberValidator,
+          Validators.pattern(/^\d+$/),
+        ],
+      ],
       address: ['', Validators.required],
       apartment: [''],
       city: ['', Validators.required],
@@ -311,35 +327,6 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     this.calculatorForm.valueChanges.subscribe(() => {
       this.calculatePriceAndTime();
     });
-  }
-
-  onTipsInput(event: any): void {
-    const input = event.target;
-    const tipsControl = this.calculatorForm.get('tips');
-    let tipsValue = input.value;
-
-    // Remove non-integer characters and leading zeros
-    tipsValue = tipsValue.replace(/[^0-9]/g, '').replace(/^0+/, '');
-
-    // Update the form control value with the filtered input
-    tipsControl?.setValue(tipsValue, { emitEvent: false });
-
-    // Clear previous timeout to prevent multiple timeouts
-    clearTimeout(this.inputTimeout);
-
-    // Set a new timeout to check the value after 2 seconds
-    this.inputTimeout = setTimeout(() => {
-      if (
-        tipsValue !== null &&
-        tipsValue !== '' &&
-        +tipsValue > 0 &&
-        +tipsValue < 10
-      ) {
-        tipsValue = '10';
-        tipsControl?.setValue(tipsValue, { emitEvent: true });
-        input.value = tipsValue; // Ensure the input field is updated
-      }
-    }, 2000);
   }
 
   ngOnInit(): void {
@@ -397,6 +384,10 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         }
       });
 
+      const sanitizedCellNumber = params['cellNumber']
+        ? params['cellNumber'].replace(/[^0-9]/g, '')
+        : '';
+
       this.calculatorForm.setValue({
         serviceType: params['serviceType'] || 'Residential',
         bedrooms: params['bedrooms'] || 'studio',
@@ -414,8 +405,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         insideTheOven: params['insideTheOven'] || false,
         insideTheFridge: params['insideTheFridge'] || false,
         washingDishes: params['washingDishes'] || false,
-        wallCleaning: params['wallCleaning'] || false,
-        insideWindows: params['insideWindows'] || false,
+        wallCleaning: params['wallCleaning'] || null,
+        insideWindows: params['insideWindows'] || null,
         petHairClean: params['petHairClean'] || false,
         insideCabinets: params['insideCabinets'] || false,
         balcony: params['balcony'] || false,
@@ -423,14 +414,14 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         office: params['office'] || false,
         laundry: params['laundry'] || false,
         folding: params['folding'] || false,
-        organizing: params['organizing'] || false,
+        organizing: params['organizing'] || null,
         vacuum2: params['vacuum2'] || false,
         cleaners: params['cleaners'] || 1,
         hours: params['hours'] || 3,
         name: params['name'] || null,
         lastName: params['lastName'] || null,
         email: params['email'] || null,
-        cellNumber: params['cellNumber'] || null,
+        cellNumber: sanitizedCellNumber || null,
         address: params['address'] || null,
         apartment: params['apartment'] || null,
         city: params['city'] || '',
@@ -462,9 +453,16 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       }
 
       this.updateSquareFeetOptions(); // Ensure options are initialized
+
+      this.cdr.detectChanges(); // Manually trigger change detection
+
+      this.calculatePriceAndTime(); // Calculate price and time based on initial values
     });
 
     this.calculatorForm.valueChanges.subscribe(() => {
+      const cellNumber = this.calculatorForm.value.cellNumber || '';
+      const sanitizedCellNumber = cellNumber.replace(/[^0-9]/g, '');
+
       this.updateUrlWithoutHistory({
         serviceType: this.calculatorForm.value.serviceType || null,
         bedrooms: this.calculatorForm.value.bedrooms || null,
@@ -499,7 +497,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         name: this.calculatorForm.value.name || null,
         lastName: this.calculatorForm.value.lastName || null,
         email: this.calculatorForm.value.email || null,
-        cellNumber: this.calculatorForm.value.cellNumber || null,
+        cellNumber: sanitizedCellNumber || null,
         address: this.calculatorForm.value.address || null,
         apartment: this.calculatorForm.value.apartment || null,
         city: this.calculatorForm.value.city || null,
@@ -507,11 +505,37 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         zipCode: this.calculatorForm.value.zipCode || null,
         tips: this.calculatorForm.value.tips || null,
       });
+
+      this.cdr.detectChanges(); // Manually trigger change detection after value change
+      this.calculatePriceAndTime(); // Recalculate price and time based on updated values
     });
 
     this.updateSquareFeetOptions(); // Ensure options are initialized
     // Scroll to top when the component initializes
     window.scrollTo(0, 0);
+
+    // Subscribe to changes in the discount control
+    this.calculatorForm.get('discount')!.valueChanges.subscribe((discount) => {
+      if (discount === 'First Time') {
+        this.calculatorForm.get('frequency')!.setValue('One Time');
+      }
+    });
+
+    // Subscribe to changes in the frequency control
+    this.calculatorForm
+      .get('frequency')!
+      .valueChanges.subscribe((frequency) => {
+        const discountControl = this.calculatorForm.get('discount')!;
+        if (
+          frequency !== 'One Time' &&
+          discountControl.value === 'First Time'
+        ) {
+          discountControl.setValue(null); // Uncheck the "First Time" discount
+        }
+      });
+
+    // Calculate price and time based on initial values
+    this.calculatePriceAndTime();
   }
 
   ngAfterViewInit(): void {
@@ -521,6 +545,81 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   updateUrlWithoutHistory(queryParams: any): void {
     const url = this.router.createUrlTree([], { queryParams }).toString();
     this.location.replaceState(url);
+  }
+
+  cellNumberValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (value && !/^\d{10}$/.test(value)) {
+      return { cellNumberInvalid: true };
+    }
+    return null;
+  }
+
+  onFocus(): void {
+    this.isFocused = true;
+    this.runChangeDetection();
+  }
+
+  onBlur(): void {
+    const cellNumberControl = this.calculatorForm.get('cellNumber');
+    if (!cellNumberControl!.value || cellNumberControl!.value.length === 0) {
+      this.isFocused = false;
+      this.runChangeDetection();
+    }
+  }
+
+  onCellNumberInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/[^0-9]/g, '');
+
+    // Limit to the first 10 digits
+    if (value.length > 10) {
+      value = value.slice(0, 10);
+    }
+
+    // Set the numeric value in the form control
+    this.calculatorForm
+      .get('cellNumber')!
+      .setValue(value, { emitEvent: false });
+
+    // Update focus state based on value length
+    this.isFocused = true;
+    this.runChangeDetection();
+  }
+
+  private runChangeDetection(): void {
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    });
+  }
+
+  onTipsInput(event: any): void {
+    const input = event.target;
+    const tipsControl = this.calculatorForm.get('tips');
+    let tipsValue = input.value;
+
+    // Remove non-integer characters and leading zeros
+    tipsValue = tipsValue.replace(/[^0-9]/g, '').replace(/^0+/, '');
+
+    // Update the form control value with the filtered input
+    tipsControl?.setValue(tipsValue, { emitEvent: false });
+
+    // Clear previous timeout to prevent multiple timeouts
+    clearTimeout(this.inputTimeout);
+
+    // Set a new timeout to check the value after 2 seconds
+    this.inputTimeout = setTimeout(() => {
+      if (
+        tipsValue !== null &&
+        tipsValue !== '' &&
+        +tipsValue > 0 &&
+        +tipsValue < 10
+      ) {
+        tipsValue = '10';
+        tipsControl?.setValue(tipsValue, { emitEvent: true });
+        input.value = tipsValue; // Ensure the input field is updated
+      }
+    }, 2000);
   }
 
   // Method to get the label for bedrooms
@@ -662,11 +761,17 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   }
 
   toggleDiscount(discount: string): void {
-    const currentDiscount = this.calculatorForm.get('discount')!.value;
-    if (currentDiscount === discount) {
-      this.setDiscount(null); // Unselect if already selected
+    const discountControl = this.calculatorForm.get('discount')!;
+    const frequencyControl = this.calculatorForm.get('frequency')!;
+
+    if (discountControl.value === discount) {
+      discountControl.setValue(null); // Unselect if already selected
     } else {
-      this.setDiscount(discount); // Select the new discount
+      discountControl.setValue(discount); // Select the new discount
+
+      if (discount === 'First Time') {
+        frequencyControl.setValue('One Time'); // Set frequency to One Time if First Time discount is selected
+      }
     }
   }
 
@@ -900,14 +1005,37 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   }
 
   onPaymentSuccess(event: any): void {
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const month = monthNames[tomorrow.getMonth()];
+    const day = tomorrow.getDate();
+    const year = tomorrow.getFullYear();
+    const tomorrowDateString = `${month}-${day}-${year}`;
+
     this.sendEmail();
     this.calculatorForm.reset({
-      serviceType: '',
+      serviceType: 'Residential',
       bedrooms: 'studio',
       bathrooms: 1,
-      squareFeet: '',
-      serviceDate: '',
-      serviceTime: '',
+      squareFeet: '<400',
+      serviceDate: tomorrowDateString,
+      serviceTime: '9:00' + ' ' + 'AM',
       frequency: 'One Time',
       discount: '',
       entryMethod: '',

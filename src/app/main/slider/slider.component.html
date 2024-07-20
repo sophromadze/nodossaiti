@@ -110,19 +110,19 @@
         <div class="fnc-nav__bg m--navbg-blue"></div>
       </div>
       <div class="fnc-nav__controls">
-        <button class="fnc-nav__control">
+        <button class="fnc-nav__control" (click)="controlClickHandler(1)">
           Regular Cleaning
           <span class="fnc-nav__control-progress"></span>
         </button>
-        <button class="fnc-nav__control">
+        <button class="fnc-nav__control" (click)="controlClickHandler(2)">
           Deep Cleaning
           <span class="fnc-nav__control-progress"></span>
         </button>
-        <button class="fnc-nav__control">
+        <button class="fnc-nav__control" (click)="controlClickHandler(3)">
           Move In Service
           <span class="fnc-nav__control-progress"></span>
         </button>
-        <button class="fnc-nav__control">
+        <button class="fnc-nav__control" (click)="controlClickHandler(4)">
           Move Out Service
           <span class="fnc-nav__control-progress"></span>
         </button>
@@ -130,10 +130,14 @@
     </nav>
   </div>
 
-  <div class="demo-cont__credits">
+  <div
+    class="demo-cont__credits-container"
+    [ngClass]="{ 'credits-container-active': isCreditsContainerActive }"
+  >
     <div
       *ngIf="activeSlideId === '1'"
       class="demo-cont__credits demo-cont__credits-1 regularCleaning"
+      [ngClass]="{ 'credits-spin-in': isCreditsActive }"
     >
       <div class="cardHeads">
         <h2>Regular Cleaning</h2>
@@ -173,6 +177,7 @@
     <div
       *ngIf="activeSlideId === '2'"
       class="demo-cont__credits demo-cont__credits-2 deepCleaning"
+      [ngClass]="{ 'credits-spin-in': isCreditsActive }"
     >
       <div class="cardHeads">
         <h2>Deep Cleaning</h2>
@@ -212,6 +217,7 @@
     <div
       *ngIf="activeSlideId === '3'"
       class="demo-cont__credits demo-cont__credits-3 moveIn"
+      [ngClass]="{ 'credits-spin-in': isCreditsActive }"
     >
       <div class="cardHeads">
         <h2>Move In</h2>
@@ -272,6 +278,7 @@
     <div
       *ngIf="activeSlideId === '4'"
       class="demo-cont__credits demo-cont__credits-4 moveOut"
+      [ngClass]="{ 'credits-spin-in': isCreditsActive }"
     >
       <div class="cardHeads">
         <h2>Move Out</h2>

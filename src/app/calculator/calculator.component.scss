@@ -269,7 +269,7 @@ h3 {
 
 .row {
   display: flex;
-  gap: 1rem;
+  gap: 20px;
   align-items: center;
 }
 
@@ -419,6 +419,42 @@ input.disabled {
   }
 }
 
+.cell-number-container {
+  position: relative;
+  display: inline-block;
+
+  input {
+    padding-left: 25px; /* Adjust padding to make space for +1 */
+    text-indent: 0; /* Ensure text starts at the very left */
+  }
+
+  .prefix {
+    position: absolute;
+    left: 5px; /* Adjust based on your padding and styling */
+    top: 50%;
+    transform: translateY(-50%);
+    color: lightgrey;
+    pointer-events: none; /* Ensure the prefix is not interactive */
+    user-select: none; /* Prevent selection of the prefix */
+    display: none; /* Hide prefix by default */
+  }
+
+  &.focused .prefix,
+  &.has-value .prefix {
+    display: inline; /* Show prefix when input has focus or value */
+  }
+
+  input::placeholder {
+    // color: lightgrey;
+    position: absolute;
+    left: 5px;
+  }
+
+  input:focus::placeholder {
+    color: transparent; /* Hide placeholder when input is focused */
+  }
+}
+
 @media (max-height: 850px) {
   .calculator-card {
     top: 38vh;
@@ -548,6 +584,12 @@ input.disabled {
     flex-direction: column;
     div {
       width: 100%;
+    }
+  }
+
+  .cell-number-container {
+    input {
+      padding-left: 25px;
     }
   }
 }

@@ -349,9 +349,6 @@
 }
 
 /* NOT PART OF COMMON SLIDER STYLES */
-body {
-  margin: 0;
-}
 
 .demo-cont__close-btn img {
   height: 30px;
@@ -645,6 +642,59 @@ $borderW: 5px;
       }
     }
   }
+}
+
+@keyframes spinOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0) rotateY(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%) rotateY(90deg);
+  }
+}
+
+@keyframes spinIn {
+  0% {
+    opacity: 0;
+    transform: translateX(100%) rotateY(-90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotateY(0deg);
+  }
+}
+
+.demo-cont__credits {
+  opacity: 0;
+  transform: translateY(-100%) rotateY(90deg);
+  position: absolute;
+  top: 0;
+}
+
+.credits-spin-in {
+  animation: spinIn 1.2s forwards;
+}
+
+.credits-spin-out {
+  animation: spinOut 2s forwards;
+}
+
+.demo-cont__credits-container {
+  transform: translate3d(100%, 0, 0) rotateY(-45deg);
+  transition: transform 0.7s;
+  position: absolute;
+  overflow-y: auto;
+  width: 100%;
+  right: 0;
+  height: 100%;
+  top: 0;
+  overflow: hidden;
+}
+
+.credits-container-active {
+  transform: translate3d(0, 0, 0);
 }
 
 .moveIn {
