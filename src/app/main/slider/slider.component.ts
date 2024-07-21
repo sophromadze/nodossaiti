@@ -236,7 +236,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
       });
     };
 
-    fncSlider.call(this, '.example-slider', { autoSlidingDelay: 4000 });
+    fncSlider.call(this, '.example-slider', { autoSlidingDelay: 6000 });
   }
 
   updateCreditsContent(): void {
@@ -250,7 +250,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
         this.activeSlideId = newSlideId;
         this.isCreditsActive = true;
         this.cdr.detectChanges(); // Manually trigger change detection
-      }, 1500); // Match the duration of your CSS transition
+      }, 50); // Match the duration of your CSS transition
     }
   }
 
@@ -298,7 +298,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
 
     if (this.$demoCont && this.$fncSlider && creditsContainer) {
       this.$demoCont.classList.toggle('credits-active');
-      creditsContainer.classList.toggle('credits-container-active');
+      creditsContainer?.classList.toggle('credits-container-active');
       this.autoSlidingActive = !this.autoSlidingActive;
 
       if (this.autoSlidingActive) {
@@ -312,8 +312,12 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
 
   onCloseButtonClick() {
+    const creditsContainer = this.$demoCont!.querySelector(
+      '.demo-cont__credits-container'
+    );
     if (this.$demoCont && this.$fncSlider) {
       this.$demoCont.classList.remove('credits-active');
+      creditsContainer?.classList.remove('credits-container-active');
       if (!this.autoSlidingActive) {
         this.autoSlidingActive = true;
         this.setAutoslidingTO();
