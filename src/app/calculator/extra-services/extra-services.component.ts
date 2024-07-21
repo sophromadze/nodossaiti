@@ -6,6 +6,7 @@ import {
   OnChanges,
   SimpleChanges,
   HostListener,
+  OnInit,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -28,7 +29,7 @@ interface ExtraServiceData {
   templateUrl: './extra-services.component.html',
   styleUrls: ['./extra-services.component.scss'],
 })
-export class ExtraServicesComponent implements OnChanges {
+export class ExtraServicesComponent implements OnInit, OnChanges {
   @Input() parentForm!: FormGroup;
   @Input() isCustomCleaning = false;
   @Output() extraServiceChanged = new EventEmitter<ExtraServiceData>();
@@ -170,6 +171,8 @@ export class ExtraServicesComponent implements OnChanges {
     vacuum2: 1.0,
   };
 
+  // aq!!
+
   // selectedVacuumOption = '';
   // showVacuumOptions = false;
   organizingHours = 0.5;
@@ -181,16 +184,18 @@ export class ExtraServicesComponent implements OnChanges {
   tooltipVisible = false;
   currentTooltip: string | null = null;
 
-  constructor() {}
-
   ngOnInit(): void {
+    this.initializeFormControls();
+    this.updateButtonText(window.innerWidth);
+  }
+
+  initializeFormControls(): void {
     this.parentForm.addControl(
       'insideWindows',
       new FormControl(1, [
         Validators.required,
         Validators.min(1),
         Validators.max(20),
-        Validators.pattern(/^\d+$/),
       ])
     );
     this.parentForm.addControl(
@@ -199,7 +204,6 @@ export class ExtraServicesComponent implements OnChanges {
         Validators.required,
         Validators.min(1),
         Validators.max(20),
-        Validators.pattern(/^\d+$/),
       ])
     );
     this.parentForm.addControl(
@@ -212,18 +216,43 @@ export class ExtraServicesComponent implements OnChanges {
       ])
     );
 
-    // Set initial values from parent form
-    this.insideWindowsNumbers =
-      this.parentForm.get('insideWindows')!.value || 1;
-    this.wallsNumbers = this.parentForm.get('wallCleaning')!.value || 1;
-    this.organizingHours = this.parentForm.get('organizing')!.value || 0.5;
+    this.parentForm.get('insideWindows')!.valueChanges.subscribe((value) => {
+      this.insideWindowsNumbers = value;
+      this.extraServicePrices['insideWindows'] = value * 30;
+      this.emitChanges();
+    });
 
-    this.updateButtonText(window.innerWidth);
+    this.parentForm.get('wallCleaning')!.valueChanges.subscribe((value) => {
+      this.wallsNumbers = value;
+      this.extraServicePrices['wallCleaning'] = value * 25;
+      this.emitChanges();
+    });
 
-    // if (this.parentForm.get('vacuum')!.value) {
-    //   this.showVacuumOptions = true;
-    //   this.extraServicePrices['vacuum'] = 90;
-    // }
+    this.parentForm.get('organizing')!.valueChanges.subscribe((value) => {
+      this.organizingHours = value;
+      this.extraServicePrices['organizing'] = value * 27.5;
+      this.emitChanges();
+    });
+
+    this.emitChanges();
+  }
+
+  validateOrganizingHours(
+    control: FormControl
+  ): { [key: string]: boolean } | null {
+    const value = control.value;
+    return value % 0.5 !== 0 ? { invalidOrganizingHours: true } : null;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['isCustomCleaning']) {
+      if (this.isCustomCleaning) {
+        this.parentForm.get('organizing')!.disable();
+      } else {
+        this.parentForm.get('organizing')!.enable();
+      }
+      this.emitChanges();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -238,112 +267,44 @@ export class ExtraServicesComponent implements OnChanges {
     this.emitChanges();
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any): void {
-    this.updateButtonText(event.target.innerWidth);
-  }
-
-  updateButtonText(width: number): void {
-    this.buttonText = width <= 1150 ? 'OK' : 'Confirm';
-  }
-
-  clearDateAndUncheckSameDayService(): void {
-    this.parentForm.get('serviceDate')?.setValue(null);
-    if (this.parentForm.get('sameDay')?.value) {
-      this.parentForm.get('sameDay')?.setValue(false);
-      this.emitChanges();
-      this.sameDayServiceChanged.emit(false);
-    }
-  }
-
-  validateOrganizingHours(
-    control: FormControl
-  ): { [key: string]: boolean } | null {
-    const value = control.value;
-    if (value % 0.5 !== 0) {
-      return { invalidOrganizingHours: true };
-    }
-    return null;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['isCustomCleaning']) {
-      if (this.isCustomCleaning) {
-        this.parentForm.get('organizing')!.disable();
-      } else {
-        this.parentForm.get('organizing')!.enable();
-      }
-      this.emitChanges();
-    }
-  }
-
+  //saechvoa es unda shevcvalo tu ara jer ar vici
   toggleExtraService(service: string): void {
     const currentValue = this.parentForm.get(service)!.value;
-    this.parentForm.get(service)!.setValue(!currentValue);
-    this.parentForm.updateValueAndValidity();
 
-    // if (service === 'vacuum')
-    //    {
-    //   if (!currentValue) {
-    //     this.showVacuumOptions = true;
-    //     this.selectedVacuumOption = 'Standard';
-    //     this.extraServicePrices['vacuum'] = 90;
-    //   } else {
-    //     this.showVacuumOptions = false;
-    //     this.selectedVacuumOption = '';
-    //     this.extraServicePrices['vacuum'] = 90;
-    //   }
-    // }
-    //  else
-    if (service === 'organizing') {
-      if (!currentValue) {
-        this.showOrganizingInput = true;
-        this.extraServicePrices['organizing'] = 27.5;
-        this.extraServiceTimes['organizing'] = 0.5;
+    if (typeof currentValue === 'boolean') {
+      this.parentForm.get(service)!.setValue(!currentValue);
+    } else {
+      // Handle specific cases where the value is not boolean
+      if (service === 'organizing') {
+        this.parentForm.get(service)?.setValue(!currentValue ? 0.5 : 0);
+      } else if (service === 'insideWindows') {
+        this.parentForm.get(service)?.setValue(!currentValue ? 1 : 0);
+      } else if (service === 'wallCleaning') {
+        this.parentForm.get(service)?.setValue(!currentValue ? 1 : 0);
       } else {
-        this.showOrganizingInput = false;
-        this.extraServicePrices['organizing'] = 0;
-        this.extraServiceTimes['organizing'] = 0;
-        this.organizingHours = 0.5;
-      }
-    } else if (service === 'insideWindows') {
-      if (!currentValue) {
-        this.showWindowsInput = true;
-        this.extraServicePrices['insideWindows'] = 30;
-        this.extraServiceTimes['insideWindows'] = 0.5;
-      } else {
-        this.showWindowsInput = false;
-        this.extraServicePrices['insideWindows'] = 0;
-        this.extraServiceTimes['insideWindows'] = 0;
-        this.insideWindowsNumbers = 1;
-      }
-    } else if (service === 'wallCleaning') {
-      if (!currentValue) {
-        this.showWallsInput = true;
-        this.extraServicePrices['wallCleaning'] = 25;
-        this.extraServiceTimes['wallCleaning'] = 0.5;
-      } else {
-        this.showWallsInput = false;
-        this.extraServicePrices['wallCleaning'] = 0;
-        this.extraServiceTimes['wallCleaning'] = 0;
-        this.wallsNumbers = 1;
+        this.parentForm.get(service)!.setValue(!currentValue ? 1 : 0);
       }
     }
+
+    this.parentForm.updateValueAndValidity();
 
     if (service === 'sameDay') {
       this.sameDayServiceChanged.emit(!currentValue);
     }
 
+    this.toggleInputVisibility(service, !currentValue);
     this.emitChanges();
   }
 
-  // selectVacuumOption(option: string, event: Event): void {
-  //   event.stopPropagation();
-  //   this.selectedVacuumOption = option;
-  //   this.extraServicePrices['vacuum'] = option === 'Standard' ? 90 : 150;
-  //   this.parentForm.get('vacuum')!.setValue(true);
-  //   this.emitChanges();
-  // }
+  toggleInputVisibility(service: string, isVisible: boolean): void {
+    if (service === 'organizing') {
+      this.showOrganizingInput = isVisible;
+    } else if (service === 'insideWindows') {
+      this.showWindowsInput = isVisible;
+    } else if (service === 'wallCleaning') {
+      this.showWallsInput = isVisible;
+    }
+  }
 
   onOrganizingHoursChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -354,24 +315,20 @@ export class ExtraServicesComponent implements OnChanges {
     } else if (value > 5) {
       value = 5;
     } else {
-      value = Math.round(value * 2) / 2;
+      value = Math.round(value * 2) / 2; // Ensure steps of 0.5
     }
 
     input.value = value.toString();
     this.organizingHours = value;
-    this.extraServicePrices['organizing'] = value * 55;
+    this.extraServicePrices['organizing'] = value * 27.5;
     this.extraServiceTimes['organizing'] = value * 0.5;
-    this.parentForm.get('organizing')!.setValue(value); // Ensure the value is set in the form control
+    this.parentForm.get('organizing')!.setValue(value);
     this.emitChanges();
   }
 
   confirmOrganizingHours(event: Event): void {
     event.stopPropagation();
-    if (!this.organizingHours || this.organizingHours < 0.5) {
-      this.organizingHours = 0.5;
-    }
     this.showOrganizingInput = false;
-    this.parentForm.get('organizing')!.setValue(this.organizingHours); // Ensure the value is set in the form control
     this.emitChanges();
   }
 
@@ -389,17 +346,13 @@ export class ExtraServicesComponent implements OnChanges {
     this.insideWindowsNumbers = value;
     this.extraServicePrices['insideWindows'] = value * 30;
     this.extraServiceTimes['insideWindows'] = value * 0.5;
-    this.parentForm.get('insideWindows')!.setValue(value); // Ensure the value is set in the form control
+    this.parentForm.get('insideWindows')!.setValue(value);
     this.emitChanges();
   }
 
-  confirminsideWindowsNumbers(event: Event): void {
+  confirmInsideWindowsNumbers(event: Event): void {
     event.stopPropagation();
-    if (!this.insideWindowsNumbers || this.insideWindowsNumbers < 1) {
-      this.insideWindowsNumbers = 1;
-    }
     this.showWindowsInput = false;
-    this.parentForm.get('insideWindows')!.setValue(this.insideWindowsNumbers); // Ensure the value is set in the form control
     this.emitChanges();
   }
 
@@ -417,88 +370,14 @@ export class ExtraServicesComponent implements OnChanges {
     this.wallsNumbers = value;
     this.extraServicePrices['wallCleaning'] = value * 25;
     this.extraServiceTimes['wallCleaning'] = value * 0.5;
-    this.parentForm.get('wallCleaning')!.setValue(value); // Ensure the value is set in the form control
+    this.parentForm.get('wallCleaning')!.setValue(value);
     this.emitChanges();
   }
 
   confirmWallsNumbers(event: Event): void {
     event.stopPropagation();
-    if (!this.wallsNumbers || this.wallsNumbers < 1) {
-      this.wallsNumbers = 1;
-    }
     this.showWallsInput = false;
-    this.parentForm.get('wallCleaning')!.setValue(this.wallsNumbers); // Ensure the value is set in the form control
     this.emitChanges();
-  }
-
-  decreaseInsideWindows(event: Event): void {
-    event.stopPropagation();
-    if (this.insideWindowsNumbers > 1) {
-      this.insideWindowsNumbers--;
-      this.onInsideWindowsChange({
-        target: { value: this.insideWindowsNumbers },
-      } as any);
-    }
-  }
-
-  increaseInsideWindows(event: Event): void {
-    event.stopPropagation();
-    if (this.insideWindowsNumbers < 20) {
-      this.insideWindowsNumbers++;
-      this.onInsideWindowsChange({
-        target: { value: this.insideWindowsNumbers },
-      } as any);
-    }
-  }
-
-  decreaseWalls(event: Event): void {
-    event.stopPropagation();
-    if (this.wallsNumbers > 1) {
-      this.wallsNumbers--;
-      this.onWallsChange({
-        target: { value: this.wallsNumbers },
-      } as any);
-    }
-  }
-
-  increaseWalls(event: Event): void {
-    event.stopPropagation();
-    if (this.wallsNumbers < 20) {
-      this.wallsNumbers++;
-      this.onWallsChange({
-        target: { value: this.wallsNumbers },
-      } as any);
-    }
-  }
-
-  decreaseOrganizingHours(event: Event): void {
-    event.stopPropagation();
-    if (this.organizingHours > 0.5) {
-      this.organizingHours -= 0.5;
-      this.onOrganizingHoursChange({
-        target: { value: this.organizingHours },
-      } as any);
-    }
-  }
-
-  increaseOrganizingHours(event: Event): void {
-    event.stopPropagation();
-    if (this.organizingHours < 5) {
-      this.organizingHours += 0.5;
-      this.onOrganizingHoursChange({
-        target: { value: this.organizingHours },
-      } as any);
-    }
-  }
-
-  showTooltip(controlName: string): void {
-    this.currentTooltip = controlName;
-    this.tooltipVisible = true;
-  }
-
-  hideTooltip(): void {
-    this.tooltipVisible = false;
-    this.currentTooltip = null;
   }
 
   emitChanges(): void {
@@ -508,14 +387,90 @@ export class ExtraServicesComponent implements OnChanges {
       organizingHours: this.organizingHours,
       insideWindowsNumbers: this.insideWindowsNumbers,
       wallsNumbers: this.wallsNumbers,
-      // selectedVacuumOption: this.selectedVacuumOption,
     });
   }
 
+  increaseInsideWindows(event: Event): void {
+    event.stopPropagation();
+    if (this.insideWindowsNumbers < 20) {
+      this.insideWindowsNumbers++;
+      this.parentForm.get('insideWindows')?.setValue(this.insideWindowsNumbers);
+      this.emitChanges();
+    }
+  }
+
+  decreaseInsideWindows(event: Event): void {
+    event.stopPropagation();
+    if (this.insideWindowsNumbers > 1) {
+      this.insideWindowsNumbers--;
+      this.parentForm.get('insideWindows')?.setValue(this.insideWindowsNumbers);
+      this.emitChanges();
+    }
+  }
+
+  increaseWalls(event: Event): void {
+    event.stopPropagation();
+    if (this.wallsNumbers < 20) {
+      this.wallsNumbers++;
+      this.parentForm.get('wallCleaning')?.setValue(this.wallsNumbers);
+      this.emitChanges();
+    }
+  }
+
+  decreaseWalls(event: Event): void {
+    event.stopPropagation();
+    if (this.wallsNumbers > 1) {
+      this.wallsNumbers--;
+      this.parentForm.get('wallCleaning')?.setValue(this.wallsNumbers);
+      this.emitChanges();
+    }
+  }
+
+  increaseOrganizingHours(event: Event): void {
+    event.stopPropagation();
+    if (this.organizingHours < 5) {
+      this.organizingHours += 0.5;
+      this.parentForm.get('organizing')?.setValue(this.organizingHours);
+      this.emitChanges();
+    }
+  }
+
+  decreaseOrganizingHours(event: Event): void {
+    event.stopPropagation();
+    if (this.organizingHours > 0.5) {
+      this.organizingHours -= 0.5;
+      this.parentForm.get('organizing')?.setValue(this.organizingHours);
+      this.emitChanges();
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.updateButtonText(event.target.innerWidth);
+  }
   getWindowsText(): string {
     return this.insideWindowsNumbers === 1 ? 'Window' : 'Windows';
   }
   getWallsText(): string {
     return this.wallsNumbers === 1 ? 'Wall' : 'Walls';
+  }
+  updateButtonText(width: number): void {
+    this.buttonText = width <= 1150 ? 'OK' : 'Confirm';
+  }
+  clearDateAndUncheckSameDayService(): void {
+    this.parentForm.get('serviceDate')?.setValue(null);
+    if (this.parentForm.get('sameDay')?.value) {
+      this.parentForm.get('sameDay')?.setValue(false);
+      this.emitChanges();
+      this.sameDayServiceChanged.emit(false);
+    }
+  }
+  showTooltip(controlName: string): void {
+    this.currentTooltip = controlName;
+    this.tooltipVisible = true;
+  }
+  hideTooltip(): void {
+    this.tooltipVisible = false;
+    this.currentTooltip = null;
   }
 }

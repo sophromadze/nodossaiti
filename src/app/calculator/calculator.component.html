@@ -168,10 +168,6 @@
                     [attr.readonly]="
                       calculatorForm.get('serviceDate')!.disabled ? true : null
                     "
-                    (mouseenter)="
-                      showTooltip = calculatorForm.get('serviceDate')!.disabled
-                    "
-                    (mouseleave)="showTooltip = false"
                   />
                   <a class="input-button" title="toggle" data-toggle>
                     <img
@@ -194,9 +190,6 @@
                       alt=""
                     />
                   </a>
-                  <div *ngIf="showTooltip" class="tooltip">
-                    Same Day Service is Checked!
-                  </div>
                 </div>
                 <div
                   *ngIf="

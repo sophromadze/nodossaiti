@@ -12,7 +12,7 @@
           <button
             type="button"
             class="btn"
-            [class.selected]="parentForm.get(extra.controlName)!.value"
+            [class.selected]="parentForm.get(extra.controlName)?.value"
             (click)="toggleExtraService(extra.controlName)"
           >
             <img
@@ -31,7 +31,7 @@
             >
               {{ extra.label }}
             </span>
-
+            <!-- aq -->
             <div
               *ngIf="extra.controlName === 'insideWindows' && showWindowsInput"
               class="insideWindows-input"
@@ -42,46 +42,48 @@
                   [min]="1"
                   [max]="20"
                   [step]="1"
-                  [(ngModel)]="insideWindowsNumbers"
+                  [value]="parentForm.get('insideWindows')?.value"
                   (click)="$event.stopPropagation()"
                   (input)="onInsideWindowsChange($event)"
                 />
                 <div class="arrowsContainer">
                   <button
                     type="button"
-                    class="arrow-btn"
+                    class="arrow-btn increase"
                     (click)="increaseInsideWindows($event)"
                   >
-                    <i class="fa-solid fa-chevron-up"></i>
+                    <i class="fa-solid fa-square-plus fa-3x"></i>
                   </button>
                   <button
                     type="button"
-                    class="arrow-btn"
+                    class="arrow-btn decrease"
                     (click)="decreaseInsideWindows($event)"
                   >
-                    <i class="fa-solid fa-chevron-down"></i>
+                    <i class="fa-solid fa-square-minus fa-3x"></i>
                   </button>
                 </div>
-
                 <button
                   type="button"
                   class="btn confirm-btn"
-                  (click)="confirminsideWindowsNumbers($event)"
+                  (click)="confirmInsideWindowsNumbers($event)"
                 >
                   {{ buttonText }}
                 </button>
               </div>
             </div>
+
             <div
               *ngIf="
                 extra.controlName === 'insideWindows' &&
-                parentForm.get('insideWindows')!.value &&
+                parentForm.get('insideWindows')?.value &&
                 !showWindowsInput
               "
               class="insideWindows-selection"
             >
-              {{ insideWindowsNumbers }} {{ getWindowsText() }}
+              {{ parentForm.get("insideWindows")?.value }}
+              {{ getWindowsText() }}
             </div>
+
             <div
               *ngIf="extra.controlName === 'wallCleaning' && showWallsInput"
               class="walls-input"
@@ -92,27 +94,26 @@
                   [min]="1"
                   [max]="20"
                   [step]="1"
-                  [(ngModel)]="wallsNumbers"
+                  [value]="parentForm.get('wallCleaning')?.value"
                   (click)="$event.stopPropagation()"
                   (input)="onWallsChange($event)"
                 />
                 <div class="arrowsContainer">
                   <button
                     type="button"
-                    class="arrow-btn"
+                    class="arrow-btn increase"
                     (click)="increaseWalls($event)"
                   >
-                    <i class="fa-solid fa-chevron-up"></i>
+                    <i class="fa-solid fa-square-plus fa-3x"></i>
                   </button>
                   <button
                     type="button"
-                    class="arrow-btn"
+                    class="arrow-btn decrease"
                     (click)="decreaseWalls($event)"
                   >
-                    <i class="fa-solid fa-chevron-down"></i>
+                    <i class="fa-solid fa-square-minus fa-3x"></i>
                   </button>
                 </div>
-
                 <button
                   type="button"
                   class="btn confirm-btn"
@@ -122,16 +123,18 @@
                 </button>
               </div>
             </div>
+
             <div
               *ngIf="
                 extra.controlName === 'wallCleaning' &&
-                parentForm.get('wallCleaning')!.value &&
+                parentForm.get('wallCleaning')?.value &&
                 !showWallsInput
               "
               class="walls-selection"
             >
-              {{ wallsNumbers }} {{ getWallsText() }}
+              {{ parentForm.get("wallCleaning")?.value }} {{ getWallsText() }}
             </div>
+
             <div
               *ngIf="extra.controlName === 'organizing' && showOrganizingInput"
               class="organizing-input"
@@ -142,27 +145,26 @@
                   [min]="0.5"
                   [max]="5"
                   [step]="0.5"
-                  [(ngModel)]="organizingHours"
+                  [value]="parentForm.get('organizing')?.value"
                   (click)="$event.stopPropagation()"
                   (input)="onOrganizingHoursChange($event)"
                 />
                 <div class="arrowsContainer">
                   <button
                     type="button"
-                    class="arrow-btn"
+                    class="arrow-btn increase"
                     (click)="increaseOrganizingHours($event)"
                   >
-                    <i class="fa-solid fa-chevron-up"></i>
+                    <i class="fa-solid fa-square-plus fa-3x"></i>
                   </button>
                   <button
                     type="button"
-                    class="arrow-btn"
+                    class="arrow-btn decrease"
                     (click)="decreaseOrganizingHours($event)"
                   >
-                    <i class="fa-solid fa-chevron-down"></i>
+                    <i class="fa-solid fa-square-minus fa-3x"></i>
                   </button>
                 </div>
-
                 <button
                   type="button"
                   class="btn confirm-btn"
@@ -172,15 +174,16 @@
                 </button>
               </div>
             </div>
+
             <div
               *ngIf="
                 extra.controlName === 'organizing' &&
-                parentForm.get('organizing')!.value &&
+                parentForm.get('organizing')?.value &&
                 !showOrganizingInput
               "
               class="organizing-selection"
             >
-              Extra {{ organizingHours }} hours
+              Extra {{ parentForm.get("organizing")?.value }} hours
             </div>
           </button>
           <app-tooltip

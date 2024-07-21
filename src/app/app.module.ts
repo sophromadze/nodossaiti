@@ -21,9 +21,17 @@ import { ContactComponent } from './contact/contact.component';
 import { ScrollToTopComponent } from './scroll-to-top/scroll-to-top.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { register } from 'swiper/element/bundle';
+import { RouterModule, Routes } from '@angular/router';
 
 // Register Swiper custom elements
 register();
+
+// Define your routes
+const appRoutes: Routes = [
+  { path: 'calculator', component: CalculatorComponent },
+  // Add other routes as needed
+  { path: '', redirectTo: '/calculator', pathMatch: 'full' },
+];
 
 @NgModule({
   declarations: [
@@ -50,6 +58,7 @@ register();
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    RouterModule.forRoot(appRoutes),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA], // Add this line
   providers: [],
