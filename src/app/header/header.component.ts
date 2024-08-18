@@ -10,7 +10,7 @@ import { ViewportScroller } from '@angular/common';
 export class HeaderComponent {
   isScrolled = false;
   isTransparentPage = false;
-  logoSrc = '/assets/images/smallLogoLight.png'; // Default logo
+  logoSrc = '/assets/images/smallLogoLight.webp'; // Default logo
   isMenuOpen = false;
   isDropdownOpen = false;
   isMobile = false;
@@ -64,9 +64,9 @@ export class HeaderComponent {
   private updateLogo(url: string) {
     // Change logo based on the current route
     if (url === '/' || url === '/about' || url === 'privacy-policy') {
-      this.logoSrc = '/assets/images/smallLogoLight.png';
+      this.logoSrc = '/assets/images/smallLogoLight.webp';
     } else {
-      this.logoSrc = '/assets/images/smallLogoDark.png';
+      this.logoSrc = '/assets/images/smallLogoDark.webp';
     }
   }
 

@@ -434,3 +434,22 @@ textarea.input {
   cursor: pointer;
   border-radius: 5px;
 }
+
+.msgCheck {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0;
+  input {
+    width: auto;
+    cursor: pointer;
+  }
+
+  label {
+    margin-bottom: 0;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #fff;
+  }
+}

@@ -1,13 +1,21 @@
-<div id="top-btn" [class.visible]="isVisible" (click)="scrollToTop()">
+<button
+  id="top-btn"
+  [class.visible]="isVisible"
+  (click)="scrollToTop()"
+  aria-label="Scroll to top"
+>
   <i class="fa fa-angle-up"></i>
-</div>
+</button>
 <div *ngIf="isMobile" id="call-btn">
-  <a href="tel:929-930-1525">
+  <a href="tel:+1 929-930-1525" aria-label="Call Dream Cleaning">
     <i class="fa fa-phone"></i>
   </a>
 </div>
 <div *ngIf="isMobile" id="mail-btn">
-  <a href="mailto:dreamcleaninginfos@gmail.com"
-    ><i class="fa fa-envelope"></i
-  ></a>
+  <a
+    href="mailto:dreamcleaninginfos@gmail.com"
+    aria-label="Email Dream Cleaning"
+  >
+    <i class="fa fa-envelope"></i>
+  </a>
 </div>

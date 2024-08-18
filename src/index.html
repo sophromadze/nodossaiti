@@ -8,37 +8,56 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="assets/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="assets/favicon-16x16.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="assets/apple-touch-icon.png"
-    />
 
-    <!-- Font Awesome -->
+    <!-- Inline Critical CSS -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        -webkit-scroll-behavior: smooth;
+        background-image: url(/assets/images/claeaningSuppliesBack.webp);
+        user-select: none;
+      }
+    </style>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/assets/images/clean1-small.webp" as="image" />
+    <link rel="preload" href="/assets/images/clean2-small.webp" as="image" />
+    <link rel="preload" href="/assets/images/clean3-small.webp" as="image" />
+    <link rel="preload" href="/assets/images/clean4-small.webp" as="image" />
+
+    <!-- Defer Non-Critical Font Awesome CSS -->
     <link
-      rel="stylesheet"
+      rel="preload"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      />
+    </noscript>
 
     <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap"
       rel="stylesheet"
+    />
+
+    <link rel="canonical" href="https://thedreamcleaning.com" />
+    <link
+      rel="sitemap"
+      type="application/xml"
+      title="Sitemap"
+      href="https://thedreamcleaning.com/sitemap.xml"
     />
 
     <!-- Meta Tags for SEO -->
@@ -48,7 +67,7 @@
     />
     <meta
       name="keywords"
-      content="cleaning, cleaning services, cleaning service, apartment, house, deep cleaning, move in cleaning, move out cleaning, apartment cleaning, house cleaning, professional cleaners, Dream Cleaning, home cleaning, Nika Sophromadze, Cleaners, cleaner, Best cleaning, Fast cleaning service, Brooklyn cleaning, Manhattan cleaning, Queens cleaning, Homemade, Airbnb, Lazy suzan cleaning, Sunlight cleaning, Neva cleaning, NYC cleaning, Cheapest cleaning service, Best cleaning company, Best cleaning service, Vacuum, Clean windows, Windows cleaning, Supplies, Brooklyn, Manhatten, Queens, Harlem, housekeeping, beforeandafter, homedecor, cleaning business, detailing, cleaningaccount, homesweethome, ecofriendly, cleaninghouse, carpet, coronavirus, hinch, love, mrshinchhome, washing, hygiene, powerwashing, hinched, springcleaning, cleaningcommunity, kitchen, business, cleaningday, homeaccount, realestate, instagood, maidservice, softwash, guttercleaning, fumigation, clean, cleaningmotivation, cleaningtips, cleaninghacks, deepcleaning, covid, commercialcleaning, cleaningproducts, cleanhome, officecleaning, residentialcleaning, windowcleaning, smallbusiness, pressurewashing, laundry, hincharmy, cleanhouse, bhfyp, mrshinch, hinching, housekeeping, office cleaning, eco-friendly cleaning, green cleaning, pet-friendly cleaning, sanitized cleaning, reliable cleaners, trusted cleaners, affordable cleaning, quality cleaning, residential cleaning, commercial cleaning, janitorial services, post-construction cleaning, event cleaning, customized cleaning services, spotless cleaning, premium cleaning, full-service cleaning."
+      content="Dream Cleaning, pet-friendly cleaning NYC, pet-safe cleaning services, cleaning services NYC, house cleaning Manhattan, Brooklyn cleaning company, Queens eco-friendly cleaning, best NYC cleaners, affordable New York cleaning, professional cleaning services, home cleaning NYC, apartment cleaning Brooklyn, deep cleaning Queens, move in cleaning NYC, move out cleaning Brooklyn, office cleaning Manhattan, residential cleaning New York, commercial cleaning services NYC, sanitized cleaning Queens, reliable cleaners NYC, trusted cleaners New York, janitorial services Manhattan, post-construction cleaning NYC, customized cleaning services Brooklyn, spotless cleaning New York, premium cleaning services Manhattan, cleaning near Central Park, cleaning near Times Square, cleaning near Brooklyn Bridge, fast cleaning service, best cleaning company, best cleaning service, clean windows, window cleaning, housekeeping, spring cleaning, eco-friendly cleaning, green cleaning, affordable cleaning, quality cleaning, full-service cleaning, small business, pressure washing, soft wash, gutter cleaning, commercial cleaning, real estate cleaning, maid service, cleaning motivation, cleaning tips, cleaning hacks, residential cleaning, office cleaning, deep cleaning, move-in cleaning, move-out cleaning, vacuum, cleaning supplies, kitchen cleaning, laundry service, covid cleaning, coronavirus disinfection, sanitized cleaning, home decor cleaning, power washing, gutter cleaning, detailing cleaning, Airbnb cleaning, Manhattan cleaning, Brooklyn cleaning, Queens cleaning."
     />
     <meta name="author" content="Nika Sophromadze" />
     <meta name="robots" content="index, follow" />
@@ -60,7 +79,7 @@
         "@type": "LocalBusiness",
         "name": "Dream Cleaning",
         "url": "https://thedreamcleaning.com",
-        "logo": "https://thedreamcleaning.com/assets/images/logoLight.png",
+        "logo": "https://thedreamcleaning.com/assets/images/logoLight.webp",
         "description": "Professional cleaning services for apartments and houses.",
         "address": {
           "@type": "PostalAddress",
@@ -81,7 +100,7 @@
     <!-- Google Analytics -->
     <!-- Google tag (gtag.js) -->
     <script
-      async
+      defer
       src="https://www.googletagmanager.com/gtag/js?id=G-Q08MZ2THJK"
     ></script>
     <script>

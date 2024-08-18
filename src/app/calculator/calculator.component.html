@@ -86,7 +86,7 @@
                       *ngFor="let sqft of squareFeetOptions"
                       [value]="sqft.value"
                     >
-                      {{ sqft.value }}
+                      {{ sqft.label }}
                     </option>
                   </select>
                   <div
@@ -173,7 +173,7 @@
                     <img
                       style="height: 35px; width: 35px"
                       class="icon-calendar"
-                      src="/assets/images/calendar.png"
+                      src="/assets/images/calendar.webp"
                       alt=""
                     />
                   </a>
@@ -186,7 +186,7 @@
                     <img
                       style="height: 35px; width: 35px"
                       class="icon-close"
-                      src="/assets/images/close.png"
+                      src="/assets/images/close.webp"
                       alt=""
                     />
                   </a>
@@ -215,7 +215,7 @@
                     <img
                       style="height: 35px; width: 35px"
                       class="icon-clock"
-                      src="/assets/images/clock.png"
+                      src="/assets/images/clock.webp"
                       alt=""
                     />
                   </a>
@@ -223,7 +223,7 @@
                     <img
                       style="height: 35px; width: 35px"
                       class="icon-close"
-                      src="/assets/images/close.png"
+                      src="/assets/images/close.webp"
                       alt=""
                     />
                   </a>
@@ -282,7 +282,7 @@
                 type="number"
                 formControlName="tips"
                 id="tips"
-                class="form-control"
+                class="form-control tipsInput"
                 placeholder="Tips"
                 min="0"
                 step="1"
@@ -559,18 +559,79 @@
 
         <!-- end of addres information -->
 
+        <!-- Checkbox for get messages -->
+        <!-- Checkbox for receiving messages -->
+        <div class="relative-container">
+          <div class="form-group bordered-group msgCheck">
+            <input
+              type="checkbox"
+              formControlName="receiveMessages"
+              id="receiveMessages"
+              class="form-control"
+            />
+            <label for="receiveMessages">
+              By checking this box, you agree to receive and send text messages
+              from and to our company.
+            </label>
+
+            <!-- <div
+              *ngIf="
+                calculatorForm.get('receiveMessages')!.invalid &&
+                calculatorForm.get('receiveMessages')!.touched
+              "
+              class="error"
+            >
+              You must agree to receive messages and updates.
+            </div> -->
+          </div>
+        </div>
+
         <div class="bookNowButton first">
           <button
             type="button"
             class="btn btn-success"
-            [ngClass]="{ disabled: !calculatorForm.valid }"
+            [ngClass]="{
+              disabled: !calculatorForm.valid
+            }"
             (click)="onBookNowClick()"
           >
             Book Now
           </button>
         </div>
 
-        <div *ngIf="showPaymentForm && total !== null">
+        <!-- Payment Method Selection Modal -->
+        <div *ngIf="showPaymentMethodSelection" class="overlay">
+          <div class="payment-method-selection-container">
+            <span (click)="closePaymentMethodSelection()" class="close-button">
+              &times;
+            </span>
+            <h3>Select Payment Method</h3>
+            <!-- <button
+              (click)="selectPaymentMethod('paypal')"
+              class="payment-method-button"
+            >
+              Pay with PayPal
+            </button> -->
+            <button
+              (click)="selectPaymentMethod('creditcard')"
+              class="payment-method-button"
+            >
+              Book with Credit/Debit Card
+            </button>
+          </div>
+        </div>
+
+        <!-- PayPal Payment Form -->
+        <div *ngIf="showPayPalForm && total !== null" class="overlay">
+          <app-paypal-button
+            [amount]="total!"
+            (close)="closePaymentForm()"
+            (paymentSuccess)="onPaymentSuccess($event)"
+          ></app-paypal-button>
+        </div>
+
+        <!-- Credit/Debit Card Payment Form -->
+        <div *ngIf="showCreditCardForm && total !== null" class="overlay">
           <app-payment-form
             [amount]="total!"
             [formValues]="calculatorForm.value"
@@ -583,18 +644,24 @@
       <div class="right-side">
         <div class="right-side-description">
           <app-service-description
+            class="first"
             [serviceType]="calculatorForm.get('serviceType')!.value"
             [isDeepCleaningSelected]="calculatorForm.get('deepCleaning')!.value"
           ></app-service-description>
         </div>
+        <div class="card-width"></div>
 
-        <div class="calculator-card fixed">
+        <!-- calculator card -->
+        <div
+          [ngClass]="{ fixed: isFixed, absolute: !isFixed }"
+          class="calculator-card"
+        >
           <div class="summary">
             <h1>Booking Summary</h1>
             <hr />
             <div class="summaryContent">
               <div *ngIf="calculatorForm.get('serviceType')!.value">
-                <img src="/assets/images/home.png" alt="" title="Service" />
+                <img src="/assets/images/home.webp" alt="" title="Service" />
                 <p>
                   {{ getServiceTypeDisplay() }}
                 </p>
@@ -602,14 +669,14 @@
 
               <div>
                 <img
-                  src="/assets/images/frequency.png"
+                  src="/assets/images/frequency.webp"
                   alt=""
                   title="Frequency"
                 />
                 <p>{{ calculatorForm.get("frequency")!.value }}</p>
               </div>
               <div *ngIf="calculatorForm.get('serviceDate')!.value">
-                <img src="/assets/images/calendar.png" alt="" title="Date" />
+                <img src="/assets/images/calendar.webp" alt="" title="Date" />
                 <p>
                   {{ calculatorForm.get("serviceDate")!.value }} at
                   {{
@@ -621,8 +688,8 @@
             <div class="summaryTime">
               <!-- <div *ngIf="!isCustomCleaning">
             <div class="timeForOneCleaner" title="Time For One Cleaner">
-              <img src="/assets/images/maid.png" alt="" />
-              <img src="/assets/images/clock.png" alt="" />
+              <img src="/assets/images/maid.webp" alt="" />
+              <img src="/assets/images/clock.webp" alt="" />
             </div>
             <p>
               {{
@@ -635,9 +702,9 @@
 
               <div>
                 <div class="numberOfCleaners" title="Number of Cleaners">
-                  <!-- <img src="/assets/images/maid2.png" alt="" /> -->
-                  <!-- <img src="/assets/images/maid3.png" alt="" /> -->
-                  <img src="/assets/images/maid.png" alt="" />
+                  <!-- <img src="/assets/images/maid2.webp" alt="" /> -->
+                  <!-- <img src="/assets/images/maid3.webp" alt="" /> -->
+                  <img src="/assets/images/maid.webp" alt="" />
                 </div>
 
                 <p>
@@ -650,7 +717,7 @@
               </div>
               <div *ngIf="isCustomCleaning">
                 <img
-                  src="/assets/images/clock.png"
+                  src="/assets/images/clock.webp"
                   alt=""
                   title="Number of Hours"
                 />
@@ -664,7 +731,7 @@
               </div>
               <div *ngIf="!isCustomCleaning">
                 <img
-                  src="/assets/images/clock.png"
+                  src="/assets/images/clock.webp"
                   alt=""
                   title="Total Hours"
                 />
@@ -707,6 +774,13 @@
               >
                 Book Now
               </button>
+              <app-service-description
+                class="second"
+                [serviceType]="calculatorForm.get('serviceType')!.value"
+                [isDeepCleaningSelected]="
+                  calculatorForm.get('deepCleaning')!.value
+                "
+              ></app-service-description>
             </div>
           </div>
         </div>

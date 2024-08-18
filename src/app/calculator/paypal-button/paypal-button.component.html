@@ -1,0 +1,29 @@
+<div class="overlay">
+  <div class="payment-form-container">
+    <span class="close-button" (click)="closeForm()">&times;</span>
+    <div id="paypal-button-container" class="form-control-paypal"></div>
+  </div>
+</div>
+
+<!-- Payment Result Modal -->
+<div *ngIf="showResultModal" class="overlay">
+  <div class="result-modal-container">
+    <div *ngIf="paymentSuccessFlag" class="success-message">
+      <span class="checkmark">&#10003;</span> Your payment was successful!
+    </div>
+    <div *ngIf="!paymentSuccessFlag" class="error-message">
+      <span class="crossmark">&#10007;</span> Your payment was unsuccessful.
+    </div>
+    <button (click)="closeResultModal()" class="close-result-button">
+      Close
+    </button>
+  </div>
+</div>
+
+<!-- Loading Spinner -->
+<div *ngIf="isLoading" class="overlay">
+  <div class="loading-container">
+    <div class="spinner"></div>
+    <p>Payment is being processed...</p>
+  </div>
+</div>

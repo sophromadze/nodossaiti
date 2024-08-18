@@ -23,6 +23,9 @@ export class SliderComponent implements OnInit, AfterViewInit {
   isCreditsActive: boolean = true;
   isCreditsContainerActive: boolean = false;
 
+  private demoCont: HTMLElement | null = null;
+  private fncSliderElement: HTMLElement | null = null;
+
   constructor(
     private router: Router,
     private renderer: Renderer2,
@@ -33,84 +36,87 @@ export class SliderComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.$demoCont = this.el.nativeElement.querySelector('.demo-cont');
-    this.$fncSlider = this.el.nativeElement.querySelector('.fnc-slider');
+    this.demoCont = this.el.nativeElement.querySelector('.demo-cont');
+    this.fncSliderElement = this.el.nativeElement.querySelector('.fnc-slider');
     this.initializeSlider();
   }
 
   initializeSlider(): void {
-    const $$ = (selector: string, context?: any): HTMLElement[] => {
+    const selectElements = (selector: string, context?: any): HTMLElement[] => {
       context = context || document;
       const elements = context.querySelectorAll(selector);
-      return [].slice.call(elements);
+      return Array.from(elements) as HTMLElement[];
     };
 
-    const _fncSliderInit = ($slider: HTMLElement, options: any) => {
+    const _fncSliderInit = (slider: HTMLElement, options: any) => {
       const prefix = '.fnc-';
-      const $slidesCont = $slider.querySelector(
+      const slidesCont = slider.querySelector(
         prefix + 'slider__slides'
       ) as HTMLElement;
-      const $slides = $$(`${prefix}slide`, $slider);
-      const $controls = $$(`${prefix}nav__control`, $slider);
-      const $controlsBgs = $$(`${prefix}nav__bg`, $slider);
-      const $progressAS = $$(`${prefix}nav__control-progress`, $slider);
+      const slides = selectElements(`${prefix}slide`, slider);
+      const controls = selectElements(`${prefix}nav__control`, slider);
+      const controlsBgs = selectElements(`${prefix}nav__bg`, slider);
+      const progressAS = selectElements(
+        `${prefix}nav__control-progress`,
+        slider
+      );
 
-      const numOfSlides = $slides.length;
+      const numOfSlides = slides.length;
       let curSlide = 1;
       let sliding = false;
       this.slidingAT =
         +parseFloat(
-          getComputedStyle($slidesCont).getPropertyValue('transition-duration')
+          getComputedStyle(slidesCont).getPropertyValue('transition-duration')
         ) * 1000;
       this.slidingDelay =
         +parseFloat(
-          getComputedStyle($slidesCont).getPropertyValue('transition-delay')
+          getComputedStyle(slidesCont).getPropertyValue('transition-delay')
         ) * 1000;
 
       const autoSlidingDelay = 5000;
       let autoSlidingBlocked = false;
 
-      let $activeSlide: HTMLElement;
-      let $activeControlsBg: HTMLElement;
-      let $prevControl: HTMLElement;
+      let activeSlide: HTMLElement;
+      let activeControlsBg: HTMLElement;
+      let prevControl: HTMLElement;
 
       const setIDs = () => {
-        $slides.forEach(($slide, index) => {
-          $slide.classList.add('fnc-slide-' + (index + 1));
+        slides.forEach((slide, index) => {
+          slide.classList.add('fnc-slide-' + (index + 1));
         });
 
-        $controls.forEach(($control, index) => {
-          $control.setAttribute('data-slide', (index + 1).toString());
-          $control.classList.add('fnc-nav__control-' + (index + 1));
+        controls.forEach((control, index) => {
+          control.setAttribute('data-slide', (index + 1).toString());
+          control.classList.add('fnc-nav__control-' + (index + 1));
         });
 
-        $controlsBgs.forEach(($bg, index) => {
-          $bg.classList.add('fnc-nav__bg-' + (index + 1));
+        controlsBgs.forEach((bg, index) => {
+          bg.classList.add('fnc-nav__bg-' + (index + 1));
         });
       };
 
       setIDs();
 
       const afterSlidingHandler = () => {
-        const previousSlide = $slider.querySelector('.m--previous-slide');
+        const previousSlide = slider.querySelector('.m--previous-slide');
         if (previousSlide)
           previousSlide.classList.remove(
             'm--active-slide',
             'm--previous-slide'
           );
 
-        const previousNavBg = $slider.querySelector('.m--previous-nav-bg');
+        const previousNavBg = slider.querySelector('.m--previous-nav-bg');
         if (previousNavBg)
           previousNavBg.classList.remove(
             'm--active-nav-bg',
             'm--previous-nav-bg'
           );
 
-        $activeSlide.classList.remove('m--before-sliding');
-        $activeControlsBg.classList.remove('m--nav-bg-before');
-        $prevControl.classList.remove('m--prev-control');
-        $prevControl.classList.add('m--reset-progress');
-        $prevControl.classList.remove('m--reset-progress');
+        activeSlide.classList.remove('m--before-sliding');
+        activeControlsBg.classList.remove('m--nav-bg-before');
+        prevControl.classList.remove('m--prev-control');
+        prevControl.classList.add('m--reset-progress');
+        prevControl.classList.remove('m--reset-progress');
 
         sliding = false;
 
@@ -127,37 +133,37 @@ export class SliderComponent implements OnInit, AfterViewInit {
         window.clearTimeout(this.autoSlidingTO);
         curSlide = slideID;
 
-        $prevControl = $slider.querySelector(
-          '.m--active-control'
-        ) as HTMLElement;
-        $prevControl.classList.remove('m--active-control');
-        $prevControl.classList.add('m--prev-control');
+        prevControl = slider.querySelector('.m--active-control') as HTMLElement;
+        prevControl.classList.remove('m--active-control');
+        prevControl.classList.add('m--prev-control');
         (
-          $slider.querySelector(
+          slider.querySelector(
             prefix + 'nav__control-' + slideID
           ) as HTMLElement
         ).classList.add('m--active-control');
 
-        $activeSlide = $slider.querySelector(
+        activeSlide = slider.querySelector(
           prefix + 'slide-' + slideID
         ) as HTMLElement;
-        $activeControlsBg = $slider.querySelector(
+        activeControlsBg = slider.querySelector(
           prefix + 'nav__bg-' + slideID
         ) as HTMLElement;
 
-        const activeSlide = $slider.querySelector('.m--active-slide');
-        if (activeSlide) activeSlide.classList.add('m--previous-slide');
+        const currentActiveSlide = slider.querySelector('.m--active-slide');
+        if (currentActiveSlide)
+          currentActiveSlide.classList.add('m--previous-slide');
 
-        const activeNavBg = $slider.querySelector('.m--active-nav-bg');
-        if (activeNavBg) activeNavBg.classList.add('m--previous-nav-bg');
+        const currentActiveNavBg = slider.querySelector('.m--active-nav-bg');
+        if (currentActiveNavBg)
+          currentActiveNavBg.classList.add('m--previous-nav-bg');
 
-        $activeSlide.classList.add('m--before-sliding');
-        $activeControlsBg.classList.add('m--nav-bg-before');
+        activeSlide.classList.add('m--before-sliding');
+        activeControlsBg.classList.add('m--nav-bg-before');
 
-        const layoutTrigger = $activeSlide.offsetTop;
+        const layoutTrigger = activeSlide.offsetTop;
 
-        $activeSlide.classList.add('m--active-slide');
-        $activeControlsBg.classList.add('m--active-nav-bg');
+        activeSlide.classList.add('m--active-slide');
+        activeControlsBg.classList.add('m--active-nav-bg');
 
         setTimeout(afterSlidingHandler, this.slidingAT + this.slidingDelay);
       };
@@ -167,7 +173,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
         if (this.classList.contains('m--active-control')) return;
         if (options.blockASafterClick) {
           autoSlidingBlocked = true;
-          $slider.classList.add('m--autosliding-blocked');
+          slider.classList.add('m--autosliding-blocked');
         }
 
         const slideID = +this.getAttribute('data-slide')!;
@@ -175,8 +181,8 @@ export class SliderComponent implements OnInit, AfterViewInit {
         performSliding(slideID);
       };
 
-      $controls.forEach(($control) => {
-        $control.addEventListener('click', controlClickHandler);
+      controls.forEach((control) => {
+        control.addEventListener('click', controlClickHandler);
       });
 
       this.setAutoslidingTO = () => {
@@ -196,25 +202,23 @@ export class SliderComponent implements OnInit, AfterViewInit {
         this.autoSlidingActive = true;
         this.setAutoslidingTO();
 
-        $slider.classList.add('m--with-autosliding');
-        const triggerLayout = $slider.offsetTop;
+        slider.classList.add('m--with-autosliding');
+        const triggerLayout = slider.offsetTop;
 
         let delay = +options.autoSlidingDelay || autoSlidingDelay;
         delay += this.slidingDelay + this.slidingAT;
 
-        $progressAS.forEach(($progress) => {
-          ($progress as HTMLElement).style.transition =
+        progressAS.forEach((progress) => {
+          (progress as HTMLElement).style.transition =
             'transform ' + delay / 1000 + 's';
         });
       }
 
       (
-        $slider.querySelector('.fnc-nav__control:first-child') as HTMLElement
+        slider.querySelector('.fnc-nav__control:first-child') as HTMLElement
       ).classList.add('m--active-control');
 
       this.updateCreditsContent();
-
-      const $demoCont = document.querySelector('.demo-cont');
 
       const globalBlending = document.querySelector(
         '.js-activate-global-blending'
@@ -229,10 +233,10 @@ export class SliderComponent implements OnInit, AfterViewInit {
     };
 
     const fncSlider = (sliderSelector: string, options: any) => {
-      const $sliders = $$(sliderSelector);
+      const sliders = selectElements(sliderSelector);
 
-      $sliders.forEach(($slider) => {
-        _fncSliderInit.call(this, $slider, options);
+      sliders.forEach((slider) => {
+        _fncSliderInit.call(this, slider, options);
       });
     };
 
@@ -288,40 +292,37 @@ export class SliderComponent implements OnInit, AfterViewInit {
     });
   }
 
-  $demoCont = document.querySelector('.demo-cont');
-  $fncSlider = document.querySelector('.fnc-slider');
-
   onReadMoreButtonClick() {
-    const creditsContainer = this.$demoCont!.querySelector(
+    const creditsContainer = this.demoCont!.querySelector(
       '.demo-cont__credits-container'
     );
 
-    if (this.$demoCont && this.$fncSlider && creditsContainer) {
-      this.$demoCont.classList.toggle('credits-active');
+    if (this.demoCont && this.fncSliderElement && creditsContainer) {
+      this.demoCont.classList.toggle('credits-active');
       creditsContainer?.classList.toggle('credits-container-active');
       this.autoSlidingActive = !this.autoSlidingActive;
 
       if (this.autoSlidingActive) {
         this.setAutoslidingTO();
-        this.$fncSlider.classList.remove('m--autosliding-blocked');
+        this.fncSliderElement.classList.remove('m--autosliding-blocked');
       } else {
         window.clearTimeout(this.autoSlidingTO);
-        this.$fncSlider.classList.add('m--autosliding-blocked');
+        this.fncSliderElement.classList.add('m--autosliding-blocked');
       }
     }
   }
 
   onCloseButtonClick() {
-    const creditsContainer = this.$demoCont!.querySelector(
+    const creditsContainer = this.demoCont!.querySelector(
       '.demo-cont__credits-container'
     );
-    if (this.$demoCont && this.$fncSlider) {
-      this.$demoCont.classList.remove('credits-active');
+    if (this.demoCont && this.fncSliderElement) {
+      this.demoCont.classList.remove('credits-active');
       creditsContainer?.classList.remove('credits-container-active');
       if (!this.autoSlidingActive) {
         this.autoSlidingActive = true;
         this.setAutoslidingTO();
-        this.$fncSlider.classList.remove('m--autosliding-blocked');
+        this.fncSliderElement.classList.remove('m--autosliding-blocked');
       }
     }
   }

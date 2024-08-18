@@ -1,23 +1,5 @@
 <div class="container">
   <div *ngIf="serviceType === 'Residential'" class="content">
-    <h4>Regular Cleaning:</h4>
-    <ul>
-      <li>
-        <b>Purpose: </b>Regular cleaning refers to routine maintenance cleaning
-        that is scheduled regularly to maintain a desired level of cleanliness
-        and tidiness.
-      </li>
-      <li>
-        <b>Tasks: </b>It typically includes basic tasks performed on a recurring
-        basis, such as dusting, vacuuming, mopping floors, wiping surfaces, and
-        cleaning bathrooms and kitchens.
-      </li>
-      <li>
-        <b>Frequency: </b>It is done on a frequent basis, often weekly,
-        bi-weekly, or monthly, depending on the needs and preferences of the
-        homeowner or business.
-      </li>
-    </ul>
     <h4 *ngIf="isDeepCleaningSelected">Deep Cleaning:</h4>
     <ul *ngIf="isDeepCleaningSelected">
       <li>
@@ -37,8 +19,45 @@
         maintain a higher level of cleanliness.
       </li>
     </ul>
+    <h4>Regular Cleaning:</h4>
+    <ul>
+      <li>
+        <b>Purpose: </b>Regular cleaning refers to routine maintenance cleaning
+        that is scheduled regularly to maintain a desired level of cleanliness
+        and tidiness.
+      </li>
+      <li>
+        <b>Tasks: </b>It typically includes basic tasks performed on a recurring
+        basis, such as dusting, vacuuming, mopping floors, wiping surfaces, and
+        cleaning bathrooms and kitchens.
+      </li>
+      <li>
+        <b>Frequency: </b>It is done on a frequent basis, often weekly,
+        bi-weekly, or monthly, depending on the needs and preferences of the
+        homeowner or business.
+      </li>
+    </ul>
   </div>
   <div *ngIf="serviceType === 'Move In'" class="content">
+    <h4 *ngIf="isDeepCleaningSelected">Deep Cleaning:</h4>
+    <ul *ngIf="isDeepCleaningSelected">
+      <li>
+        <b>Purpose: </b>Deep cleaning is a more thorough and intensive cleaning
+        process aimed at tackling accumulated dirt, grime, and buildup that may
+        not be addressed in regular cleaning sessions.
+      </li>
+      <li>
+        <b>Tasks: </b>It involves cleaning tasks that go beyond the routine,
+        such as scrubbing tiles and grout, cleaning inside appliances (like
+        ovens and refrigerators), washing baseboards, cleaning light fixtures,
+        and removing dust and cobwebs from corners and high surfaces.
+      </li>
+      <li>
+        <b>Frequency: </b> It is typically done less frequently than regular
+        cleaning and is often performed on a seasonal basis or as needed to
+        maintain a higher level of cleanliness.
+      </li>
+    </ul>
     <h4>
       Move-In Cleaning Service:
       <b style="font-weight: 400">
@@ -73,6 +92,8 @@
       </li>
       <li><b>Trash Removal: </b> Disposing of any leftover trash or debris.</li>
     </ul>
+  </div>
+  <div *ngIf="serviceType === 'Move Out'" class="content">
     <h4 *ngIf="isDeepCleaningSelected">Deep Cleaning:</h4>
     <ul *ngIf="isDeepCleaningSelected">
       <li>
@@ -92,8 +113,6 @@
         maintain a higher level of cleanliness.
       </li>
     </ul>
-  </div>
-  <div *ngIf="serviceType === 'Move Out'" class="content">
     <h4>
       Move-Out Cleaning Service:
       <b style="font-weight: 400">
@@ -133,6 +152,8 @@
         next occupants.
       </li>
     </ul>
+  </div>
+  <div *ngIf="serviceType === 'Custom Cleaning'" class="content">
     <h4 *ngIf="isDeepCleaningSelected">Deep Cleaning:</h4>
     <ul *ngIf="isDeepCleaningSelected">
       <li>
@@ -152,8 +173,6 @@
         maintain a higher level of cleanliness.
       </li>
     </ul>
-  </div>
-  <div *ngIf="serviceType === 'Custom Cleaning'" class="content">
     <h4>
       Custom Cleaning Service:
       <span>
@@ -211,25 +230,6 @@
         additional services such as carpet cleaning, upholstery cleaning,
         post-construction cleaning, and move-in/move-out cleaning may also be
         available as part of their custom cleaning offerings.
-      </li>
-    </ul>
-    <h4 *ngIf="isDeepCleaningSelected">Deep Cleaning:</h4>
-    <ul *ngIf="isDeepCleaningSelected">
-      <li>
-        <b>Purpose: </b>Deep cleaning is a more thorough and intensive cleaning
-        process aimed at tackling accumulated dirt, grime, and buildup that may
-        not be addressed in regular cleaning sessions.
-      </li>
-      <li>
-        <b>Tasks: </b>It involves cleaning tasks that go beyond the routine,
-        such as scrubbing tiles and grout, cleaning inside appliances (like
-        ovens and refrigerators), washing baseboards, cleaning light fixtures,
-        and removing dust and cobwebs from corners and high surfaces.
-      </li>
-      <li>
-        <b>Frequency: </b> It is typically done less frequently than regular
-        cleaning and is often performed on a seasonal basis or as needed to
-        maintain a higher level of cleanliness.
       </li>
     </ul>
   </div>

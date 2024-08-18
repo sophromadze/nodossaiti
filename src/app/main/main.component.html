@@ -1,27 +1,34 @@
 <div class="main">
   <div class="container">
     <div>
-      <h2>
-        Save Time, Maintain Energy, and Revel in a Spotless, Comfortable Home in
-        <span> NYC.</span>
+      <h2 class="rotating-text">
+        Save Time, Maintain Energy and Revel in a Spotless, Comfortable Home in:
+        <h3>
+          NYC -
+          <span>
+            <span class="word brooklyn">Brooklyn.</span>
+            <span class="word manhattan">Manhattan.</span>
+            <span class="word queens">Queens.</span>
+          </span>
+        </h3>
       </h2>
 
       <p>
-        <b>Dream Cleaning</b> transforms your living spaces into spotless havens
-        of comfort. Save time and energy while our professional team ensures a
-        clean, refreshed home environment. Let us handle the chores so you can
-        enjoy a clean, organized home and deserved relaxation.
+        <b>Dream Cleaning</b> - Transforms your living spaces into spotless
+        havens of comfort. Save time and energy while our professional team
+        ensures a clean, refreshed home environment. Let us handle the chores so
+        you can enjoy a clean, organized home and deserved relaxation.
       </p>
     </div>
     <div class="cleanings">
       <div id="bookNow" (click)="navigateToCalculator('regular')">
-        <h5>BOOK NOW <i class="fa-solid fa-chevron-right"></i></h5>
+        <b>Book Now <i class="fa-solid fa-chevron-right"></i></b>
       </div>
       <div id="ourPopular" class="clickable-div" (click)="scrollToCards()">
-        <h5>OUR POPULAR <i class="fa-solid fa-chevron-down"></i></h5>
+        <b>Our Popular <i class="fa-solid fa-chevron-down"></i></b>
       </div>
       <div id="ourPopular" class="clickable-div" (click)="scrollToCities()">
-        <h5>CITIES WE SERVE <i class="fa-solid fa-chevron-down"></i></h5>
+        <b>Cities We Serve <i class="fa-solid fa-chevron-down"></i></b>
       </div>
     </div>
   </div>
@@ -33,11 +40,64 @@
     speed="2000"
     effect="fade"
   >
-    <swiper-slide class="bg-0"></swiper-slide>
-    <swiper-slide class="bg-1"></swiper-slide>
-    <swiper-slide class="bg-2"></swiper-slide>
-    <swiper-slide class="bg-3"></swiper-slide>
+    <swiper-slide>
+      <img
+        src="/assets/images/clean1-small.webp"
+        srcset="
+          /assets/images/clean1-small.webp   640w,
+          /assets/images/clean1-medium.webp 1280w,
+          /assets/images/clean1-large.webp  1920w
+        "
+        sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
+        loading="lazy"
+        alt="Clean 1"
+        class="slide-image"
+      />
+    </swiper-slide>
+    <swiper-slide>
+      <img
+        src="/assets/images/clean2-small.webp"
+        srcset="
+          /assets/images/clean2-small.webp   640w,
+          /assets/images/clean2-medium.webp 1280w,
+          /assets/images/clean2-large.webp  1920w
+        "
+        sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
+        loading="lazy"
+        alt="Clean 2"
+        class="slide-image"
+      />
+    </swiper-slide>
+    <swiper-slide>
+      <img
+        src="/assets/images/clean3-small.webp"
+        srcset="
+          /assets/images/clean3-small.webp   640w,
+          /assets/images/clean3-medium.webp 1280w,
+          /assets/images/clean3-large.webp  1920w
+        "
+        sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
+        loading="lazy"
+        alt="Clean 3"
+        class="slide-image"
+      />
+    </swiper-slide>
+    <swiper-slide>
+      <img
+        src="/assets/images/clean4-small.webp"
+        srcset="
+          /assets/images/clean4-small.webp   640w,
+          /assets/images/clean4-medium.webp 1280w,
+          /assets/images/clean4-large.webp  1920w
+        "
+        sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
+        loading="lazy"
+        alt="Clean 4"
+        class="slide-image"
+      />
+    </swiper-slide>
   </swiper-container>
 </div>
+
 <app-slider id="cards"></app-slider>
 <app-cities id="cities"></app-cities>

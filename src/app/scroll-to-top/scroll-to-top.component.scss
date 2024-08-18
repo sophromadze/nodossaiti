@@ -12,6 +12,7 @@
   transition: all 0.8s;
   z-index: 105;
   opacity: 0; /* Start invisible */
+  border: none;
 }
 
 #top-btn.visible {
@@ -20,7 +21,7 @@
 }
 
 #top-btn:hover {
-  background-color: #59aecb;
+  background-color: #2ca5ce;
 }
 
 #top-btn i:hover {
@@ -41,7 +42,6 @@
   position: fixed;
   text-align: center;
   border-radius: 100px;
-  background-color: #0fe0f5;
   cursor: pointer;
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.12), 3px 4px 8px 0px rgba(0, 0, 0, 0.11);
   transition: all 0.8s;
@@ -50,20 +50,24 @@
 }
 
 #call-btn {
-  bottom: 75px;
-  right: 20px;
+  bottom: 15px;
+  right: 75px;
   transform: translateY(-50%);
+  background-color: #32cd32;
 }
 
 #mail-btn {
-  bottom: 135px;
-  right: 20px;
+  bottom: 15px;
+  right: 130px;
   transform: translateY(-50%);
+  background-color: #ff3131;
 }
 
-#call-btn:hover,
+#call-btn:hover {
+  background-color: #1f9e1f;
+}
 #mail-btn:hover {
-  background-color: #59aecb;
+  background-color: #ff0505;
 }
 
 #call-btn i,
@@ -88,12 +92,6 @@
     margin-top: -5px;
   }
 
-  #top-btn:hover,
-  #call-btn:hover,
-  #mail-btn:hover {
-    background-color: #0fe0f5;
-  }
-
   #top-btn i:hover {
     margin-top: -10px;
   }
@@ -105,15 +103,20 @@
 
   #top-btn {
     right: 10px;
+    bottom: 10px;
+  }
+
+  #top-btn.visible {
+    bottom: 10px;
   }
 
   #call-btn {
-    bottom: 65px;
+    bottom: 35px;
     right: 10px;
   }
 
   #mail-btn {
-    bottom: 110px;
+    bottom: 80px;
     right: 10px;
   }
 }

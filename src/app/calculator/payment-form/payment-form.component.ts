@@ -25,6 +25,8 @@ export class PaymentFormComponent implements OnInit {
   paymentSuccessFlag = false;
   isLoading = false;
 
+  private paymentIntentId: string | null = null; // Store payment intent ID
+
   constructor(
     private stripeService: StripePaymentService,
     private fb: FormBuilder,
@@ -68,30 +70,43 @@ export class PaymentFormComponent implements OnInit {
         .post(`${environment.api}/create-payment-intent`, {
           amount: amountInCents,
         })
-        .subscribe(async (response: any) => {
-          const clientSecret = response.clientSecret;
-          const { error, paymentIntent } =
-            await this.stripe!.confirmCardPayment(clientSecret, {
-              payment_method: {
-                card: this.card,
-                billing_details: {
-                  name,
+        .subscribe(
+          async (response: any) => {
+            const clientSecret = response.clientSecret;
+            this.paymentIntentId = response.paymentIntentId; // Store the payment intent ID
+            const { error, paymentIntent } =
+              await this.stripe!.confirmCardPayment(clientSecret, {
+                payment_method: {
+                  card: this.card,
+                  billing_details: {
+                    name,
+                  },
                 },
-              },
-            });
+                setup_future_usage: 'off_session', // Allow capture later
+              });
 
-          if (error) {
-            console.error('Error confirming card payment:', error);
+            if (error) {
+              console.error('Error confirming card payment:', error);
+              this.paymentSuccessFlag = false;
+              this.showResultModal = true;
+            } else if (
+              paymentIntent &&
+              paymentIntent.status === 'requires_capture'
+            ) {
+              console.log('Payment authorized but not captured', paymentIntent);
+              this.paymentSuccessFlag = true;
+              this.showResultModal = true;
+              this.paymentSuccess.emit(this.formValues);
+            }
+            this.isLoading = false; // Hide loading spinner
+          },
+          (error) => {
+            console.error('Error creating payment intent:', error);
             this.paymentSuccessFlag = false;
             this.showResultModal = true;
-          } else if (paymentIntent && paymentIntent.status === 'succeeded') {
-            console.log('Payment successful', paymentIntent);
-            this.paymentSuccessFlag = true;
-            this.showResultModal = true;
-            this.paymentSuccess.emit(this.formValues);
+            this.isLoading = false; // Hide loading spinner
           }
-          this.isLoading = false; // Hide loading spinner
-        });
+        );
     }
   }
 

@@ -1,18 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main/main.component';
-import { CalculatorComponent } from './calculator/calculator.component';
-import { AboutComponent } from './about/about.component';
-import { ContactComponent } from './contact/contact.component';
-import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
-  { path: 'calculator', component: CalculatorComponent },
-  { path: 'about', component: AboutComponent },
-  { path: '', redirectTo: '/', pathMatch: 'full' },
-  { path: 'contact', component: ContactComponent },
-  { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  {
+    path: 'calculator',
+    loadChildren: () =>
+      import('./calculator/calculator.module').then((m) => m.CalculatorModule),
+  },
+  {
+    path: 'about',
+    loadChildren: () =>
+      import('./about/about.module').then((m) => m.AboutModule),
+  },
+  {
+    path: 'contact',
+    loadChildren: () =>
+      import('./contact/contact.module').then((m) => m.ContactModule),
+  },
+  {
+    path: 'privacy-policy',
+    loadChildren: () =>
+      import('./privacy-policy/privacy-policy.module').then(
+        (m) => m.PrivacyPolicyModule
+      ),
+  },
+  { path: '**', redirectTo: '/' }, // Handle 404s
 ];
 
 @NgModule({

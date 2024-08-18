@@ -5,7 +5,7 @@
   <div class="upperDiv" *ngIf="!isMobile">
     <div>
       <i class="fa-solid fa-phone"></i
-      ><a href="tel:929-930-1525"><span> 929-930-1525</span></a>
+      ><a href="tel:+1 929-930-1525"><span> 929-930-1525</span></a>
     </div>
     <div>
       <i class="fa-regular fa-envelope"></i>
@@ -13,19 +13,19 @@
         href="mailto:dreamcleaninginfos@gmail.com"
         (click)="closeMenuAndDropdown()"
       >
-        <span> DreamCleaningInfos@gmail.com</span>
+        <span> DreamCleaningInfos&#64;gmail.com</span>
       </a>
     </div>
   </div>
   <div class="mainDiv">
     <div class="headLeft">
-      <h1 class="logo">
+      <div class="logo">
         <!-- <a href="https://thedreamcleaning.com/"> -->
         <a href="/">
           <img [src]="logoSrc" alt="DREAM CLEANING Logo" />
-          <b class="gradient-text">DREAM CLEANING</b>
+          <h1 class="gradient-text">DREAM CLEANING</h1>
         </a>
-      </h1>
+      </div>
       <div class="hamburger" (click)="toggleMenu()">
         <i
           [ngClass]="
@@ -36,27 +36,27 @@
 
       <ul class="mainMenu" [ngClass]="{ show: isMenuOpen }">
         <li class="cleaningService">
-          <a (click)="toggleDropdown()"
-            >Cleaning Services <i class="fa-solid fa-chevron-down"></i
-          ></a>
+          <p (click)="toggleDropdown()">
+            Cleaning Services <i class="fa-solid fa-chevron-down"></i>
+          </p>
           <ul
             class="cleaningServiceDropdown"
             [ngClass]="{ show: isDropdownOpen }"
           >
             <li>
-              <a (click)="navigateToCalculator('regular')">Regular Cleaning</a>
+              <p (click)="navigateToCalculator('regular')">Regular Cleaning</p>
             </li>
             <li>
-              <a (click)="navigateToCalculator('deep')">Deep Cleaning</a>
+              <p (click)="navigateToCalculator('deep')">Deep Cleaning</p>
             </li>
             <li>
-              <a (click)="navigateToCalculator('moveIn')">Move in Service</a>
+              <p (click)="navigateToCalculator('moveIn')">Move in Service</p>
             </li>
             <li>
-              <a (click)="navigateToCalculator('moveOut')">Move out Service</a>
+              <p (click)="navigateToCalculator('moveOut')">Move out Service</p>
             </li>
             <li>
-              <a (click)="navigateToCalculator('custom')">Custom Cleaning</a>
+              <p (click)="navigateToCalculator('custom')">Custom Cleaning</p>
             </li>
           </ul>
         </li>
@@ -76,16 +76,24 @@
     <div *ngIf="!isMobile">
       <div class="socialMedia">
         <a
-          href="https://www.facebook.com/profile.php?id=61562078646597&mibextid=LQQJ4d"
+          href="https://www.facebook.com/profile.php?id=61563387757936"
           target="_blank"
+          aria-label="Facebook Profile"
           ><i class="fa-brands fa-2x fa-facebook-f"></i
         ></a>
         <a
           href="https://www.instagram.com/thedream_cleaning?utm_source=qr"
           target="_blank"
+          aria-label="Instagram Profile"
           ><i class="fa-brands fa-2x fa-instagram"></i
         ></a>
-        <i class="fa-brands fa-2x fa-whatsapp"></i>
+        <a
+          href="https://www.yelp.com/biz/dream-cleaning-brooklyn?override_cta=Get%20pricing%20%26%20availability"
+          target="_blank"
+          aria-label="Yelp Profile"
+          ><i class="fa-brands fa-2x fa-yelp"></i
+        ></a>
+        <!-- <i class="fa-brands fa-2x fa-whatsapp"></i> -->
       </div>
     </div>
   </div>

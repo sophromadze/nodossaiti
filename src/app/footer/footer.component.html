@@ -1,29 +1,37 @@
-<div class="footerContainer">
+<div class="footerContainer app-footer">
   <div class="container">
     <div class="upper">
       <div class="logo">
-        <a href="https://thedreamcleaning.com/">
-          <img src="/assets/images/logoLight.png" alt=""
+        <a href="https://themarvelouscleaning.com/" aria-label="Home Page">
+          <img src="/assets/images/logoLight.webp" alt=""
         /></a>
       </div>
       <button class="bN" (click)="navigateToCalculator()">Book Now</button>
       <div class="socialMedia">
         <a
-          href="https://www.facebook.com/profile.php?id=61562078646597&mibextid=LQQJ4d"
+          href="https://www.facebook.com/profile.php?id=61563387757936"
           target="_blank"
+          aria-label="Facebook Profile"
           ><i class="fa-brands fa-2x fa-facebook-f"></i
         ></a>
         <a
           href="https://www.instagram.com/thedream_cleaning?utm_source=qr"
           target="_blank"
+          aria-label="Instagram Profile"
           ><i class="fa-brands fa-2x fa-instagram"></i
         ></a>
-        <i class="fa-brands fa-2x fa-whatsapp"></i>
+        <!-- <i class="fa-brands fa-2x fa-whatsapp"></i> -->
+        <a
+          href="https://www.yelp.com/biz/dream-cleaning-brooklyn?override_cta=Get%20pricing%20%26%20availability"
+          target="_blank"
+          aria-label="Yelp Profile"
+          ><i class="fa-brands fa-2x fa-yelp"></i
+        ></a>
       </div>
     </div>
     <div class="mid">
       <ul>
-        <li><a (click)="navigateToHome()">Home</a></li>
+        <li><p (click)="navigateToHome()">Home</p></li>
         <li><a routerLink="/about">About</a></li>
         <li><a routerLink="/contact">Contact</a></li>
       </ul>

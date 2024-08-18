@@ -7,6 +7,8 @@
     padding: 1rem;
     max-width: 100%;
     position: absolute;
+    border: 1px solid gray;
+
     border-radius: 4px;
     h4 {
       color: #0006cf;
@@ -29,6 +31,28 @@
     &:hover {
       z-index: 5;
       background: #fff;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.41));
+    }
+  }
+}
+
+@media (max-width: 900px) or (max-height: 700px) {
+  .container {
+    .content {
+      position: relative;
+      background: transparent;
+      border: none;
+      padding: 0;
+      padding-top: 10px;
+
+      h4,
+      ul li {
+        font-size: 14px;
+      }
+      &:hover {
+        background: none;
+        filter: none;
+      }
     }
   }
 }

@@ -54,11 +54,10 @@
 
       .mainMenu {
         .cleaningServiceDropdown {
-          background: #fffc;
           background: linear-gradient(
             180deg,
-            rgba(168, 168, 168, 0) 5%,
-            rgba(255, 255, 255, 0.705) 7%,
+            rgba(168, 168, 168, 0) 3.5%,
+            rgba(255, 255, 255, 0.705) 4%,
             rgba(255, 255, 255, 0.904) 50%,
             #fffc 90%
           );
@@ -66,8 +65,9 @@
             &:not(:last-child) {
               border-bottom: 1px dotted $secondary-color;
             }
-            a:hover {
+            p:hover {
               color: $secondary-color !important;
+              cursor: pointer;
             }
           }
         }
@@ -78,7 +78,8 @@
       background: #ffffffe7 !important;
     }
 
-    .mainMenu a {
+    .mainMenu a,
+    .mainMenu p {
       color: #000 !important;
 
       &:hover {
@@ -120,7 +121,8 @@
       cursor: pointer;
     }
 
-    a {
+    a,
+    p {
       text-decoration: none;
       color: #fff;
       &:hover {
@@ -170,6 +172,7 @@
     }
 
     .gradient-text {
+      // font-size: 30px;
       background: linear-gradient(
         175deg,
         #a8a8a8 20%,
@@ -193,19 +196,22 @@
       list-style: none;
       gap: 20px;
       font-size: 1.3rem;
+      align-items: center;
 
       li.bAC a {
         color: green;
       }
 
-      a {
+      a,
+      p {
         text-decoration: none;
         color: #fff;
         padding: 5px;
         cursor: pointer;
       }
 
-      a:hover {
+      a:hover,
+      p:hover {
         color: #0fe0f5;
       }
 
@@ -218,9 +224,11 @@
         display: none;
         position: absolute;
         background: linear-gradient(
-          rgba(0, 0, 0, 0) 5%,
-          rgba(0, 0, 0, 0.322),
-          rgb(0, 0, 0, 47%)
+          180deg,
+          rgba(0, 0, 0, 0) 3.5%,
+          rgba(0, 0, 0, 0.479) 4%,
+          rgba(0, 0, 0, 0.904) 50%,
+          rgba(0, 0, 0, 0.8) 90%
         );
         color: #fff;
         padding: 10px;
@@ -240,11 +248,12 @@
             border-bottom: 1px dotted #0fe0f5;
           }
 
-          a {
+          p {
             color: #fff;
+            cursor: pointer;
           }
 
-          a:hover {
+          p:hover {
             border-top: none;
             color: #0fe0f5 !important;
           }
@@ -279,8 +288,7 @@
         align-items: center;
       }
       img {
-        height: 35px;
-        width: 35px;
+        height: auto;
       }
     }
 
@@ -294,8 +302,8 @@
         margin-top: -3px;
       }
 
-      .fa-facebook-f {
-        font-size: 25px;
+      .fa-instagram {
+        font-size: 2.3rem;
       }
 
       a {
@@ -334,6 +342,7 @@
     }
     .mainDiv {
       padding: 10px;
+      gap: 90px;
       .mainMenu {
         font-size: 1rem;
         gap: 5px;
@@ -346,10 +355,14 @@
       }
 
       .logo {
-        font-size: 25px;
         img {
-          height: 25px;
           width: 25px;
+          height: auto;
+        }
+        a {
+          h1 {
+            font-size: 25px;
+          }
         }
       }
 
@@ -358,10 +371,18 @@
         i {
           font-size: 25px;
         }
-        .fa-facebook-f {
-          font-size: 20px;
+        .fa-instagram {
+          font-size: 29px;
         }
       }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .fixedHeader {
+    .mainDiv {
+      gap: 5px;
     }
   }
 }

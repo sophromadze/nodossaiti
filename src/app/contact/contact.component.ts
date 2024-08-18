@@ -1,7 +1,6 @@
-// contact.component.ts
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { NgForm } from '@angular/forms';
 import { environment } from 'src/environments/environment.development';
 
 @Component({
@@ -10,9 +9,19 @@ import { environment } from 'src/environments/environment.development';
   styleUrls: ['./contact.component.scss'],
 })
 export class ContactComponent implements OnInit {
+  contactForm: FormGroup;
   showPopup = false;
+  showErrorPopup = false; // Add this line
 
-  constructor(private http: HttpClient) {}
+  constructor(private fb: FormBuilder, private http: HttpClient) {
+    this.contactForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required],
+      message: ['', Validators.required],
+      receiveMessages: [false], // Default value for checkbox
+    });
+  }
 
   ngOnInit(): void {
     const inputs = document.querySelectorAll('.input');
@@ -35,9 +44,10 @@ export class ContactComponent implements OnInit {
     });
   }
 
-  onSubmit(contactForm: NgForm) {
-    const formData = contactForm.value;
-    this.onSentMail(formData);
+  onSubmit() {
+    if (this.contactForm.valid) {
+      this.onSentMail(this.contactForm.value);
+    }
   }
 
   onSentMail(formData: any) {
@@ -60,14 +70,18 @@ export class ContactComponent implements OnInit {
       (response) => {
         console.log('Email sent to you successfully', response);
         this.showPopup = true;
+        this.showErrorPopup = false; // Reset error popup
       },
       (error) => {
         console.error('Error sending email to you', error);
+        this.showErrorPopup = true; // Show error popup
+        this.showPopup = false; // Reset success popup
       }
     );
   }
 
   closePopup() {
     this.showPopup = false;
+    this.showErrorPopup = false; // Add this line
   }
 }

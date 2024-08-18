@@ -13,12 +13,14 @@
     margin: 0 auto;
   }
 
-  a {
+  a,
+  p {
     text-decoration: none;
     color: #fff;
   }
 
-  a:hover {
+  a:hover,
+  p:hover {
     text-decoration: underline;
     cursor: pointer;
   }
@@ -27,7 +29,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 10px 30px;
 
     .socialMedia {
       display: flex;
@@ -143,7 +145,7 @@
       }
 
       .socialMedia {
-        gap: 8px;
+        // gap: 8px;
         i {
           font-size: 20px;
         }

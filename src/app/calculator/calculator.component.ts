@@ -6,6 +6,7 @@ import {
   ElementRef,
   ChangeDetectorRef,
   ViewChild,
+  HostListener,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -20,6 +21,7 @@ import { Location } from '@angular/common';
 import flatpickr from 'flatpickr';
 import { ExtraServicesComponent } from './extra-services/extra-services.component';
 import { environment } from 'src/environments/environment.development';
+import { StripePaymentService } from '../stripe-payment.service'; // Import the service
 
 @Component({
   selector: 'app-calculator',
@@ -44,11 +46,16 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   isCustomCleaning: boolean = false;
   deepCleaningChecked: boolean = false;
   requiredCleaners: number | null = null;
-  showPaymentForm: boolean = false;
   originalServiceDate: string | null = null;
   organizingHours: number | null = 0;
   insideWindowsNumbers: number | null = 0;
   wallsNumbers: number | null = 0;
+  isFixed: boolean = true;
+  showPaymentForm: boolean = false;
+  showPaymentMethodSelection: boolean = false;
+  showPayPalForm: boolean = false;
+  showCreditCardForm: boolean = false;
+
   extraServicePrices: { [key: string]: number } = {
     sameDay: 30,
     deepCleaning: 50,
@@ -97,13 +104,13 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     { value: 'Weekly', label: 'Weekly 10% Discount', discount: 10 },
     { value: 'Every 2 Weeks', label: 'Every 2 Weeks 8% Discount', discount: 8 },
     { value: 'Every 3 Weeks', label: '3 Weekly 5.5%', discount: 5.5 },
-    { value: 'Monthly', label: 'Monthly Discount 3%', discount: 99.9 },
+    { value: 'Monthly', label: 'Monthly Discount 3%', discount: 3 },
   ];
   discounts = [
     {
       value: 'First Time',
       label: 'First Time Service',
-      discount: 10,
+      discount: 20,
     },
   ];
   cleanersOptions = [1, 2, 3, 4, 5];
@@ -274,7 +281,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private stripeService: StripePaymentService
   ) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -347,6 +355,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       state: ['NY', Validators.required],
       zipCode: ['', Validators.required],
       tips: [0],
+      receiveMessages: [false],
     });
 
     this.calculatorForm.get('serviceType')!.valueChanges.subscribe(() => {
@@ -370,6 +379,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.calculatePriceAndTime();
     this.setMinDate();
+    this.updateMaxWidth();
 
     const monthNames = [
       'Jan',
@@ -490,6 +500,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         state: params['state'] || 'NY',
         zipCode: params['zipCode'] || null,
         tips: params['tips'] ? parseFloat(params['tips']) : '0',
+        receiveMessages: params['receiveMessages'] || null,
       });
 
       const type = params['type'];
@@ -567,6 +578,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         state: this.calculatorForm.value.state || null,
         zipCode: this.calculatorForm.value.zipCode || null,
         tips: this.calculatorForm.value.tips || null,
+        receiveMessages: this.calculatorForm.value.receiveMessages || null,
       });
 
       this.cdr.detectChanges(); //saechvoa
@@ -600,6 +612,71 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initializeFlatpickr();
+    this.checkScroll();
+    this.updateMaxWidth();
+    this.cdr.detectChanges(); // Manually trigger change detection
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.checkScroll();
+  }
+
+  @HostListener('window:resize', [])
+  onWindowResize() {
+    this.updateMaxWidth();
+  }
+
+  checkScroll() {
+    const footerElement = document.querySelector(
+      '.footerContainer'
+    ) as HTMLElement;
+    const fixedDivElement = document.querySelector(
+      '.calculator-card'
+    ) as HTMLElement;
+
+    if (footerElement && fixedDivElement) {
+      const footerRect = footerElement.getBoundingClientRect();
+      const fixedDivRect = fixedDivElement.getBoundingClientRect();
+      const offset = 10; // Margin from the footer
+
+      if (window.innerWidth < 900 || window.innerHeight < 700) {
+        this.isFixed = false;
+        fixedDivElement.style.position = 'sticky';
+        fixedDivElement.style.bottom = '0';
+        fixedDivElement.style.right = '0';
+      } else {
+        if (footerRect.top <= window.innerHeight - offset) {
+          this.isFixed = false;
+          fixedDivElement.style.position = 'absolute';
+          fixedDivElement.style.bottom = '0';
+          fixedDivElement.style.right = '0';
+        } else {
+          this.isFixed = true;
+          fixedDivElement.style.position = 'fixed';
+          fixedDivElement.style.bottom = '0';
+
+          if (window.innerWidth < 1150) {
+            fixedDivElement.style.right = '10px';
+          } else {
+            fixedDivElement.style.right = '50px';
+          }
+        }
+      }
+      this.cdr.detectChanges(); // Manually trigger change detection
+    }
+  }
+
+  updateMaxWidth() {
+    const fixedDivElement = this.el.nativeElement.querySelector(
+      '.calculator-card'
+    ) as HTMLElement;
+    const contentElement = document.querySelector('.card-width') as HTMLElement;
+
+    if (contentElement && fixedDivElement) {
+      const contentWidth = contentElement.clientWidth; // Get the width of the content element
+      this.renderer.setStyle(fixedDivElement, 'width', `${contentWidth}px`);
+    }
   }
 
   onExtraServiceChanged(extraServiceData: {
@@ -936,8 +1013,23 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
 
   onSubmit(): void {
     if (this.calculatorForm.valid) {
-      this.openPaymentForm();
+      this.calculatePriceAndTime();
+      this.showPaymentMethodSelection = true; // Show payment method selection modal
     }
+  }
+
+  selectPaymentMethod(method: string): void {
+    this.showPaymentMethodSelection = false; // Hide the payment method selection modal
+    if (method === 'paypal') {
+      this.showPayPalForm = true;
+    } else if (method === 'creditcard') {
+      this.stripeService.loadStripeScript(); // Use the injected service here
+      this.showCreditCardForm = true;
+    }
+  }
+
+  closePaymentMethodSelection() {
+    this.showPaymentMethodSelection = false;
   }
 
   openPaymentForm(): void {
@@ -946,6 +1038,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
 
   closePaymentForm(): void {
     this.showPaymentForm = false;
+    this.showPayPalForm = false;
+    this.showCreditCardForm = false;
   }
 
   onPaymentSuccess(event: any): void {

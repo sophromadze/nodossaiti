@@ -1,22 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Open Sans", Helvetica, Arial, sans-serif;
-}
-
-html {
-  scroll-behavior: smooth;
-  -webkit-scroll-behavior: smooth;
-  background-image: url(/assets/images/claeaningSuppliesBack.png);
-  user-select: none;
-}
-
-// .no-scroll {
-//   overflow: hidden;
-//   height: 100%;
-// }
-
 .flatpickr-calendar {
   background-color: #ebf5ff !important; /* Custom background color for the entire calendar */
 }
