@@ -1,0 +1,238 @@
+.serviceMain {
+  margin-top: 105px;
+}
+
+section {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 10px;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  min-height: 60vh;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  h2 {
+    text-align: center;
+    padding-bottom: 5px;
+  }
+  img {
+    max-width: 50%;
+  }
+
+  button {
+    // border: none;
+    // background: none;
+    cursor: pointer;
+    text-align: center;
+    align-self: center;
+    margin-top: 5px;
+    width: 130px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-size: 15px;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+
+  .btn-11 {
+    border: none;
+    background: #00f2f7;
+    background: linear-gradient(
+      0deg,
+      rgba(0, 242, 247, 1) 0%,
+      rgba(0, 210, 215, 1) 100%
+    );
+
+    color: #fff;
+    overflow: hidden;
+  }
+  .btn-11:hover {
+    text-decoration: none;
+    color: #fff;
+  }
+  .btn-11:before {
+    position: absolute;
+    content: "";
+    display: inline-block;
+    top: -180px;
+    left: 0;
+    width: 30px;
+    height: 100%;
+    background-color: #fff;
+    animation: shiny-btn1 3s ease-in-out infinite;
+  }
+  .btn-11:hover {
+    opacity: 0.7;
+  }
+  .btn-11:active {
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.3),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.2),
+      inset 4px 4px 6px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  @keyframes shiny-btn1 {
+    0% {
+      transform: scale(0) rotate(45deg);
+      opacity: 0;
+    }
+    80% {
+      transform: scale(0) rotate(45deg);
+      opacity: 0.5;
+    }
+    81% {
+      transform: scale(4) rotate(45deg);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(50) rotate(45deg);
+      opacity: 0;
+    }
+  }
+}
+
+@media (max-width: 1400px) {
+  section {
+    flex-direction: column;
+    padding: 0;
+    position: relative;
+
+    div {
+      order: 2;
+      color: #fff;
+      padding: 10px;
+      height: 60vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      p {
+        max-width: 800px;
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.582); /* Overlay color */
+        z-index: 1; /* Ensure the overlay is on top of the background image */
+      }
+
+      * {
+        position: relative; /* Ensure text is above the overlay */
+        z-index: 2;
+      }
+    }
+    img {
+      display: none;
+    }
+  }
+
+  #regular {
+    div {
+      background-image: url("../../assets/images/regular2.webp");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+  }
+  #deep {
+    div {
+      background-image: url("../../assets/images/deep2.webp");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+  }
+  #moveInv {
+    div {
+      background-image: url("../../assets/images/moveIn2.webp");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+  }
+  #moveOut {
+    div {
+      background-image: url("../../assets/images/moveOut.webp");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+  }
+  #custom {
+    div {
+      background-image: url("../../assets/images/custom.webp");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+  }
+  #posrRenovation {
+    div {
+      background-image: url("../../assets/images/renovation.webp");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+  }
+}
+
+@media (max-width: 1150px) {
+  .serviceMain {
+    margin-top: 95px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-margin {
+    margin-top: 55px;
+  }
+
+  .desktop-margin {
+    margin-top: 95px;
+  }
+
+  section {
+    div {
+      h2 {
+        font-size: 16px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) or (max-height: 768px) {
+  section {
+    min-height: auto;
+    div {
+      height: auto;
+    }
+  }
+}

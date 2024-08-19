@@ -153,6 +153,65 @@
       </li>
     </ul>
   </div>
+  <div *ngIf="serviceType === 'Post Renovation'" class="content">
+    <h4 *ngIf="isDeepCleaningSelected">Deep Cleaning:</h4>
+    <ul *ngIf="isDeepCleaningSelected">
+      <li>
+        <b>Purpose: </b>Deep cleaning is a more thorough and intensive cleaning
+        process aimed at tackling accumulated dirt, grime, and buildup that may
+        not be addressed in regular cleaning sessions.
+      </li>
+      <li>
+        <b>Tasks: </b>It involves cleaning tasks that go beyond the routine,
+        such as scrubbing tiles and grout, cleaning inside appliances (like
+        ovens and refrigerators), washing baseboards, cleaning light fixtures,
+        and removing dust and cobwebs from corners and high surfaces.
+      </li>
+      <li>
+        <b>Frequency: </b> It is typically done less frequently than regular
+        cleaning and is often performed on a seasonal basis or as needed to
+        maintain a higher level of cleanliness.
+      </li>
+    </ul>
+    <h4>
+      Post Renovation Cleaning:
+      <span>
+        refers to the process of thoroughly cleaning a space after construction
+        or renovation work has been completed. This type of cleaning is
+        essential because renovations often leave behind dust, debris, paint
+        splatters, and other residues. The goal is to make the space ready for
+        use by removing all the remnants of the renovation work.
+      </span>
+    </h4>
+    <ul>
+      <b>Typical tasks in post-renovation cleaning include:</b>
+      <li>
+        <b>Dusting and Sweeping: </b>Removing dust from surfaces, including
+        walls, ceilings, and floors.
+      </li>
+      <li>
+        <b>Vacuuming: </b>Cleaning carpets and rugs to remove fine dust and
+        debris
+      </li>
+      <li>
+        <b>Wiping Down Surfaces: </b>Cleaning countertops, cabinets,
+        windowsills, and other surfaces to remove any remaining dust or
+        construction residues.
+      </li>
+      <li>
+        <b>Cleaning Windows and Glass:</b>
+        Washing windows and glass surfaces to remove smudges and dust.
+      </li>
+      <li>
+        <b>Removing Paint Spots: </b>Scraping or wiping off any paint or other
+        stains that may have splattered during the renovation.
+      </li>
+      <li>
+        <b>Disposing of Debris: </b>Properly removing and disposing of any
+        remaining construction materials or waste.
+      </li>
+    </ul>
+  </div>
   <div *ngIf="serviceType === 'Custom Cleaning'" class="content">
     <h4 *ngIf="isDeepCleaningSelected">Deep Cleaning:</h4>
     <ul *ngIf="isDeepCleaningSelected">
@@ -176,11 +235,11 @@
     <h4>
       Custom Cleaning Service:
       <span>
-        Custom cleaning" typically refers to tailored cleaning services that are
-        designed to meet specific needs and preferences of the client. In New
-        York (NY), custom cleaning services can vary widely depending on the
-        cleaning company and the requirements of the customer. Here's a general
-        description of what custom cleaning services in NY might involve:
+        typically refers to tailored cleaning services that are designed to meet
+        specific needs and preferences of the client. In New York (NY), custom
+        cleaning services can vary widely depending on the cleaning company and
+        the requirements of the customer. Here's a general description of what
+        custom cleaning services in NY might involve:
       </span>
     </h4>
     <ul>

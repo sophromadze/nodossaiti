@@ -102,6 +102,20 @@ h3 {
   margin-top: 0;
 }
 
+p {
+  padding-top: 5px;
+  color: gray;
+  font-size: 15px;
+}
+
+ul {
+  list-style-position: inside;
+  li {
+    color: gray;
+    font-size: 15px;
+  }
+}
+
 .vacuum-options {
   display: flex;
   gap: 0.5rem;
@@ -234,6 +248,16 @@ input[type="number"] {
       .btn {
         padding: 5px;
       }
+    }
+  }
+
+  p {
+    font-size: 13px;
+  }
+
+  ul {
+    li {
+      font-size: 13px;
     }
   }
 }

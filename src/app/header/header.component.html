@@ -34,7 +34,14 @@
         ></i>
       </div>
 
-      <ul class="mainMenu" [ngClass]="{ show: isMenuOpen }">
+      <ul
+        class="mainMenu"
+        [ngClass]="{
+          show: isMenuOpen,
+          'mobile-menu': isMobile,
+          'desktop-menu': !isMobile
+        }"
+      >
         <li class="cleaningService">
           <p (click)="toggleDropdown()">
             Cleaning Services <i class="fa-solid fa-chevron-down"></i>
@@ -44,22 +51,36 @@
             [ngClass]="{ show: isDropdownOpen }"
           >
             <li>
-              <p (click)="navigateToCalculator('regular')">Regular Cleaning</p>
+              <p (click)="navigateToServiceSection('regular')">
+                Regular Cleaning
+              </p>
             </li>
             <li>
-              <p (click)="navigateToCalculator('deep')">Deep Cleaning</p>
+              <p (click)="navigateToServiceSection('deep')">Deep Cleaning</p>
             </li>
             <li>
-              <p (click)="navigateToCalculator('moveIn')">Move in Service</p>
+              <p (click)="navigateToServiceSection('moveInv')">
+                Move In Service
+              </p>
             </li>
             <li>
-              <p (click)="navigateToCalculator('moveOut')">Move out Service</p>
+              <p (click)="navigateToServiceSection('moveOut')">
+                Move Out Service
+              </p>
             </li>
             <li>
-              <p (click)="navigateToCalculator('custom')">Custom Cleaning</p>
+              <p (click)="navigateToServiceSection('posrRenovation')">
+                Post Renovation Service
+              </p>
+            </li>
+            <li>
+              <p (click)="navigateToServiceSection('custom')">
+                Custom Cleaning
+              </p>
             </li>
           </ul>
         </li>
+
         <li>
           <a routerLink="/calculator" (click)="closeMenuAndDropdown()"
             >Book Now</a

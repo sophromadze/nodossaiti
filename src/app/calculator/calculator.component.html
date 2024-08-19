@@ -1,7 +1,13 @@
 <div class="background">
   <form [formGroup]="calculatorForm" (ngSubmit)="onSubmit()">
     <div class="container">
-      <div class="left-side">
+      <div
+        class="left-side"
+        [ngClass]="{
+          'mobile-margin': isMobileDevice,
+          'desktop-margin': !isMobileDevice
+        }"
+      >
         <!-- Service Type -->
         <div class="relative-container">
           <div class="form-group col bordered-group">
@@ -19,6 +25,9 @@
                   </option>
                   <option value="Move In">Move In Cleaning Package</option>
                   <option value="Move Out">Move Out Cleaning Package</option>
+                  <option value="Post Renovation">
+                    Post Renovation Cleaning
+                  </option>
                   <option value="Custom Cleaning">Custom Cleaning</option>
                 </select>
                 <div
@@ -39,6 +48,11 @@
         <div *ngIf="!isCustomCleaning" class="relative-container">
           <div class="apartment">
             <h3>Tell us about your apartment **</h3>
+            <p>
+              Please select the number of bedrooms and bathrooms, also square
+              feet of your apartment. The kitchen and living room are
+              automatically included in the service.
+            </p>
             <div class="form-group row typeRow">
               <div class="col">
                 <select
@@ -113,6 +127,10 @@
               >(Deep Cleaning)</span
             >
           </h3>
+          <p>
+            Please choose how many cleaners you need and the duration of their
+            service.
+          </p>
           <div class="form-group row customHours">
             <div class="col">
               <select
@@ -349,7 +367,7 @@
               formControlName="specialInstructions"
               id="specialInstructions"
               class="form-control"
-              placeholder="Special Instructions"
+              placeholder="Special Instructions for Cleaners"
             ></textarea>
           </div>
         </div>
@@ -357,6 +375,11 @@
         <!-- Contact Information -->
         <div class="contact-info">
           <h3>Contact Info</h3>
+          <p>
+            We will use this information to keep in contact with you. Your
+            personal information will remain confidential and will not be shared
+            with others.
+          </p>
           <div class="formsGap">
             <div class="row contactInfo">
               <div class="col">

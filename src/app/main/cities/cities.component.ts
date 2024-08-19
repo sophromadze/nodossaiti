@@ -45,7 +45,7 @@ export class CitiesComponent implements OnInit, OnDestroy {
     this.intervalId = setInterval(() => {
       const items = document.querySelectorAll('.item');
       slider!.append(items[0]); // Auto-slide: move the first item to the end every 10 seconds
-    }, 100000);
+    }, 10000);
   }
 
   stopAutoSlide() {

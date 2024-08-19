@@ -15,6 +15,8 @@ export class HeaderComponent {
   isDropdownOpen = false;
   isMobile = false;
 
+  private scrollToTopDisabled = false;
+
   constructor(
     private router: Router,
     private viewportScroller: ViewportScroller
@@ -22,7 +24,12 @@ export class HeaderComponent {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.checkRoute(event.url);
-        this.scrollToTop();
+        if (!this.scrollToTopDisabled) {
+          this.scrollToTop();
+        } else {
+          this.scrollToTopDisabled = false;
+        }
+        this.scrollToFragment(); // Ensure scrolling after navigation
         this.closeMenuAndDropdown(); // Close menu and dropdown on navigation
       }
     });
@@ -53,8 +60,43 @@ export class HeaderComponent {
     this.closeMenuAndDropdown(); // Close the dropdown after navigation
   }
 
+  navigateToServiceSection(sectionId: string) {
+    this.scrollToTopDisabled = true; // Disable scrolling to top for this navigation
+    this.router
+      .navigate(['/services-page'], { fragment: sectionId })
+      .then(() => {
+        this.scrollToFragment(); // Scroll to the fragment after navigation completes
+      });
+    this.closeMenuAndDropdown(); // Close the dropdown after navigation
+  }
+
+  private scrollToFragment() {
+    const fragment = this.router.url.split('#')[1];
+    if (fragment) {
+      setTimeout(() => {
+        const element = document.getElementById(fragment);
+        if (element) {
+          const yOffset = this.isMobile ? -54 : -94; // Set yOffset based on device type
+          const yPosition =
+            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: yPosition, behavior: 'smooth' });
+        }
+      }, 100); // Adding a small delay ensures content is loaded before scrolling
+    }
+  }
+
+  navigateToServicesDescription() {
+    this.router.navigate(['/services-page']);
+    this.closeMenuAndDropdown(); // Close the dropdown after navigation
+  }
+
   private checkRoute(url: string) {
-    const transparentPages = ['/calculator', '/contact', '/privacy-policy'];
+    const transparentPages = [
+      '/calculator',
+      '/contact',
+      '/privacy-policy',
+      '/services-page',
+    ];
     this.isTransparentPage = transparentPages.some((page) =>
       url.includes(page)
     );

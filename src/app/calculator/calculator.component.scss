@@ -301,6 +301,11 @@ h3 {
 
 .cleanHours {
   padding: 10px;
+  p {
+    color: gray;
+    font-size: 15px;
+    padding-top: 5px;
+  }
 }
 
 .customHours {
@@ -309,6 +314,11 @@ h3 {
 
 .apartment {
   padding: 0 10px;
+  p {
+    color: gray;
+    font-size: 15px;
+    padding-top: 5px;
+  }
 }
 
 .typeRow {
@@ -393,6 +403,11 @@ input.disabled {
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+
+.contact-info p {
+  color: gray;
+  font-size: 15px;
 }
 
 .tips {
@@ -748,14 +763,35 @@ input.disabled {
 }
 
 @media (max-width: 768px) {
+  .mobile-margin {
+    margin-top: 54px;
+  }
+
+  .desktop-margin {
+    margin-top: 94px;
+  }
+
   .bordered-group,
   .contact-info,
   .address-info {
     padding: 10px 0;
   }
 
-  .left-side {
-    margin-top: 54px;
+  .apartment {
+    p {
+      font-size: 13px;
+    }
+
+    .cleanHours {
+      p {
+        font-size: 13px;
+      }
+    }
+  }
+
+  .contact-info p {
+    color: gray;
+    font-size: 13px;
   }
 
   .serviceType {

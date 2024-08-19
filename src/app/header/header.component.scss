@@ -56,8 +56,8 @@
         .cleaningServiceDropdown {
           background: linear-gradient(
             180deg,
-            rgba(168, 168, 168, 0) 3.5%,
-            rgba(255, 255, 255, 0.705) 4%,
+            rgba(168, 168, 168, 0) 2.5%,
+            rgba(255, 255, 255, 0.705) 3%,
             rgba(255, 255, 255, 0.904) 50%,
             #fffc 90%
           );
@@ -225,8 +225,8 @@
         position: absolute;
         background: linear-gradient(
           180deg,
-          rgba(0, 0, 0, 0) 3.5%,
-          rgba(0, 0, 0, 0.479) 4%,
+          rgba(0, 0, 0, 0) 2.5%,
+          rgba(0, 0, 0, 0.479) 3%,
           rgba(0, 0, 0, 0.904) 50%,
           rgba(0, 0, 0, 0.8) 90%
         );
@@ -401,11 +401,25 @@
     padding: 5px;
   }
 
+  .mainMenu {
+    &.mobile-menu {
+      top: 54px;
+    }
+
+    &.desktop-menu {
+      top: 94px;
+    }
+  }
+
+  .socialMedia {
+    display: none !important;
+  }
+
   .mainDiv .headLeft .mainMenu.show {
     display: block;
     position: absolute;
     background: rgb(0, 0, 0, 47%);
-    top: 54px;
+    // top: 54px;
     left: 0;
     width: 100%;
     .cleaningService:hover .cleaningServiceDropdown {

@@ -22,6 +22,7 @@ import flatpickr from 'flatpickr';
 import { ExtraServicesComponent } from './extra-services/extra-services.component';
 import { environment } from 'src/environments/environment.development';
 import { StripePaymentService } from '../stripe-payment.service'; // Import the service
+import { DeviceDetectorService } from '../device-detector.service';
 
 @Component({
   selector: 'app-calculator',
@@ -55,6 +56,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   showPaymentMethodSelection: boolean = false;
   showPayPalForm: boolean = false;
   showCreditCardForm: boolean = false;
+  isMobileDevice: boolean = false;
 
   extraServicePrices: { [key: string]: number } = {
     sameDay: 30,
@@ -282,7 +284,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     private router: Router,
     private location: Location,
     private cdr: ChangeDetectorRef,
-    private stripeService: StripePaymentService
+    private stripeService: StripePaymentService,
+    private deviceDetector: DeviceDetectorService
   ) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -380,6 +383,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     this.calculatePriceAndTime();
     this.setMinDate();
     this.updateMaxWidth();
+    this.isMobileDevice = this.deviceDetector.isMobile();
 
     const monthNames = [
       'Jan',
@@ -518,6 +522,9 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
           break;
         case 'moveOut':
           this.calculatorForm.get('serviceType')!.setValue('Move Out');
+          break;
+        case 'renovation':
+          this.calculatorForm.get('serviceType')!.setValue('Post Renovation');
           break;
         case 'custom':
           this.calculatorForm.get('serviceType')!.setValue('Custom Cleaning');

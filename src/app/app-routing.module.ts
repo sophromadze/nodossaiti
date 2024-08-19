@@ -26,6 +26,13 @@ const routes: Routes = [
         (m) => m.PrivacyPolicyModule
       ),
   },
+  {
+    path: 'services-page',
+    loadChildren: () =>
+      import('./services-page/services-page.module').then(
+        (m) => m.ServicesPageModule
+      ),
+  },
   { path: '**', redirectTo: '/' }, // Handle 404s
 ];
 
