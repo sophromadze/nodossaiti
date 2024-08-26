@@ -3,6 +3,8 @@ import {
   OnInit,
   AfterViewInit,
   Renderer2,
+  ViewChildren,
+  QueryList,
   ElementRef,
   ChangeDetectorRef,
   ViewChild,
@@ -21,8 +23,8 @@ import { Location } from '@angular/common';
 import flatpickr from 'flatpickr';
 import { ExtraServicesComponent } from './extra-services/extra-services.component';
 import { environment } from 'src/environments/environment.development';
-import { StripePaymentService } from '../stripe-payment.service'; // Import the service
-import { DeviceDetectorService } from '../device-detector.service';
+import { StripePaymentService } from '../services/stripe-payment.service'; // Import the service
+import { DeviceDetectorService } from '../services/device-detector.service';
 
 @Component({
   selector: 'app-calculator',
@@ -32,6 +34,8 @@ import { DeviceDetectorService } from '../device-detector.service';
 export class CalculatorComponent implements OnInit, AfterViewInit {
   @ViewChild(ExtraServicesComponent)
   extraServicesComponent!: ExtraServicesComponent;
+  @ViewChildren('entryMethodRef, otherRef, anotherRef')
+  formGroups!: QueryList<ElementRef>;
   calculatorForm: FormGroup;
   private inputTimeout: any;
   minDate!: string;
@@ -45,6 +49,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   total: number | null = null;
   tips: number = 0;
   isCustomCleaning: boolean = false;
+  isRenovationCleaning: boolean = false;
   deepCleaningChecked: boolean = false;
   requiredCleaners: number | null = null;
   originalServiceDate: string | null = null;
@@ -359,6 +364,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       zipCode: ['', Validators.required],
       tips: [0],
       receiveMessages: [false],
+      agreeTxt: [false, Validators.requiredTrue],
     });
 
     this.calculatorForm.get('serviceType')!.valueChanges.subscribe(() => {
@@ -380,6 +386,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.preloadBackgroundImage();
     this.calculatePriceAndTime();
     this.setMinDate();
     this.updateMaxWidth();
@@ -505,6 +512,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         zipCode: params['zipCode'] || null,
         tips: params['tips'] ? parseFloat(params['tips']) : '0',
         receiveMessages: params['receiveMessages'] || null,
+        agreeTxt: params[''] || null,
       });
 
       const type = params['type'];
@@ -586,6 +594,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
         zipCode: this.calculatorForm.value.zipCode || null,
         tips: this.calculatorForm.value.tips || null,
         receiveMessages: this.calculatorForm.value.receiveMessages || null,
+        agreeTxt: this.calculatorForm.value.agreeTxt || null,
       });
 
       this.cdr.detectChanges(); //saechvoa
@@ -622,6 +631,23 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     this.checkScroll();
     this.updateMaxWidth();
     this.cdr.detectChanges(); // Manually trigger change detection
+  }
+
+  preloadBackgroundImage() {
+    const screenWidth = window.innerWidth;
+    let imageToPreload = '';
+
+    if (screenWidth <= 1280) {
+      imageToPreload = '/assets/images/bubbles-medium.webp';
+    } else {
+      imageToPreload = '/assets/images/bubbles-large.webp';
+    }
+
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = imageToPreload;
+    document.head.appendChild(link);
   }
 
   @HostListener('window:scroll', [])
@@ -775,8 +801,9 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   onServiceTypeChange(): void {
     const serviceType = this.calculatorForm.get('serviceType')!.value;
     this.isCustomCleaning = serviceType === 'Custom Cleaning';
+    this.isRenovationCleaning = serviceType === 'Post Renovation';
 
-    if (this.isCustomCleaning) {
+    if (this.isCustomCleaning || this.isRenovationCleaning) {
       this.calculatorForm.get('bedrooms')!.disable();
       this.calculatorForm.get('bathrooms')!.disable();
       this.calculatorForm.get('cleaners')!.enable();
@@ -936,6 +963,9 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     if (this.isCustomCleaning) {
       return 'Custom Cleaning Service';
     }
+    if (this.isRenovationCleaning) {
+      return 'Post Renovation Cleaning';
+    }
     const bedrooms = this.calculatorForm.get('bedrooms')!.value;
     return `${this.getBedroomLabel(bedrooms)}`;
   }
@@ -1013,8 +1043,24 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   onBookNowClick(): void {
     if (this.calculatorForm.invalid) {
       this.calculatorForm.markAllAsTouched();
+
+      // Scroll to the first invalid input
+      this.scrollToFirstInvalidControl();
     } else {
       this.onSubmit();
+    }
+  }
+
+  private scrollToFirstInvalidControl(): void {
+    const invalidControl = this.formGroups.find((control) =>
+      control.nativeElement.querySelector('.ng-invalid')
+    );
+
+    if (invalidControl) {
+      invalidControl.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
     }
   }
 
@@ -1115,6 +1161,8 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       state: 'NY',
       zipCode: null,
       tips: null,
+      receiveMessages: false,
+      agreeTxt: false,
     });
     // this.closePaymentForm();
   }
@@ -1130,13 +1178,15 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
 
     const formattedServiceTime = this.formatTimeToAmPm(formValues.serviceTime);
 
-    const subTotalTimeText = this.isCustomCleaning
-      ? '0 hours and 0 minutes'
-      : this.formatTimeToHoursAndMinutes(this.subTotalTime ?? 0);
+    const subTotalTimeText =
+      this.isCustomCleaning || this.isRenovationCleaning
+        ? '0 hours and 0 minutes'
+        : this.formatTimeToHoursAndMinutes(this.subTotalTime ?? 0);
 
-    const totalTimeText = this.isCustomCleaning
-      ? ''
-      : this.formatTimeToHoursAndMinutes(this.totalTime ?? 0);
+    const totalTimeText =
+      this.isCustomCleaning || this.isRenovationCleaning
+        ? ''
+        : this.formatTimeToHoursAndMinutes(this.totalTime ?? 0);
 
     const customCleaningHoursText = this.formatTimeToHoursAndMinutes(
       formValues.hours
@@ -1153,11 +1203,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     const wallsText = formValues.wallCleaning
       ? `${this.wallsNumbers} walls`
       : '0 walls';
-    // const vacuumOptionText = formValues.vacuum
-    //   ? this.selectedVacuumOption
-    //   : 'NO';
 
-    // Function to conditionally include information based on boolean value
     const conditionalInclude = (label: string, value: boolean) => {
       return value ? `${label}: ${booleanToYesNo(value)}` : null;
     };
@@ -1184,7 +1230,6 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       .filter(Boolean)
       .join('\n');
 
-    // Retrieve displayed text of city, state, and entry method select elements
     const cityElement = document.querySelector(
       '#city option:checked'
     ) as HTMLOptionElement;
@@ -1201,10 +1246,16 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       ? entryMethodElement.textContent
       : 'N/A';
 
+    const serviceTypeText = this.isCustomCleaning
+      ? 'Custom Cleaning Service'
+      : this.isRenovationCleaning
+      ? 'Post-Renovation Cleaning Service'
+      : formValues.serviceType;
+
     const emailText = `
       Booking Details:
   
-      Service Type: ${formValues.serviceType}
+      Service Type: ${serviceTypeText}
       Bedrooms: ${formValues.bedrooms ?? 'None'}
       Bathrooms: ${formValues.bathrooms ?? 'None'}
       Square Feet: ${formValues.squareFeet ?? 'None'}
@@ -1214,16 +1265,26 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
       Discount: ${formValues.discount ?? 'None'}
       Entry Method: ${entryMethodText}
       Special Instructions: ${formValues.specialInstructions || 'None'}
-${extraServicesText}
+  ${extraServicesText}
       Inside Windows: ${insideWindowsText}
       Walls Quantity: ${wallsText}
       Hours of Organizing: ${organizingHoursText}
       Number of Cleaners: ${this.requiredCleaners}
       Number of Hours: ${
-        this.isCustomCleaning ? customCleaningHoursText : 'N/A'
+        this.isCustomCleaning || this.isRenovationCleaning
+          ? customCleaningHoursText
+          : 'N/A'
       }
-      ${!this.isCustomCleaning ? `Sub-total Time: ${subTotalTimeText}\n` : ''}
-      ${!this.isCustomCleaning ? `Total Time: ${totalTimeText}\n` : ''}
+      ${
+        !this.isCustomCleaning && !this.isRenovationCleaning
+          ? `Sub-total Time: ${subTotalTimeText}\n`
+          : ''
+      }
+      ${
+        !this.isCustomCleaning && !this.isRenovationCleaning
+          ? `Total Time: ${totalTimeText}\n`
+          : ''
+      }
       Sub-total Price: $${this.totalPrice?.toFixed(2)}
       Sales Tax: $${this.salesTax?.toFixed(2)}
       Tips: $${this.tips?.toFixed(2)}
@@ -1250,7 +1311,7 @@ ${extraServicesText}
   
       Here are your booking details:
   
-      Service Type: ${formValues.serviceType}
+      Service Type: ${serviceTypeText}
       Bedrooms: ${formValues.bedrooms ?? 'None'}
       Bathrooms: ${formValues.bathrooms ?? 'None'}
       Square Feet: ${formValues.squareFeet ?? 'None'}
@@ -1262,16 +1323,26 @@ ${extraServicesText}
       Special Instructions For Cleaners: ${
         formValues.specialInstructions || 'None'
       }
-${extraServicesText}
+  ${extraServicesText}
       Inside Windows: ${insideWindowsText}
       Walls Quantity: ${wallsText}
       Hours of Organizing: ${organizingHoursText}
       Number of Cleaners: ${this.requiredCleaners}
       Number of Hours: ${
-        this.isCustomCleaning ? customCleaningHoursText : 'N/A'
+        this.isCustomCleaning || this.isRenovationCleaning
+          ? customCleaningHoursText
+          : 'N/A'
       }
-      ${!this.isCustomCleaning ? `Sub-total Time: ${subTotalTimeText}\n` : ''}
-      ${!this.isCustomCleaning ? `Total Time: ${totalTimeText}\n` : ''}
+      ${
+        !this.isCustomCleaning && !this.isRenovationCleaning
+          ? `Sub-total Time: ${subTotalTimeText}\n`
+          : ''
+      }
+      ${
+        !this.isCustomCleaning && !this.isRenovationCleaning
+          ? `Total Time: ${totalTimeText}\n`
+          : ''
+      }
       Sub-total Price: $${this.totalPrice?.toFixed(2)}
       Sales Tax: $${this.salesTax?.toFixed(2)}
       Tips: $${this.tips?.toFixed(2)}
@@ -1346,17 +1417,28 @@ ${extraServicesText}
         basePrice += 90;
         subTotalTime += 4;
         break;
-      case 'Custom Cleaning':
-        let hourlyRate = 55;
+      case 'Post Renovation':
+        let renovationHour = 50;
         if (formValues.deepCleaning) {
-          hourlyRate = 75; // Increase hourly rate if deep cleaning is selected
+          renovationHour = 70;
+        }
+        basePrice += formValues.cleaners * formValues.hours * renovationHour;
+        subTotalTime += formValues.hours;
+        break;
+      case 'Custom Cleaning':
+        let hourlyRate = 45;
+        if (formValues.deepCleaning) {
+          hourlyRate = 65; // Increase hourly rate if deep cleaning is selected
         }
         basePrice += formValues.cleaners * formValues.hours * hourlyRate;
         subTotalTime += formValues.hours;
         break;
     }
 
-    if (formValues.serviceType !== 'Custom Cleaning') {
+    if (
+      formValues.serviceType !== 'Custom Cleaning' &&
+      formValues.serviceType !== 'Post Renovation'
+    ) {
       let bedroomBasePrice = 0;
       let bedroomTime = 0;
 
@@ -1446,7 +1528,10 @@ ${extraServicesText}
     this.totalPrice = basePrice;
     this.subTotalTime = subTotalTime;
 
-    if (formValues.serviceType !== 'Custom Cleaning') {
+    if (
+      formValues.serviceType !== 'Custom Cleaning' &&
+      formValues.serviceType !== 'Post Renovation'
+    ) {
       this.requiredCleaners = Math.ceil(subTotalTime / 7);
       this.totalTime = subTotalTime / this.requiredCleaners;
     } else {

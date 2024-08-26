@@ -20,7 +20,11 @@ export class HeaderComponent {
   constructor(
     private router: Router,
     private viewportScroller: ViewportScroller
-  ) {
+  ) {}
+
+  ngOnInit(): void {
+    this.preloadHeaderImages(); // Preload the header logo images
+    // Subscribe to router events here, when the component is fully initialized
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.checkRoute(event.url);
@@ -33,7 +37,24 @@ export class HeaderComponent {
         this.closeMenuAndDropdown(); // Close menu and dropdown on navigation
       }
     });
+
+    // Set up mobile detection after component initialization
     this.isMobile = this.checkIfMobile();
+  }
+
+  preloadHeaderImages(): void {
+    const imagesToPreload = [
+      '/assets/images/smallLogoLight.webp',
+      '/assets/images/smallLogoDark.webp',
+    ];
+
+    imagesToPreload.forEach((src) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = src;
+      document.head.appendChild(link);
+    });
   }
 
   toggleMenu() {

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js';
-import { StripePaymentService } from '../../stripe-payment.service';
+import { StripePaymentService } from '../../services/stripe-payment.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';

@@ -15,6 +15,7 @@ export class CitiesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.preloadImages(); // Preload images when the component initializes
     this.startAutoSlide(); // Start the auto-slide when the component is initialized
     document.addEventListener('click', this.activateSliderHandler, false); // Add event listener for navigation buttons
   }
@@ -22,6 +23,51 @@ export class CitiesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.stopAutoSlide(); // Stop the auto-slide when the component is destroyed
     document.removeEventListener('click', this.activateSliderHandler, false); // Remove event listener to prevent memory leaks
+  }
+
+  preloadImages() {
+    const screenWidth = window.innerWidth;
+    let imagesToPreload: string[] = [];
+
+    if (screenWidth <= 640) {
+      // Preload small images
+      imagesToPreload = [
+        '/assets/images/queens-small.webp',
+        '/assets/images/manhattan-small.webp',
+        '/assets/images/brooklyn3-small.webp',
+        '/assets/images/queens2-small.webp',
+        '/assets/images/manhattan2-small.webp',
+        '/assets/images/brooklyn2-small.webp',
+      ];
+    } else if (screenWidth <= 1280) {
+      // Preload medium images
+      imagesToPreload = [
+        '/assets/images/queens-medium.webp',
+        '/assets/images/manhattan-medium.webp',
+        '/assets/images/brooklyn3-medium.webp',
+        '/assets/images/queens2-medium.webp',
+        '/assets/images/manhattan2-medium.webp',
+        '/assets/images/brooklyn2-medium.webp',
+      ];
+    } else {
+      // Preload large images
+      imagesToPreload = [
+        '/assets/images/queens-large.webp',
+        '/assets/images/manhattan-large.webp',
+        '/assets/images/brooklyn3-large.webp',
+        '/assets/images/queens2-large.webp',
+        '/assets/images/manhattan2-large.webp',
+        '/assets/images/brooklyn2-large.webp',
+      ];
+    }
+
+    imagesToPreload.forEach((src) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = src;
+      document.head.appendChild(link);
+    });
   }
 
   activateSlider(e: any) {

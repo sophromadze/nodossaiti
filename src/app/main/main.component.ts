@@ -24,6 +24,46 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.initializeRotatingText();
+    this.preloadImagesBasedOnScreenWidth();
+  }
+
+  preloadImagesBasedOnScreenWidth() {
+    const screenWidth = window.innerWidth;
+    let imagesToPreload: string[] = [];
+
+    if (screenWidth <= 640) {
+      // Preload small images
+      imagesToPreload = [
+        '/assets/images/clean1-small.webp',
+        '/assets/images/clean2-small.webp',
+        '/assets/images/clean3-small.webp',
+        '/assets/images/clean4-small.webp',
+      ];
+    } else if (screenWidth <= 1280) {
+      // Preload medium images
+      imagesToPreload = [
+        '/assets/images/clean1-medium.webp',
+        '/assets/images/clean2-medium.webp',
+        '/assets/images/clean3-medium.webp',
+        '/assets/images/clean4-medium.webp',
+      ];
+    } else {
+      // Preload large images
+      imagesToPreload = [
+        '/assets/images/clean1-large.webp',
+        '/assets/images/clean2-large.webp',
+        '/assets/images/clean3-large.webp',
+        '/assets/images/clean4-large.webp',
+      ];
+    }
+
+    imagesToPreload.forEach((src) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = src;
+      document.head.appendChild(link);
+    });
   }
 
   initializeRotatingText() {

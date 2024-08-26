@@ -101,6 +101,31 @@
           </div>
         </div>
       </div>
+      <div class="fnc-slide m--blend-orange" data-slide-id="5">
+        <div class="fnc-slide__inner">
+          <div class="fnc-slide__mask">
+            <div class="fnc-slide__mask-inner"></div>
+          </div>
+          <div class="fnc-slide__content">
+            <h2 class="fnc-slide__heading" (click)="onReadMoreButtonClick()">
+              <div class="fnc-slide__heading-line">
+                <span>Renovation</span>
+              </div>
+              <div class="fnc-slide__heading-line">
+                <span>Cleaning</span>
+              </div>
+            </h2>
+            <button
+              type="button"
+              class="fnc-slide__action-btn"
+              (click)="onReadMoreButtonClick()"
+            >
+              Read More
+              <span data-text="Read More">Read More</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <nav class="fnc-nav">
       <div class="fnc-nav__bgs">
@@ -108,6 +133,7 @@
         <div class="fnc-nav__bg m--navbg-dark"></div>
         <div class="fnc-nav__bg m--navbg-red"></div>
         <div class="fnc-nav__bg m--navbg-blue"></div>
+        <div class="fnc-nav__bg m--navbg-orange"></div>
       </div>
       <div class="fnc-nav__controls">
         <button class="fnc-nav__control" (click)="controlClickHandler(1)">
@@ -124,6 +150,10 @@
         </button>
         <button class="fnc-nav__control" (click)="controlClickHandler(4)">
           Move Out Service
+          <span class="fnc-nav__control-progress"></span>
+        </button>
+        <button class="fnc-nav__control" (click)="controlClickHandler(5)">
+          Post Renovation
           <span class="fnc-nav__control-progress"></span>
         </button>
       </div>
@@ -347,6 +377,70 @@
       <button
         class="blob-btn bookBtns"
         (click)="navigateToCalculator('moveOut')"
+      >
+        Book Now
+        <span class="blob-btn__inner">
+          <span class="blob-btn__blobs">
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+            <span class="blob-btn__blob"></span>
+          </span>
+        </span>
+      </button>
+    </div>
+    <div
+      *ngIf="activeSlideId === '5'"
+      class="demo-cont__credits demo-cont__credits-5 postRenovation"
+      [ngClass]="{ 'credits-spin-in': isCreditsActive }"
+    >
+      <div class="cardHeads">
+        <h2>Post Renovation</h2>
+        <button
+          class="demo-cont__close-btn"
+          aria-label="close"
+          (click)="onCloseButtonClick()"
+        >
+          <img src="/assets/images/macclos.webp" alt="" />
+        </button>
+      </div>
+      <h3>$ 150</h3>
+      <ul>
+        <p>
+          <b>Post Renovation Cleaning:</b> is essential for removing dust,
+          debris, paint splatters, and other residues left behind after
+          construction or renovation work. The goal is to make the space ready
+          for use by thoroughly cleaning all remnants of the renovation.
+        </p>
+        <li>
+          <b>Dusting and Sweeping:</b> Removing dust from surfaces, including
+          walls, ceilings, and floors.
+        </li>
+        <li>
+          <b>Vacuuming: </b>Cleaning carpets and rugs to remove fine dust and
+          debris
+        </li>
+        <li>
+          <b>Wiping Down Surfaces: </b>Cleaning countertops, cabinets,
+          windowsills, and other surfaces to remove any remaining dust or
+          construction residues.
+        </li>
+        <li>
+          <b>Cleaning Windows and Glass:</b>
+          Washing windows and glass surfaces to remove smudges and dust.
+        </li>
+        <li>
+          <b>Removing Paint Spots: </b>Scraping or wiping off any paint or other
+          stains that may have splattered during the renovation.
+        </li>
+        <li>
+          <b>Disposing of Debris: </b>Properly removing and disposing of any
+          remaining construction materials or waste.
+        </li>
+      </ul>
+      <button
+        class="blob-btn bookBtns"
+        (click)="navigateToCalculator('renovation')"
       >
         Book Now
         <span class="blob-btn__inner">

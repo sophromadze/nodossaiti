@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PayPalPaymentService } from '../../paypal-payment.service';
+import { PayPalPaymentService } from '../../services/paypal-payment.service';
 
 declare var paypal: any; // Declare the PayPal variable
 

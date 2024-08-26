@@ -32,6 +32,7 @@ interface ExtraServiceData {
 export class ExtraServicesComponent implements OnInit, OnChanges {
   @Input() parentForm!: FormGroup;
   @Input() isCustomCleaning = false;
+  @Input() isRenovationCleaning = false;
   @Output() extraServiceChanged = new EventEmitter<ExtraServiceData>();
   @Output() sameDayServiceChanged = new EventEmitter<boolean>();
   buttonText: string = 'Confirm';
@@ -185,8 +186,19 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
   currentTooltip: string | null = null;
 
   ngOnInit(): void {
+    this.preloadExtraServiceImages();
     this.initializeFormControls();
     this.updateButtonText(window.innerWidth);
+  }
+
+  preloadExtraServiceImages(): void {
+    this.extraServices.forEach((service) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = service.iconPath;
+      document.head.appendChild(link);
+    });
   }
 
   initializeFormControls(): void {
@@ -245,8 +257,8 @@ export class ExtraServicesComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['isCustomCleaning']) {
-      if (this.isCustomCleaning) {
+    if (changes['isCustomCleaning'] || changes['isRenovationCleaning']) {
+      if (this.isCustomCleaning || this.isRenovationCleaning) {
         this.parentForm.get('organizing')!.disable();
       } else {
         this.parentForm.get('organizing')!.enable();

@@ -18,7 +18,10 @@
           class="btn-container"
           (mouseover)="showTooltip(extra.controlName)"
           (mouseout)="hideTooltip()"
-          *ngIf="!(isCustomCleaning && extra.controlName === 'organizing')"
+          *ngIf="
+            !(isCustomCleaning && extra.controlName === 'organizing') &&
+            !(isRenovationCleaning && extra.controlName === 'organizing')
+          "
         >
           <button
             type="button"

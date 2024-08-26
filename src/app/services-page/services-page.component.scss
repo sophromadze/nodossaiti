@@ -1,5 +1,6 @@
 .serviceMain {
   margin-top: 105px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.41));
 }
 
 section {
@@ -26,6 +27,7 @@ section {
   }
   img {
     max-width: 50%;
+    border-radius: 10px;
   }
 
   button {
@@ -41,7 +43,7 @@ section {
     border-radius: 5px;
     padding: 10px 25px;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 900;
     background: transparent;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -136,7 +138,7 @@ section {
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.582); /* Overlay color */
+        background: rgba(0, 0, 0, 0.432); /* Overlay color */
         z-index: 1; /* Ensure the overlay is on top of the background image */
       }
 
@@ -152,7 +154,7 @@ section {
 
   #regular {
     div {
-      background-image: url("../../assets/images/regular2.webp");
+      background-image: url("../../assets/images/regular2-medium.webp");
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center center;
@@ -160,7 +162,7 @@ section {
   }
   #deep {
     div {
-      background-image: url("../../assets/images/deep2.webp");
+      background-image: url("../../assets/images/deep2-medium.webp");
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center center;
@@ -168,7 +170,7 @@ section {
   }
   #moveInv {
     div {
-      background-image: url("../../assets/images/moveIn2.webp");
+      background-image: url("../../assets/images/moveIn2-medium.webp");
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center center;
@@ -176,7 +178,7 @@ section {
   }
   #moveOut {
     div {
-      background-image: url("../../assets/images/moveOut.webp");
+      background-image: url("../../assets/images/moveOut-medium.webp");
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center center;
@@ -184,7 +186,7 @@ section {
   }
   #custom {
     div {
-      background-image: url("../../assets/images/custom.webp");
+      background-image: url("../../assets/images/custom-medium.webp");
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center center;
@@ -192,7 +194,7 @@ section {
   }
   #posrRenovation {
     div {
-      background-image: url("../../assets/images/renovation.webp");
+      background-image: url("../../assets/images/renovation-medium.webp");
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center center;

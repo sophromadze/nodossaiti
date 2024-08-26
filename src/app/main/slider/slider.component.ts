@@ -33,12 +33,47 @@ export class SliderComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.preloadSliderImages();
+  }
 
   ngAfterViewInit(): void {
     this.demoCont = this.el.nativeElement.querySelector('.demo-cont');
     this.fncSliderElement = this.el.nativeElement.querySelector('.fnc-slider');
     this.initializeSlider();
+  }
+
+  preloadSliderImages(): void {
+    const screenWidth = window.innerWidth;
+    let imagesToPreload: string[] = [];
+
+    if (screenWidth <= 1280) {
+      // Preload medium images
+      imagesToPreload = [
+        '/assets/images/regular2-medium.webp',
+        '/assets/images/deep2-medium.webp',
+        '/assets/images/moveIn2-medium.webp',
+        '/assets/images/moveOut-medium.webp',
+        '/assets/images/renovation-medium.webp',
+      ];
+    } else {
+      // Preload large images
+      imagesToPreload = [
+        '/assets/images/regular2-large.webp',
+        '/assets/images/deep2-large.webp',
+        '/assets/images/moveIn2-large.webp',
+        '/assets/images/moveOut-large.webp',
+        '/assets/images/renovation-large.webp',
+      ];
+    }
+
+    imagesToPreload.forEach((src) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = src;
+      document.head.appendChild(link);
+    });
   }
 
   initializeSlider(): void {
@@ -127,6 +162,47 @@ export class SliderComponent implements OnInit, AfterViewInit {
         this.updateCreditsContent();
       };
 
+      // const performSliding = (slideID: number) => {
+      //   if (sliding) return;
+      //   sliding = true;
+      //   window.clearTimeout(this.autoSlidingTO);
+      //   curSlide = slideID;
+
+      //   prevControl = slider.querySelector('.m--active-control') as HTMLElement;
+      //   prevControl.classList.remove('m--active-control');
+      //   prevControl.classList.add('m--prev-control');
+      //   (
+      //     slider.querySelector(
+      //       prefix + 'nav__control-' + slideID
+      //     ) as HTMLElement
+      //   ).classList.add('m--active-control');
+
+      //   activeSlide = slider.querySelector(
+      //     prefix + 'slide-' + slideID
+      //   ) as HTMLElement;
+      //   activeControlsBg = slider.querySelector(
+      //     prefix + 'nav__bg-' + slideID
+      //   ) as HTMLElement;
+
+      //   const currentActiveSlide = slider.querySelector('.m--active-slide');
+      //   if (currentActiveSlide)
+      //     currentActiveSlide.classList.add('m--previous-slide');
+
+      //   const currentActiveNavBg = slider.querySelector('.m--active-nav-bg');
+      //   if (currentActiveNavBg)
+      //     currentActiveNavBg.classList.add('m--previous-nav-bg');
+
+      //   activeSlide.classList.add('m--before-sliding');
+      //   activeControlsBg.classList.add('m--nav-bg-before');
+
+      //   const layoutTrigger = activeSlide.offsetTop;
+
+      //   activeSlide.classList.add('m--active-slide');
+      //   activeControlsBg.classList.add('m--active-nav-bg');
+
+      //   setTimeout(afterSlidingHandler, this.slidingAT + this.slidingDelay);
+      // };
+
       const performSliding = (slideID: number) => {
         if (sliding) return;
         sliding = true;
@@ -160,11 +236,13 @@ export class SliderComponent implements OnInit, AfterViewInit {
         activeSlide.classList.add('m--before-sliding');
         activeControlsBg.classList.add('m--nav-bg-before');
 
-        const layoutTrigger = activeSlide.offsetTop;
+        // This triggers a layout reflow, necessary for transitions
+        activeSlide.offsetTop;
 
         activeSlide.classList.add('m--active-slide');
         activeControlsBg.classList.add('m--active-nav-bg');
 
+        // No need to manually manage transitions; SCSS handles it now
         setTimeout(afterSlidingHandler, this.slidingAT + this.slidingDelay);
       };
 

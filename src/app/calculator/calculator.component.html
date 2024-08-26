@@ -11,7 +11,7 @@
         <!-- Service Type -->
         <div class="relative-container">
           <div class="form-group col bordered-group">
-            <div class="col serviceType">
+            <div class="col serviceType" #entryMethodRef>
               <h3>Service Type **</h3>
               <div class="col">
                 <select
@@ -45,7 +45,10 @@
         </div>
 
         <!-- Bedrooms and Bathrooms -->
-        <div *ngIf="!isCustomCleaning" class="relative-container">
+        <div
+          *ngIf="!isCustomCleaning && !isRenovationCleaning"
+          class="relative-container"
+        >
           <div class="apartment">
             <h3>Tell us about your apartment **</h3>
             <p>
@@ -53,8 +56,8 @@
               feet of your apartment. The kitchen and living room are
               automatically included in the service.
             </p>
-            <div class="form-group row typeRow">
-              <div class="col">
+            <div class="form-group typeRow">
+              <div class="col" #entryMethodRef>
                 <select
                   formControlName="bedrooms"
                   id="bedrooms"
@@ -89,7 +92,7 @@
                   </option>
                 </select>
               </div>
-              <div class="col">
+              <div class="col" #entryMethodRef>
                 <div class="col">
                   <select
                     formControlName="squareFeet"
@@ -121,7 +124,44 @@
         <!-- Cleaners and Hours (Custom Cleaning) -->
         <div *ngIf="isCustomCleaning" class="relative-container cleanHours">
           <h3 class="hourlyService">
-            Hourly Service: {{ deepCleaningChecked ? "$75" : "$55" }} per
+            Hourly Service: {{ deepCleaningChecked ? "$65" : "$45" }} per
+            hour/per cleaner
+            <span *ngIf="deepCleaningChecked" class="deep-cleaning-text"
+              >(Deep Cleaning)</span
+            >
+          </h3>
+          <p>
+            Please choose how many cleaners you need and the duration of their
+            service.
+          </p>
+          <div class="form-group row customHours">
+            <div class="col">
+              <select
+                formControlName="cleaners"
+                id="cleaners"
+                class="form-control"
+              >
+                <option value="" disabled>Select number of cleaners**</option>
+                <option *ngFor="let i of cleanersOptions" [value]="i">
+                  {{ i }} {{ i === 1 ? "Cleaner" : "Cleaners" }}
+                </option>
+              </select>
+            </div>
+            <div class="col cleanerHours">
+              <select formControlName="hours" id="hours" class="form-control">
+                <option value="" disabled>Select number of hours**</option>
+                <option *ngFor="let hour of hoursOptions" [value]="hour">
+                  {{ formatTimeToHoursAndMinutes(hour) }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cleaners and Hours (Renovation Cleaning) -->
+        <div *ngIf="isRenovationCleaning" class="relative-container cleanHours">
+          <h3 class="hourlyService">
+            Hourly Service: {{ deepCleaningChecked ? "$70" : "$50" }} per
             hour/per cleaner
             <span *ngIf="deepCleaningChecked" class="deep-cleaning-text"
               >(Deep Cleaning)</span
@@ -159,6 +199,7 @@
         <app-extra-services
           [parentForm]="calculatorForm"
           [isCustomCleaning]="isCustomCleaning"
+          [isRenovationCleaning]="isRenovationCleaning"
           (extraServiceChanged)="onExtraServiceChanged($event)"
           (sameDayServiceChanged)="onSameDayServiceChanged($event)"
         ></app-extra-services>
@@ -168,7 +209,7 @@
           <div class="form-group col bordered-group">
             <h3>Service Date & Time **</h3>
             <div class="row dateTime">
-              <div class="col">
+              <div class="col errorSpace" #entryMethodRef>
                 <div class="flatpickr" id="datePickerWrapper">
                   <input
                     type="text"
@@ -219,7 +260,7 @@
                   Please select a service date.
                 </div>
               </div>
-              <div class="col">
+              <div class="col errorSpace" #entryMethodRef>
                 <div class="flatpickr" id="timePickerWrapper">
                   <input
                     type="text"
@@ -277,15 +318,6 @@
                 {{ freq.label }}
               </button>
             </div>
-            <div
-              *ngIf="
-                calculatorForm.get('frequency')!.invalid &&
-                calculatorForm.get('frequency')!.touched
-              "
-              class="error"
-            >
-              Please select a frequency.
-            </div>
           </div>
         </div>
 
@@ -332,7 +364,7 @@
 
         <!-- Entry Method -->
         <div class="relative-container">
-          <div class="form-group bordered-group">
+          <div class="form-group bordered-group errorSpace" #entryMethodRef>
             <label for="entryMethod"><h3>Entry Method **</h3></label>
             <select
               formControlName="entryMethod"
@@ -350,7 +382,7 @@
                 calculatorForm.get('entryMethod')!.invalid &&
                 calculatorForm.get('entryMethod')!.touched
               "
-              class="errorEntry"
+              class="error"
             >
               Please select a entry method.
             </div>
@@ -382,7 +414,7 @@
           </p>
           <div class="formsGap">
             <div class="row contactInfo">
-              <div class="col">
+              <div class="col errorSpace" #entryMethodRef>
                 <input
                   type="text"
                   formControlName="name"
@@ -400,7 +432,7 @@
                   Please enter your first name.
                 </div>
               </div>
-              <div class="col">
+              <div class="col errorSpace" #entryMethodRef>
                 <input
                   type="text"
                   formControlName="lastName"
@@ -420,7 +452,7 @@
               </div>
             </div>
             <div class="row contactInfo">
-              <div class="col">
+              <div class="col errorSpace" #entryMethodRef>
                 <input
                   type="email"
                   formControlName="email"
@@ -438,7 +470,7 @@
                   Please enter a valid email.
                 </div>
               </div>
-              <div class="col">
+              <div class="col errorSpace" #entryMethodRef>
                 <div
                   class="cell-number-container"
                   [class.focused]="isFocused"
@@ -488,7 +520,7 @@
           <h3>Address</h3>
           <div class="formsGap">
             <div class="row addressInfoUp">
-              <div class="col address-flex">
+              <div class="col address-flex errorSpace" #entryMethodRef>
                 <input
                   type="text"
                   formControlName="address"
@@ -506,7 +538,7 @@
                   Please enter your address.
                 </div>
               </div>
-              <div class="col">
+              <div class="col errorSpace" #entryMethodRef>
                 <input
                   type="text"
                   formControlName="apartment"
@@ -518,7 +550,7 @@
             </div>
             <div class="row addressInfoDown">
               <div class="row address-flex">
-                <div class="col address-flex">
+                <div class="col address-flex errorSpace" #entryMethodRef>
                   <select formControlName="city" id="city" class="form-control">
                     <option value="" disabled>Select City**</option>
                     <option value="bro">Brooklyn</option>
@@ -536,7 +568,7 @@
                     Please enter your city.
                   </div>
                 </div>
-                <div class="col">
+                <div class="col errorSpace" #entryMethodRef>
                   <select
                     formControlName="state"
                     id="state"
@@ -558,7 +590,7 @@
                 </div>
               </div>
 
-              <div class="col">
+              <div class="col errorSpace" #entryMethodRef>
                 <input
                   type="text"
                   formControlName="zipCode"
@@ -608,6 +640,39 @@
             </div> -->
           </div>
         </div>
+        <div class="relative-container">
+          <div class="form-group bordered-group msgCheck" #entryMethodRef>
+            <input
+              type="checkbox"
+              formControlName="agreeTxt"
+              id="agreeTxt"
+              class="form-control"
+              [ngClass]="{
+                'error-flash':
+                  calculatorForm.get('agreeTxt')?.invalid &&
+                  calculatorForm.get('agreeTxt')?.touched
+              }"
+            />
+            <label for="agreeTxt">
+              I understand that I will be charged a $70 cancellation fee if I
+              cancel or reschedule my appointment less than 24 hours before the
+              scheduled service. I also confirm that the booking details
+              accurately reflect the cleaning requirements. If the actual
+              condition differs from the described details, Dream Cleaning Team
+              reserves the right to either leave or adjust the services to match
+              the actual condition.**
+            </label>
+          </div>
+          <div
+            *ngIf="
+              calculatorForm.get('agreeTxt')?.invalid &&
+              calculatorForm.get('agreeTxt')?.touched
+            "
+            class="error"
+          >
+            You must agree to our terms.
+          </div>
+        </div>
 
         <div class="bookNowButton first">
           <button
@@ -620,6 +685,16 @@
           >
             Book Now
           </button>
+          <p>
+            <b>Please note:</b> We accept credit or debit cards, and all online
+            payments are securely processed through Stripe. When you book with
+            Dream Cleaning, you can rest assured that your transaction is safe
+            and protected. At the time of scheduling, we place a hold on your
+            card (which may appear as 'pending' on your statement), rather than
+            a charge. By ordering our services and providing your credit card
+            details, you consent to us charging your card for the service fee.
+            Your card will only be charged once the cleaning is completed.
+          </p>
         </div>
 
         <!-- Payment Method Selection Modal -->
@@ -732,13 +807,13 @@
 
                 <p>
                   {{
-                    !isCustomCleaning
+                    !isCustomCleaning && !isRenovationCleaning
                       ? requiredCleaners
                       : calculatorForm.get("cleaners")!.value
                   }}
                 </p>
               </div>
-              <div *ngIf="isCustomCleaning">
+              <div *ngIf="isCustomCleaning || isRenovationCleaning">
                 <img
                   src="/assets/images/clock.webp"
                   alt=""
@@ -752,7 +827,7 @@
                   }}
                 </p>
               </div>
-              <div *ngIf="!isCustomCleaning">
+              <div *ngIf="!isCustomCleaning && !isRenovationCleaning">
                 <img
                   src="/assets/images/clock.webp"
                   alt=""
@@ -797,6 +872,18 @@
               >
                 Book Now
               </button>
+              <p>
+                <b>Please note:</b> We accept credit or debit cards, and all
+                online payments are securely processed through Stripe. When you
+                book with Dream Cleaning, you can rest assured that your
+                transaction is safe and protected. At the time of scheduling, we
+                place a hold on your card (which may appear as 'pending' on your
+                statement), rather than a charge. By ordering our services and
+                providing your credit card details, you consent to us charging
+                your card for the service fee. Your card will only be charged
+                once the cleaning is completed.
+              </p>
+              <hr />
               <app-service-description
                 class="second"
                 [serviceType]="calculatorForm.get('serviceType')!.value"

@@ -228,7 +228,51 @@ main {
   }
 }
 
-@media (max-height: 700px) and (max-width: 800px) {
+// @media (max-height: 700px) and (max-width: 800px) {
+//   .content {
+//     top: 50%;
+//     left: 2rem;
+//     right: auto;
+//     max-width: 300px;
+//     padding: 5px;
+
+//     & .title {
+//       font-size: 1.1rem;
+//     }
+
+//     & .description {
+//       font-size: 0.8rem;
+//     }
+//   }
+
+//   .item {
+//     width: 110px;
+//     height: 200px;
+
+//     &:nth-child(3) {
+//       left: calc(20% + 220px);
+//       top: 50%;
+//     }
+
+//     &:nth-child(4) {
+//       left: calc(20% + 340px);
+//       top: 50%;
+//     }
+
+//     &:nth-child(5) {
+//       top: 50%;
+//       left: calc(20% + 460px);
+//     }
+
+//     &:nth-child(6) {
+//       top: 50%;
+//       left: calc(20% + 585px);
+//       opacity: 0;
+//     }
+//   }
+// }
+
+@media (max-height: 500px) {
   .content {
     top: 50%;
     left: 2rem;

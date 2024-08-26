@@ -1,8 +1,11 @@
 .background {
-  background-image: url("/assets/images/try2.webp");
+  background-image: url("/assets/images/bubbles-large.webp");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  @media (max-width: 1280px) {
+    background-image: url("/assets/images/bubbles-medium.webp");
+  }
 }
 
 .container {
@@ -198,19 +201,75 @@ button.btn-success.disabled:hover::after {
   z-index: 1;
 }
 
+.errorSpace {
+  position: relative;
+  padding-bottom: 20px !important;
+}
+
+@-webkit-keyframes flash-error {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes flash-error {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 .error {
   position: absolute;
   color: red;
   font-size: 0.875rem;
-  margin-top: 3.5rem;
-  max-width: 250px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  bottom: 0;
+  -webkit-animation: flash-error 1s ease-in-out infinite;
+  animation: flash-error 1s ease-in-out infinite;
 }
 
-.errorEntry {
-  position: absolute;
-  color: red;
-  font-size: 0.875rem;
-  max-width: 250px;
+input.form-control.error-flash {
+  border-color: red !important;
+  -webkit-box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.5);
+  -webkit-animation: flash-border 1s ease-in-out infinite;
+  animation: flash-border 1s ease-in-out infinite;
+}
+
+@-webkit-keyframes flash-border {
+  0%,
+  100% {
+    border-color: red;
+    -webkit-box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.5);
+    box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.5);
+  }
+  50% {
+    border-color: #ccc;
+    -webkit-box-shadow: 0 0 0 3px rgba(255, 0, 0, 0);
+    box-shadow: 0 0 0 3px rgba(255, 0, 0, 0);
+  }
+}
+
+@keyframes flash-border {
+  0%,
+  100% {
+    border-color: red;
+    box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.5);
+  }
+  50% {
+    border-color: #ccc;
+    box-shadow: 0 0 0 3px rgba(255, 0, 0, 0);
+  }
 }
 
 .discountBtn {
@@ -275,6 +334,10 @@ button.btn-success.disabled:hover::after {
   display: none;
 }
 
+.relative-container {
+  position: relative;
+}
+
 .bordered-group {
   padding: 10px;
   flex: 1;
@@ -302,7 +365,7 @@ h3 {
 .cleanHours {
   padding: 10px;
   p {
-    color: gray;
+    color: rgb(56, 56, 56);
     font-size: 15px;
     padding-top: 5px;
   }
@@ -315,7 +378,7 @@ h3 {
 .apartment {
   padding: 0 10px;
   p {
-    color: gray;
+    color: rgb(56, 56, 56);
     font-size: 15px;
     padding-top: 5px;
   }
@@ -323,6 +386,9 @@ h3 {
 
 .typeRow {
   padding: 10px 0;
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 
 .deep-cleaning-text {
@@ -390,7 +456,6 @@ input.disabled {
 .formsGap {
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 
 .cleanerHours {
@@ -406,7 +471,7 @@ input.disabled {
 }
 
 .contact-info p {
-  color: gray;
+  color: rgb(56, 56, 56);
   font-size: 15px;
 }
 
@@ -580,10 +645,6 @@ input.disabled {
   }
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
-
 .tipsInput {
   padding-left: 20px !important;
 }
@@ -673,6 +734,7 @@ input.disabled {
   justify-content: left;
   align-items: center;
   gap: 10px;
+  padding-bottom: 20px;
   margin-bottom: 0;
   input {
     width: auto;
@@ -682,6 +744,13 @@ input.disabled {
   label {
     margin-bottom: 0;
     cursor: pointer;
+  }
+}
+
+.bookNowButton.first p {
+  padding: 10px;
+  b {
+    color: #0006cf;
   }
 }
 
@@ -760,9 +829,17 @@ input.disabled {
       padding: 0;
     }
   }
+
+  .bookNowButton.second p {
+    font-size: 14px !important;
+    padding: 10px 0;
+    b {
+      color: #0006cf;
+    }
+  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px) or (max-height: 768px) {
   .mobile-margin {
     margin-top: 54px;
   }
@@ -775,6 +852,10 @@ input.disabled {
   .contact-info,
   .address-info {
     padding: 10px 0;
+  }
+
+  .msgCheck {
+    padding-bottom: 20px;
   }
 
   .apartment {
@@ -790,7 +871,7 @@ input.disabled {
   }
 
   .contact-info p {
-    color: gray;
+    color: rgb(56, 56, 56);
     font-size: 13px;
   }
 
@@ -811,7 +892,43 @@ input.disabled {
   }
 }
 
-@media (max-width: 580px) {
+@media (max-width: 680px) {
+  .addressInfoDown {
+    flex-direction: column;
+    div {
+      width: 100%;
+    }
+    .address-flex {
+      flex-direction: column;
+    }
+  }
+
+  .addressInfoUp {
+    flex-direction: column;
+    div {
+      width: 100%;
+    }
+  }
+
+  .contactInfo {
+    flex-direction: column;
+    div {
+      width: 100%;
+    }
+  }
+  .tipsDiscount {
+    flex-direction: column;
+    .tips,
+    .discount {
+      width: 100%;
+    }
+  }
+  .row {
+    gap: 0;
+  }
+}
+
+@media (max-width: 580px) or (max-height: 580px) {
   .container {
     h3 {
       font-size: 16px;
@@ -837,13 +954,6 @@ input.disabled {
     }
   }
 
-  .addressInfoDown {
-    flex-direction: column;
-    div {
-      width: 100%;
-    }
-  }
-
   .cell-number-container {
     input {
       padding-left: 25px;
@@ -857,33 +967,9 @@ input.disabled {
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 500px) or (max-height: 500px) {
   .customHours {
     flex-direction: column;
-  }
-
-  .contactInfo {
-    flex-direction: column;
-    div {
-      width: 100%;
-    }
-  }
-
-  .addressInfoDown {
-    .address-flex {
-      flex-direction: column;
-    }
-  }
-
-  .addressInfoUp {
-    flex-direction: column;
-    div {
-      width: 100%;
-    }
-  }
-
-  .error {
-    margin-top: 3rem;
   }
 
   .calculator-card {
@@ -926,17 +1012,10 @@ input.disabled {
   }
 }
 
-@media (max-width: 400px) {
-  .tipsDiscount {
-    flex-direction: column;
-    .tips,
-    .discount {
-      width: 100%;
-    }
-  }
+@media (max-width: 400px) or (max-height: 400px) {
 }
 
-@media (max-width: 350px) {
+@media (max-width: 350px) or (max-height: 350px) {
   button.btn-success.disabled:hover::after {
     font-size: 11px;
   }

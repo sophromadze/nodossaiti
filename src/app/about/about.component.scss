@@ -1,11 +1,15 @@
 .about {
-  background-image: url("/assets/images/city.webp");
+  background-image: url("/assets/images/city-large.webp");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 1280px) {
+    background-image: url("/assets/images/city-medium.webp");
+  }
 }
 
 .container {
