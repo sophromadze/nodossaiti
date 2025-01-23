@@ -20,6 +20,36 @@
   min-height: 100vh;
 }
 
+.fTimeDiscTxtCont {
+  cursor: pointer;
+  border: 1px solid #42a5f5;
+  border-radius: 50%;
+  height: auto;
+  width: 190px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  margin: 0 auto;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
+  background: #ebf5ff;
+  animation: boxShadowAnim 1s ease-in-out infinite;
+}
+
+.firstTimeDiscTxtUp {
+  color: #0006cf;
+  text-align: center;
+  font-size: 20px;
+}
+
+.firstTimeDiscTxtDown {
+  color: #0006cf;
+  text-align: center;
+  font-size: 20px;
+}
+
 .left-side {
   flex: 2;
   border: 1px solid #ccc;
@@ -315,10 +345,35 @@ input.form-control.error-flash {
   flex: 1;
   text-align: center;
   background-color: #ebf5ff;
-  border: 1px solid #ccc;
+  border: 1px solid #42a5f5;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
   padding: 0.5rem;
   color: #000;
   font-weight: 900;
+  -webkit-animation: boxShadowAnim 1s ease-in-out infinite;
+  animation: boxShadowAnim 1s ease-in-out infinite;
+}
+
+@keyframes boxShadowAnim {
+  0%,
+  100% {
+    box-shadow: 0 0 10px 5px rgba(66, 164, 245, 0.89);
+  }
+  50% {
+    box-shadow: 0 0 0 0 rgba(66, 165, 245, 0.2);
+
+  }
+}
+
+@-webkit-keyframes boxShadowAnim {
+  0%,
+  100% {
+    box-shadow: 0 0 10px 5px rgba(66, 164, 245, 0.89);
+  }
+  50% {
+    box-shadow: 0 0 0 0 rgba(66, 165, 245, 0.2);
+
+  }
 }
 
 .discount-buttons .btn:hover {

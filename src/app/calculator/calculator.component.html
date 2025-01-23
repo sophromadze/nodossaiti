@@ -8,6 +8,11 @@
           'desktop-margin': !isMobileDevice
         }"
       >
+      <div class="fTimeDiscTxtCont" (click)="scrollToDiscount()">
+        <h1 class="firstTimeDiscTxtUp">FIRST TIME?</h1>
+        <h1 class="firstTimeDiscTxtDown">GET 20% OFF!!!</h1>
+      </div>
+      
         <!-- Service Type -->
         <div class="relative-container">
           <div class="form-group col bordered-group">
@@ -321,28 +326,12 @@
           </div>
         </div>
 
-        <!-- Tips Input -->
-        <div class="relative-container row tipsDiscount">
-          <div class="form-group bordered-group tips">
-            <label for="tips"><h3>Tips For Cleaners</h3></label>
-            <p>Min $10</p>
-            <div class="input-container">
-              <span class="currency-symbol">$</span>
-              <input
-                type="number"
-                formControlName="tips"
-                id="tips"
-                class="form-control tipsInput"
-                placeholder="Tips"
-                min="0"
-                step="1"
-                (input)="onTipsInput($event)"
-              />
-            </div>
-          </div>
+        
 
+        <!-- Tips and discount Inputs -->
+        <div class="relative-container row tipsDiscount">
           <!--  Discounts -->
-          <div class="form-group bordered-group discount">
+          <div id="discounts" class="form-group bordered-group discount">
             <label><h3>Discounts</h3></label>
             <p>Choose Your Discounts</p>
             <div class="discount-buttons">
@@ -360,6 +349,23 @@
             </div>
           </div>
           <!-- Discounts End -->
+          <div class="form-group bordered-group tips">
+            <label for="tips"><h3>Tips For Cleaners</h3></label>
+            <p>Min $10</p>
+            <div class="input-container">
+              <span class="currency-symbol">$</span>
+              <input
+                type="number"
+                formControlName="tips"
+                id="tips"
+                class="form-control tipsInput"
+                placeholder="Tips"
+                min="0"
+                step="1"
+                (input)="onTipsInput($event)"
+              />
+            </div>
+          </div>
         </div>
 
         <!-- Entry Method -->
@@ -720,13 +726,13 @@
         </div>
 
         <!-- PayPal Payment Form -->
-        <div *ngIf="showPayPalForm && total !== null" class="overlay">
+        <!-- <div *ngIf="showPayPalForm && total !== null" class="overlay">
           <app-paypal-button
             [amount]="total!"
             (close)="closePaymentForm()"
             (paymentSuccess)="onPaymentSuccess($event)"
           ></app-paypal-button>
-        </div>
+        </div> -->
 
         <!-- Credit/Debit Card Payment Form -->
         <div *ngIf="showCreditCardForm && total !== null" class="overlay">

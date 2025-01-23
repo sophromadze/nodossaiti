@@ -108,7 +108,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   isFocused: boolean = false;
   frequencies = [
     { value: 'One Time', label: 'One Time', discount: 0 },
-    { value: 'Weekly', label: 'Weekly 10% Discount', discount: 10 },
+    { value: 'Weekly', label: 'Weekly 20% Discount', discount: 20 },
     { value: 'Every 2 Weeks', label: 'Every 2 Weeks 8% Discount', discount: 8 },
     { value: 'Every 3 Weeks', label: '3 Weekly 5.5%', discount: 5.5 },
     { value: 'Monthly', label: 'Monthly Discount 3%', discount: 3 },
@@ -116,7 +116,7 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
   discounts = [
     {
       value: 'First Time',
-      label: 'First Time Service',
+      label: 'First Time Service 20% OFF',
       discount: 20,
     },
   ];
@@ -797,6 +797,17 @@ export class CalculatorComponent implements OnInit, AfterViewInit {
     }
     return null;
   }
+
+  scrollToDiscount() {
+    const discountButton = document.getElementById('discounts');
+    if (discountButton) {
+      const yOffset = -100; // Set your offset value here
+      const yPosition = discountButton.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      
+      window.scrollTo({ top: yPosition, behavior: 'smooth' });
+    }
+  }
+  
 
   onServiceTypeChange(): void {
     const serviceType = this.calculatorForm.get('serviceType')!.value;
